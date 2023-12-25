@@ -29,8 +29,8 @@ function Login() {
                     <h1>Board.</h1>        
                 </div>
             </div>         
-            <div className={!login?"mx-auto lg:mt-[6rem] 2xl:w-3/4 bg-[#F8FAFF]":"hidden"}>
-                    <h1 className="text-4xl text-center md:text-left mt-10 md:mt-10m-4 font-bold ml-4">Sign in</h1>
+            <div className={!login?"mx-auto lg:mt-[6rem] xl:w-3/4 bg-[#F8FAFF]":"hidden"}>
+                    <h1 className="text-4xl text-center md:text-left mt-10 md:mt-10 m-4 font-bold ml-4">Sign in</h1>
                     <h2 className="text-xs mt-2 text-center md:text-left m-4 font-lato">Sign into your account</h2>
                     <div className="">
                         <div className="block m-4">
