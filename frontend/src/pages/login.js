@@ -3,14 +3,8 @@ import { FcGoogle} from "react-icons/fc";
 import { AiFillGithub,AiFillTwitterCircle,AiFillLinkedin } from "react-icons/ai";
 import { BsDiscord } from "react-icons/bs";
 import { useState } from "react";
-import Register from "./register";
-
+import { Link } from "react-router-dom";
 function Login() {
-    const [login,setLogin] = useState(0);
-    const handleLogin = (e)=>{
-        e.preventDefault();
-        setLogin(!login)
-    }
     return(
         <div className="md:grid md:grid-cols-2 relative">
             <div className="relative">
@@ -29,7 +23,7 @@ function Login() {
                     <h1>Board.</h1>        
                 </div>
             </div>         
-            <div className={!login?"mx-auto lg:mt-[6rem] xl:w-3/4 bg-[#F8FAFF]":"hidden"}>
+            <div className="mx-auto lg:mt-[6rem] xl:w-3/4 bg-[#F8FAFF]">
                     <h1 className="text-4xl text-center md:text-left mt-10 md:mt-10 m-4 font-bold ml-4">Sign in</h1>
                     <h2 className="text-xs mt-2 text-center md:text-left m-4 font-lato">Sign into your account</h2>
                     <div className="">
@@ -38,18 +32,17 @@ function Login() {
                                 {<FcGoogle className="inline" />} Sign in with google
                             </button>
                         </div>
-                        <form className="text-start bg-white ring-slate-50">   
+                        <form className="text-start bg-white ring-slate-50" action="http://localhost:5000/" method="post">   
                             <label htmlFor="mail" className="block text-[16px] m-4 font-lato">Email address</label>                    
-                            <input id="mail" type="email" className="h-[43px]  bg-[#F5F5F5] rounded w-full p-2 m-2 focus:outline-none font-lato"/>  
+                            <input id="mail" type="email" name="mail" className="h-[43px]  bg-[#F5F5F5] rounded w-full p-2 m-2 focus:outline-none font-lato"/>  
                             <label htmlFor="password" className="block text-[16px]  m-4 font-lato">password</label>                    
-                            <input id="password" type="password" className="h-[43px] bg-[#F5F5F5] rounded w-full p-2 m2 focus:outline-none font-lato"/>  
+                            <input id="password" type="password" name="password" className="h-[43px] bg-[#F5F5F5] rounded w-full p-2 m2 focus:outline-none font-lato"/>  
                             <a href="/" className="block text-blue-400 m-4 font-lato">Forgot password?</a>     
-                            <button className=" block bg-[#778379] text-white w-3/4 h-[43px] rounded-md mt-2 mx-auto m-4 font-montserrat font-bold">Sign in</button> 
-                            <p className="text-center text-[#858585] mt-2 font-lato">Don't have an account? <a href="/" className="text-blue-400 m-4 font-lato" onClick={handleLogin} >Register here</a></p>             
+                            <button className="block bg-[#778379] text-white w-3/4 h-[43px] rounded-md mt-2 mx-auto m-4 font-montserrat font-bold">Sign in</button> 
+                            <p className="text-center text-[#858585] mt-2 font-lato">Don't have an account? <Link to="/register" className="text-blue-400 m-4 font-lato">Register here</Link></p>             
                         </form>
                     </div>
             </div>
-            <Register login={login} handleLogin={handleLogin} />
             <div className="md:hidden flex flex-row justify-center  items-center gap-10 box-border text-4xl mt-8">
                 <h1>{<AiFillGithub/>}</h1>
                 <h1>{<AiFillLinkedin/>}</h1>

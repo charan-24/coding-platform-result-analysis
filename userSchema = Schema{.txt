@@ -1,0 +1,12 @@
+userSchema = Schema{
+	name:string,
+	email:string,
+	password:string,
+	coding_profiles:{
+		hackerrank:{
+			uname:string,
+			score:number,
+			
+		}
+	}
+}
