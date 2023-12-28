@@ -4,16 +4,21 @@ import MyProfile from './pages/myProfile';
 import CodingProfiles from './pages/codingProfiles';
 import LeaderBoard from './pages/leaderboard';
 import Navbar from './layouts/navbar';
-import Footer from './layouts/footer';
+
+//import Footer from './layouts/footer';
 import Register from './pages/register';
-import {BrowserRouter as Router,Route,Routes} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+//import { Switch } from 'react-router';
 
 function App() {
 
   return (
-    <div className="App">
-      <Navbar />
+    <div >
+      
       <Router>
+        <Navbar />
+
+        
         <Routes>
             <Route path='/' element={<Login />}/>
             <Route path='/register' element={<Register />}/>
@@ -21,6 +26,7 @@ function App() {
             <Route path='/coding-profiles' element={<CodingProfiles/>}/>
             <Route path='/leaderboard' element={<LeaderBoard />}/>
         </Routes>
+        
       </Router>
     </div>
   );
