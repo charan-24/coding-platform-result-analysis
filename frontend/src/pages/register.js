@@ -1,30 +1,38 @@
 import React from "react";
 import { FcGoogle} from "react-icons/fc";
-import { AiFillGithub,AiFillTwitterCircle,AiFillLinkedin } from "react-icons/ai";
-import { BsDiscord } from "react-icons/bs";
+import { useState } from "react";
+import Coding from '../images/coding.gif';
 import { Link } from "react-router-dom";
 
 function Register(){
+    const [showpwd,setShowpd] = useState("Show passwords");
+    const [pwdtype,setPwdtype] = useState(1);
+    const handlePassword = ()=>{
+        if(pwdtype){
+            setShowpd("Hide passwords");
+        }
+        else{
+            setShowpd("Show passwords");
+        }
+        setPwdtype(!pwdtype);
+    }
     return(
         <div className="md:grid md:grid-cols-2 relative">
             <div className="relative">
-                    <div className="max-md:hidden left-side w-full h-screen text-white font-extrabold relative bg-[#778379]">
-                        <h1 className="xl:text-4xl text-white">LOGO</h1>
-                        <h1 className="block text-center text-3xl">WELCOME BACK</h1>
-                        <div className="absolute bottom-[1rem] ml-[3rem] lg:ml-[7rem] xl:ml-[12rem] flex flex-row gap-10 box-border text-4xl mt-8">
-                            <h1>{<AiFillGithub/>}</h1>
-                            <h1>{<AiFillLinkedin/>}</h1>
-                            <h1>{<AiFillTwitterCircle/>}</h1>
-                            <h1>{<BsDiscord/>}</h1>
+                    <div className="max-md:hidden left-side w-full h-screen text-black font-extrabold relative">
+                        <h1 className="xl:text-4xl">LOGO</h1>
+                        <h1 className="block text-center text-3xl">WELCOME CODERS</h1>
+                        <div className="flex justify-center item-center">
+                            <img src= {Coding} className="absolute top-1/4 w-3/4" alt="coding GIF" />
                         </div>
                     </div>
-                    <div className="md:hidden flex flex-row justify-between font-extrabold gap-10 text-black bg-[#778379]">
+                    <div className="md:hidden flex flex-row justify-between font-extrabold gap-10 text-black">
                         <h1>LOGO</h1>
-                        <h1>Board.</h1>        
+                        <h1>WELCOME CODERS</h1>        
                     </div>
             </div> 
-            <div className="mx-auto lg:mt-[6rem] w-3/4 bg-[#F8FAFF]">
-                <h1 className="text-4xl text-center md:text-left mt-10 md:mt-10 m-4 font-bold ml-4">Sign up</h1>
+            <div className="mx-auto xl:mt-[6rem] w-3/4 bg-[#F8FAFF]">
+                <h1 className="text-4xl text-center md:text-left mt-5 md:mt-5 m-4 font-bold ml-4">Sign up</h1>
                 <h2 className="text-xs mt-2 text-center md:text-left m-4 font-lato">Register your account</h2>
                 <div className="">
                     <div className="block m-4">
@@ -32,23 +40,23 @@ function Register(){
                             {<FcGoogle className="inline" />} Register with google
                         </button>
                     </div>
-                    <form className="text-start bg-white ring-slate-50" action="http://localhost:5000/register" method="post">   
-                        <label htmlFor="mail" className="block text-[16px] m-4 font-lato">Email address</label>                    
-                        <input id="mail" type="email" name="mail" className="h-[43px]  bg-[#F5F5F5] rounded w-full p-2 m-2 focus:outline-none font-lato"/>  
-                        <label htmlFor="password" className="block text-[16px]  m-4 font-lato">password</label>                    
-                        <input id="password" type="password" name="password" className="h-[43px] bg-[#F5F5F5] rounded w-full p-2 m2 focus:outline-none font-lato"/> 
-                        <label htmlFor="cnfpassword" className="block text-[16px]  m-4 font-lato">confirm password</label>                    
-                        <input id="cnfpassword" type="password" name="cnfpassword" className="h-[43px] bg-[#F5F5F5] rounded w-full p-2 m2 focus:outline-none font-lato"/>        
+                    <form className="text-start bg-white ring-slate-50 mt-4" action="http://localhost:5000/register" method="post">
+                        <label htmlFor="mail" className="block text-[16px] font-lato">Full Name</label>                    
+                        <input id="mail" type="email" name="mail" className="mb-4 h-[43px]  bg-[#F5F5F5] rounded w-full focus:outline-none font-lato"/> 
+                        <label htmlFor="mail" className="block text-[16px]  font-lato">Username</label>                    
+                        <input id="mail" type="email" name="mail" className="mb-4 h-[43px]  bg-[#F5F5F5] rounded w-full focus:outline-none font-lato"/>  
+                        <label htmlFor="mail" className="block text-[16px] font-lato">Email address</label>                    
+                        <input id="mail" type="email" name="mail" className="mb-4 h-[43px]  bg-[#F5F5F5] rounded w-full focus:outline-none font-lato"/>  
+                        <label htmlFor="password" className="block text-[16px] font-lato">Password</label>                    
+                        <input id="password" type={pwdtype?"password":"text"} name="password" className="mb-4 h-[43px] bg-[#F5F5F5] rounded w-full focus:outline-none font-lato"/> 
+                        <label htmlFor="cnfpassword" className="block text-[16px] font-lato">Confirm password</label>                    
+                        <input id="cnfpassword" type={pwdtype?"password":"text"} name="cnfpassword" className="mb-4 h-[43px] bg-[#F5F5F5] rounded w-full focus:outline-none font-lato"/>
+                        <input type="checkbox" id="showpassword" name="showpassword" className="mt-4 mr-2" onClick={handlePassword}></input>
+                        <label htmlFor="showpassword">{showpwd}</label>        
                         <button className="block bg-[#778379] text-white w-3/4 h-[43px] rounded-md mt-2 mx-auto m-4 font-montserrat font-bold" type="submit">Sign me up</button> 
-                        <p className="text-center text-[#858585] mt-2 font-lato">Already a member? <a href="/" className="text-blue-400 m-4 font-lato">Login here</a></p>             
+                        <p className="text-center text-[#858585] mt-2 font-lato">Already a member? <Link to="/" className="text-blue-400 m-4 font-lato">Login here</Link></p>             
                     </form>
                 </div>
-            </div>
-            <div className="md:hidden flex flex-row justify-center  items-center gap-10 box-border text-4xl mt-8">
-                <h1>{<AiFillGithub/>}</h1>
-                <h1>{<AiFillLinkedin/>}</h1>
-                <h1>{<AiFillTwitterCircle/>}</h1>
-                <h1>{<BsDiscord/>}</h1>
             </div>
         </div>
     );

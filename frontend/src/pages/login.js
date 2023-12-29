@@ -1,26 +1,36 @@
 import React from "react";
 import { FcGoogle} from "react-icons/fc";
-import { AiFillGithub,AiFillTwitterCircle,AiFillLinkedin } from "react-icons/ai";
-import { BsDiscord } from "react-icons/bs";
+// import { IoEye,IoEyeOff } from "react-icons/io5";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import Coding from '../images/coding.gif';
+
 function Login() {
+    const [showpwd,setShowpd] = useState("Show password");
+    const [pwdtype,setPwdtype] = useState(1);
+    const handlePassword = ()=>{
+        if(pwdtype){
+            setShowpd("Hide password");
+        }
+        else{
+            setShowpd("Show password");
+        }
+        setPwdtype(!pwdtype);
+    }
     return(
-        <div className="md:grid md:grid-cols-2 relative">
+        <div>
+            <div className="md:grid md:grid-cols-2 relative">
             <div className="relative">
-                <div className="max-md:hidden left-side w-full h-screen text-white font-extrabold relative bg-[#778379]">
-                    <h1 className="xl:text-4xl text-white">LOGO</h1>
+                <div className="relative max-md:hidden left-side w-full h-screen text-black font-extrabold">
+                    <h1 className="xl:text-4xl">LOGO</h1>
                     <h1 className="block text-center text-3xl">WELCOME BACK</h1>
-                    <div className="absolute bottom-[1rem] ml-[3rem] lg:ml-[7rem] xl:ml-[12rem] flex flex-row gap-10 box-border text-4xl mt-8">
-                        <h1>{<AiFillGithub/>}</h1>
-                        <h1>{<AiFillLinkedin/>}</h1>
-                        <h1>{<AiFillTwitterCircle/>}</h1>
-                        <h1>{<BsDiscord/>}</h1>
-                    </div>
+                    <div className="flex justify-center item-center">
+                        <img src= {Coding} className="absolute top-1/4 w-3/4" alt="coding GIF" />
+                    </div>                   
                 </div>
-                <div className="md:hidden flex flex-row justify-between font-extrabold gap-10 text-black bg-[#778379]">
+                <div className="md:hidden flex flex-row justify-between font-extrabold gap-10 text-black">
                     <h1>LOGO</h1>
-                    <h1>Board.</h1>        
+                    <h1>WELCOME BACK</h1>        
                 </div>
             </div>         
             <div className="mx-auto lg:mt-[6rem] xl:w-3/4 bg-[#F8FAFF]">
@@ -33,23 +43,21 @@ function Login() {
                             </button>
                         </div>
                         <form className="text-start bg-white ring-slate-50" action="http://localhost:5000/" method="post">   
-                            <label htmlFor="mail" className="block text-[16px] m-4 font-lato">Email address</label>                    
-                            <input id="mail" type="email" name="mail" className="h-[43px]  bg-[#F5F5F5] rounded w-full p-2 m-2 focus:outline-none font-lato"/>  
-                            <label htmlFor="password" className="block text-[16px]  m-4 font-lato">password</label>                    
-                            <input id="password" type="password" name="password" className="h-[43px] bg-[#F5F5F5] rounded w-full p-2 m2 focus:outline-none font-lato"/>  
+                            <label htmlFor="mail" className="block text-[16px] mt-4 font-lato">Email/Username</label>                    
+                            <input id="mail" type="email" name="mail" className="mb-4 h-[43px]  bg-[#F5F5F5] rounded w-full focus:outline-none font-lato"/>  
+                            <label htmlFor="password" className="block text-[16px] font-lato">Password</label>                    
+                            <input id="password" type={pwdtype?"password":"text"} name="password" className="mb-4 h-[43px] bg-[#F5F5F5] rounded w-full focus:outline-none font-lato"></input>  
+                            <input type="checkbox" id="showpassword" name="showpassword" className="mt-4 mx-2" onClick={handlePassword}></input>
+                            <label htmlFor="showpassword">{showpwd}</label>
                             <a href="/" className="block text-blue-400 m-4 font-lato">Forgot password?</a>     
                             <button className="block bg-[#778379] text-white w-3/4 h-[43px] rounded-md mt-2 mx-auto m-4 font-montserrat font-bold">Sign in</button> 
                             <p className="text-center text-[#858585] mt-2 font-lato">Don't have an account? <Link to="/register" className="text-blue-400 m-4 font-lato">Register here</Link></p>             
                         </form>
                     </div>
-            </div>
-            <div className="md:hidden flex flex-row justify-center  items-center gap-10 box-border text-4xl mt-8">
-                <h1>{<AiFillGithub/>}</h1>
-                <h1>{<AiFillLinkedin/>}</h1>
-                <h1>{<AiFillTwitterCircle/>}</h1>
-                <h1>{<BsDiscord/>}</h1>
-            </div>        
+            </div>       
         </div>
+        </div>
+        
     );
 }
 

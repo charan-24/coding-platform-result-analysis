@@ -2,8 +2,8 @@ import React from 'react';
 import ProfilePicture from './ProfilePicture'; // Assuming ProfilePicture.js is in the same directory
 import LineGraph from './LineGraph';
 import BarGraph from './BarChart';
-import UserInfo from './UserProfileInfo';
-
+import UserInfo from '../UserProfileInfo';
+import Navbar from '../../layouts/navbar';
 const MyProfile = () => {
   const profileImageUrl = ''; // Add the actual image URL
 
@@ -16,7 +16,9 @@ const MyProfile = () => {
   };
 
   return (
-    <div className="border border-gray-300 p-6 rounded-lg">
+    <div>
+      <Navbar />
+      <div className="border border-gray-300 p-6 rounded-lg">
       <div className="flex flex-col md:flex-row">
         {/* Left Column: Profile Picture */}
         <div className="flex-none border-b md:border-b-0 md:border-r pr-4 mb-4 md:mb-0">
@@ -44,6 +46,8 @@ const MyProfile = () => {
         </div>
       </div>
     </div>
+    </div>
+    
   );
 };
 

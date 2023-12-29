@@ -1,9 +1,9 @@
 import './App.css';
 import Login from './pages/login';
-import MyProfile from './pages/myProfile';
+import MyProfile from './pages/myProfile/myProfile';
 import CodingProfiles from './pages/codingProfiles';
-import LeaderBoard from './pages/leaderboard';
-import Navbar from './layouts/navbar';
+import LeaderBoard from './pages/leaderboard/leaderboard';
+import MyAccount from './pages/myAccount';
 
 //import Footer from './layouts/footer';
 import Register from './pages/register';
@@ -16,17 +16,15 @@ function App() {
     <div >
       
       <Router>
-        <Navbar />
-
-        
+        {/* <Navbar /> */}
         <Routes>
             <Route path='/' element={<Login />}/>
             <Route path='/register' element={<Register />}/>
             <Route path='/my-profile' element={<MyProfile />}/>
             <Route path='/coding-profiles' element={<CodingProfiles/>}/>
             <Route path='/leaderboard' element={<LeaderBoard />}/>
-        </Routes>
-        
+            <Route path='/my-account' element={<MyAccount />}/>
+        </Routes>       
       </Router>
     </div>
   );
