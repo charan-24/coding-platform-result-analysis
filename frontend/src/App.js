@@ -3,7 +3,7 @@ import Login from './pages/login';
 import MyProfile from './pages/myProfile/myProfile';
 import CodingProfiles from './pages/codingProfiles';
 import LeaderBoard from './pages/leaderboard/leaderboard';
-import MyAccount from './pages/myAccount';
+import MyAccount from './pages/myAccount/myAccount';
 
 //import Footer from './layouts/footer';
 import Register from './pages/register';

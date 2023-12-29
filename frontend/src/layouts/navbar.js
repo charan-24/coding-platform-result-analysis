@@ -1,12 +1,12 @@
 // Navbar.js
-import React, { useState,useEffect } from 'react';
+import React, { useState} from 'react';
 import { Link } from 'react-router-dom';
 import logo1 from '../images/logo1.jpeg';
 import { IoIosArrowDropdownCircle } from "react-icons/io";
 const Navbar = () => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const [style,setStyle] = useState({});
-  const [clicked,setClicked] = useState(0);
+
   const toggleDropdown = () => {
     if(!isDropdownOpen){
       setStyle({
