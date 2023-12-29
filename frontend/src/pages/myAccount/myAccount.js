@@ -6,7 +6,7 @@ function MyAccount(){
         <div>
             <Navbar />
             <div>
-                <h1 className="text-center font-bold md:mt-4">Personal Details</h1>
+                <h1 className="text-center font-bold md:mt-4 underline">Personal Details</h1>
                 <form className="w-3/4 md:w-2/5 mx-auto">
                     {personals.map((personal)=>(
                         <div key={personal.id}>
@@ -21,7 +21,7 @@ function MyAccount(){
                 </form>
             </div>
             <div>
-                <h1 className="text-center font-bold md:mt-4">Coding Profiles</h1>
+                <h1 className="text-center font-bold md:mt-4 underline">Coding Profiles</h1>
                 <form className="w-3/4 md:w-2/5 mx-auto">
                     {codingProfiles.map((platform)=>(
                         <div key={platform.id}>
@@ -36,7 +36,7 @@ function MyAccount(){
                 </form>
             </div>
             <div>
-                <h1 className="text-center font-bold md:mt-4">Social Profiles</h1>
+                <h1 className="text-center font-bold md:mt-4 underline">Social Profiles</h1>
                 <form className="w-3/4 md:w-2/5 mx-auto">
                     {socials.map((media)=>(
                         <div key={media.id}>
@@ -51,7 +51,7 @@ function MyAccount(){
                 </form>
             </div>
             <div className="mb-4">
-                <h1 className="text-center font-bold md:mt-4">Development Profiles</h1>
+                <h1 className="text-center font-bold md:mt-4 underline">Development Profiles</h1>
                 <form className="w-3/4 md:w-2/5 mx-auto">
                     {development.map((platform)=>(
                         <div key={platform.id}>
