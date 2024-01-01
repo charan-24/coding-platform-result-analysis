@@ -26,14 +26,15 @@ const LineGraph = () => {
         pointHoverBackgroundColor: 'rgba(75,192,192,1)',
         pointHoverBorderColor: '#fff',
         data: [
-          300, 320, 350, 380, 400, 410, 420, 430, 440, 450,
-          450, 430, 420, 480, 500, 510, 520, 530, 540, 550,
-          580, 600, 650, 655, 700, 720, 800, 850, 900, 1000,
           
-
-          1000, 1100, 1200, 1300, 1350, 1400, 1450, 1500, 1600, 1650,
+          450, 430, 420, 480, 500, 5000, 5200, 5300, 5400, 5450,510, 520, 530, 540, 550,
           1700, 1800, 1800, 1900, 3000, 3500, 4000, 4500, 4600, 4650,
-          4700, 4800, 4900, 5000, 5200, 5300, 5400, 5450, 5500, 5600,
+          580, 600, 650, 655, 700, 720, 800, 850, 900, 1000,
+  
+          1000, 1100, 1200, 1300, 1350, 1400, 1450, 1500, 1600, 1650,
+          
+          4700, 4800, 4900,  5500, 5600,
+          300, 320, 350, 380, 400, 410, 420, 430, 440, 450,
           
         ], 
       },
@@ -41,6 +42,14 @@ const LineGraph = () => {
   };
 
   const options = {
+    layout:{
+      padding:0,
+    },
+    plugins: {
+      legend:{
+          display:false
+      }
+    },
     scales: {
       x: {
         type: 'category',
@@ -52,16 +61,9 @@ const LineGraph = () => {
   };
 
   return (
-    <div className="flex">
-    <div className="w-3/5 p-4 ">
-      <h2 className="text-xl font-bold mb-4">OverAll Performance </h2>
-      <Line data={data} options={options} />
-    </div>
-    <div className="w-1/6 p-4 ">
-        <div className="relative ">
-          <DonutChart />
-        </div>
-      </div>
+    <div>
+      <h2 className="md:text-xl font-bold my-4 text-center underline">OverAll Performance </h2>
+      <Line data={data} options={options}/>
     </div>
   );
 };

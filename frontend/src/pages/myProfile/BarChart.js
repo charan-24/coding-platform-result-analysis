@@ -19,6 +19,11 @@ const BarChart = () => {
   };
 
   const options = {
+    plugins: {
+      legend:{
+          display:false
+      }
+    },
     scales: {
       x: {
         type: 'category', // Use 'category' for days of the week
@@ -30,8 +35,8 @@ const BarChart = () => {
   };
 
   return (
-    <div className="w-3/5">
-      <h2 className="text-xl font-bold mb-4">Weekly Performance</h2>
+    <div>
+      <h2 className="md:text-xl font-bold my-4 text-center underline">Weekly Performance</h2>
       <Bar data={data} options={options} />
     </div>
   );
