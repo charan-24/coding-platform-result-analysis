@@ -20,7 +20,7 @@ function Register(){
         <div className="md:grid md:grid-cols-2 relative">
             <div className="relative">
                     <div className="max-md:hidden left-side w-full h-screen text-black font-extrabold relative">
-                        <h1 className="xl:text-4xl">LOGO</h1>
+                        <h1 className="xl:text-4xl">DYNAMICS</h1>
                         <h1 className="block text-center text-3xl">WELCOME CODERS</h1>
                         <div className="flex justify-center item-center">
                             <img src= {Coding} className="absolute top-1/4 w-3/4" alt="coding GIF" />
@@ -42,9 +42,9 @@ function Register(){
                     </div>
                     <form className="text-start bg-white ring-slate-50 mt-4" action="http://localhost:5000/register" method="post">
                         <label htmlFor="mail" className="block text-[16px] font-lato">Full Name</label>                    
-                        <input id="mail" type="email" name="mail" className="mb-4 h-[43px]  bg-[#F5F5F5] rounded w-full focus:outline-none font-lato"/> 
+                        <input id="mail" type="text" name="mail" className="mb-4 h-[43px]  bg-[#F5F5F5] rounded w-full focus:outline-none font-lato"/> 
                         <label htmlFor="mail" className="block text-[16px]  font-lato">Username</label>                    
-                        <input id="mail" type="email" name="mail" className="mb-4 h-[43px]  bg-[#F5F5F5] rounded w-full focus:outline-none font-lato"/>  
+                        <input id="mail" type="text" name="mail" className="mb-4 h-[43px]  bg-[#F5F5F5] rounded w-full focus:outline-none font-lato"/>  
                         <label htmlFor="mail" className="block text-[16px] font-lato">Email address</label>                    
                         <input id="mail" type="email" name="mail" className="mb-4 h-[43px]  bg-[#F5F5F5] rounded w-full focus:outline-none font-lato"/>  
                         <label htmlFor="password" className="block text-[16px] font-lato">Password</label>                    

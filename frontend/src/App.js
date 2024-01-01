@@ -4,6 +4,7 @@ import MyProfile from './pages/myProfile/myProfile';
 import CodingProfiles from './pages/codingProfiles';
 import LeaderBoard from './pages/leaderboard/leaderboard';
 import MyAccount from './pages/myAccount/myAccount';
+import Contactus from './layouts/contactus';
 
 //import Footer from './layouts/footer';
 import Register from './pages/register';
@@ -24,6 +25,7 @@ function App() {
             <Route path='/coding-profiles' element={<CodingProfiles/>}/>
             <Route path='/leaderboard' element={<LeaderBoard />}/>
             <Route path='/my-account' element={<MyAccount />}/>
+            <Route path='/contact-us' element={<Contactus />}/>
         </Routes>       
       </Router>
     </div>

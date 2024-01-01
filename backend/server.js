@@ -29,7 +29,7 @@ app.post('/register',(req,res)=>{
     console.log(mail);
     console.log(pwd);
     console.log(cnfpwd);
-    res.redirect('http://localhost:3000/my-profile');
+    res.redirect('http://localhost:3000/coding-profiles');
 });
 
 app.post('/coding-profiles',(req,res)=>{
