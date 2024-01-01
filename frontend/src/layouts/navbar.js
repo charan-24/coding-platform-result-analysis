@@ -1,9 +1,10 @@
 // Navbar.js
 import React, { useState} from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import logo1 from '../images/logo1.jpeg';
 import { IoIosArrowDropdownCircle } from "react-icons/io";
 const Navbar = () => {
+
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const [style,setStyle] = useState({});
 
@@ -23,12 +24,15 @@ const Navbar = () => {
     setDropdownOpen(!isDropdownOpen);
   };
 
-  const handleOptionClick = () => {
+  const handleOptionClick = (e) => {
     setStyle({
       transform: 'rotate(360deg)',
       transition: 'transform 150ms ease',
     });
     setDropdownOpen(false); 
+    // if(e.target.id==='logout'){
+    //   useNavigate('../pages/login.js');
+    // }
   };
 
   // useEffect(()=>{
@@ -46,7 +50,7 @@ const Navbar = () => {
       <div className="container  flex justify-between items-center py-4">
         <div className="flex items-center">
           {/* logo image */}
-          <img src={logo1} alt="Logo" className="h-8 " />
+          {/* <img src={logo1} alt="Logo" className="h-8 " /> */}
           {/* Hide on small devices */}
           <span className="ml-2 text-lg font-semibold hidden sm:inline ">Dynamics</span>
         </div>
@@ -71,10 +75,10 @@ const Navbar = () => {
             </Link>
             {/* <Link to="/contact" className="block px-4 py-2 hover:bg-gray-200" onClick={handleOptionClick}>
               Contact Us
-            </Link>
-            <Link to="/logout" className="block px-4 py-2 hover:bg-gray-200" onClick={handleOptionClick}>
-              LogOut
             </Link> */}
+            <Link to="/" id="logout" className="block px-4 py-2 hover:bg-gray-200" onClick={handleOptionClick}>
+              LogOut
+            </Link>
           </div>
         </div>
       </div>

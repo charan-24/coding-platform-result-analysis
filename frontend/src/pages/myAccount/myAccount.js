@@ -1,5 +1,6 @@
 import React from "react";
 import Navbar from "../../layouts/navbar";
+import Contactus from "../../layouts/contactus";
 import {codingProfiles,personals,socials,development} from "./myAccountsdata";
 function MyAccount(){
     return(

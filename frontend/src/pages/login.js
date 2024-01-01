@@ -22,7 +22,7 @@ function Login() {
             <div className="md:grid md:grid-cols-2 relative">
             <div className="relative">
                 <div className="relative max-md:hidden left-side w-full h-screen text-black font-extrabold">
-                    <h1 className="xl:text-4xl">LOGO</h1>
+                    <h1 className="xl:text-4xl">DYNAMICS</h1>
                     <h1 className="block text-center text-3xl">WELCOME BACK</h1>
                     <div className="flex justify-center item-center">
                         <img src= {Coding} className="absolute top-1/4 w-3/4" alt="coding GIF" />

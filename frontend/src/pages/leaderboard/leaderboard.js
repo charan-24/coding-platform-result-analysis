@@ -1,110 +1,9 @@
 import React from "react";
 import Navbar from '../../layouts/navbar';
+import Contactus from "../../layouts/contactus";
 import './leaderboard.css';
+import { Users } from "./leaderboarddata";
 function LeaderBoard(){
-    const users = [
-            {
-                sno:1,
-                name: "xavier",
-                college: "RIEC",
-                hacker:1200,
-                leet:1410,
-                chef:210,
-                force:810,
-                total:6900
-            },
-            {
-                sno:2,
-                name: "xavier",
-                college: "RIEC",
-                hacker:1200,
-                leet:1410,
-                chef:210,
-                force:810,
-                total:6900
-            },
-            {
-                sno:3,
-                name: "xavier",
-                college: "RIEC",
-                hacker:1200,
-                leet:1410,
-                chef:210,
-                force:810,
-                total:6900
-            },
-            {
-                sno:4,
-                name: "xavier",
-                college: "RIEC",
-                hacker:1200,
-                leet:1410,
-                chef:210,
-                force:810,
-                total:6900
-            },
-            {
-                sno:5,
-                name: "xavier",
-                college: "RIEC",
-                hacker:1200,
-                leet:1410,
-                chef:210,
-                force:810,
-                total:6900
-            },
-            {
-                sno:6,
-                name: "xavier",
-                college: "RIEC",
-                hacker:1200,
-                leet:1410,
-                chef:210,
-                force:810,
-                total:6900
-            },
-            {
-                sno:7,
-                name: "xavier",
-                college: "RIEC",
-                hacker:1200,
-                leet:1410,
-                chef:210,
-                force:810,
-                total:6900
-            },
-            {
-                sno:8,
-                name: "xavier",
-                college: "RIEC",
-                hacker:1200,
-                leet:1410,
-                chef:210,
-                force:810,
-                total:6900
-            },
-            {
-                sno:9,
-                name: "xavier",
-                college: "RIEC",
-                hacker:1200,
-                leet:1410,
-                chef:210,
-                force:810,
-                total:6900
-            },
-            {
-                sno:10,
-                name: "xavier",
-                college: "RIEC",
-                hacker:1200,
-                leet:1410,
-                chef:210,
-                force:810,
-                total:6900
-            },
-    ];
-    console.log({users});
     return(
         <div>
             <Navbar />
@@ -123,7 +22,7 @@ function LeaderBoard(){
                         </tr>
                     </thead>
                     <tbody>
-                        {users.map((user,index)=>(
+                        {Users.map((user,index)=>(
                             <tr key={user.sno} className={index%2!==0?"tbody-row bg-[#f5f5f5]":"tbody-row"}>
                                 <td>{user.sno}</td>
                                 <td>{user.name}</td>
@@ -138,6 +37,7 @@ function LeaderBoard(){
                     </tbody>
                 </table>
             </div>
+            <Contactus />
         </div>
     );
 };
