@@ -1,6 +1,5 @@
 import React, { useRef } from 'react';
 import emailjs from '@emailjs/browser';
-// import '../styles/Contactus.css';
 import Navbar from './navbar';
 function Contactus() {
   const form = useRef();
@@ -20,7 +19,7 @@ function Contactus() {
 
   return (
     <div className=''>  
-        {/* <Navbar /> */}
+        <Navbar />
         <div className='mx-auto border-t border-gray-300'>
             <h1 className='text-center font-bold mt-4 lg:text-[2rem] underline'>CONTACT US</h1>
             <form ref={form} onSubmit={sendEmail} className="w-3/4 md:w-2/5 mx-auto mt-4">
@@ -34,7 +33,6 @@ function Contactus() {
                 <textarea id="desc" type="text" placeholder="Enter your message" className="w-full rounded-mg mt-2 focus:outline-none"></textarea>
                 <hr className={`border-1 border-black w-full`}/>
                 <button className="block mx-auto bg-amber-300 rounded-md px-8 py-2 md:px-10 my-4">Send</button>
-                    {/* <hr className={`border-1 border-black w-full`}/>                    */}
             </form>
         </div>   
     </div>

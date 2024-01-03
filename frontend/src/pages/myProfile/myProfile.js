@@ -4,7 +4,6 @@ import BarGraph from './BarChart';
 import DonutChart from './DonutChart';
 import UserInfo from './UserProfileInfo';
 import Navbar from '../../layouts/navbar';
-import Contactus from "../../layouts/contactus";
 const MyProfile = () => {
 
   const user = {
@@ -18,27 +17,25 @@ const MyProfile = () => {
   return (
     <div>
       <Navbar />
-      <div className='lg:grid lg:grid-cols-12 lg:gap-3'>
-        <div className='lg:col-span-2 border-r-2 border-gray-300'>
-          <UserInfo user={user}/>
-        </div>
-        <div className='lg:col-span-10'>
-          <div className='lg:grid lg:grid-cols-12'>
-            <div className="lg:col-span-6">
-              <BarGraph />
-            </div>
-            <div className='lg:col-span-6 lg:relative'>
-              <DonutChart />
-            </div>
-          </div>  
-          <hr className='my-4'/>        
-          <div className='w-full lg:w-3/4 mx-auto'> 
-            <LineGraph />
+        <div className='lg:grid lg:grid-cols-12 lg:gap-3'>
+          <div className='lg:col-span-2 border-r-2 border-gray-300'>
+            <UserInfo user={user}/>
           </div>
-        </div>
-      </div>
-      
-      <Contactus />
+          <div className='lg:col-span-10'>
+            <div className='lg:grid lg:grid-cols-12'>
+              <div className="lg:col-span-6">
+                <BarGraph />
+              </div>
+              <div className='lg:col-span-6 flex items-center'>
+                <DonutChart />
+              </div>
+            </div>  
+            <hr className='my-4'/>        
+            <div className='w-full lg:w-3/4 mx-auto'> 
+              <LineGraph />
+            </div>
+          </div>
+        </div>  
     </div>
   );
 };

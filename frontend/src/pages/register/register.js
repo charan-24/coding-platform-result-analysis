@@ -1,7 +1,6 @@
 import React from "react";
 import { FcGoogle} from "react-icons/fc";
 import { useState } from "react";
-import Coding from '../images/coding.gif';
 import { Link } from "react-router-dom";
 
 function Register(){
@@ -21,9 +20,9 @@ function Register(){
             <div className="relative">
                     <div className="max-md:hidden left-side w-full h-screen text-black font-extrabold relative">
                         <h1 className="xl:text-4xl">DYNAMICS</h1>
-                        <h1 className="block text-center text-3xl">WELCOME CODERS</h1>
+                        <h1 className="block text-center text-3xl md:mt-16">WELCOME CODERS</h1>
                         <div className="flex justify-center item-center">
-                            <img src= {Coding} className="absolute top-1/4 w-3/4" alt="coding GIF" />
+                            <img src= {process.env.PUBLIC_URL+"images/coding.gif"} className="absolute top-1/4 w-3/4" alt="coding GIF" />
                         </div>
                     </div>
                     <div className="md:hidden flex flex-row justify-between font-extrabold gap-10 text-black">

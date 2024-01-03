@@ -31,7 +31,7 @@ const DonutChart = () => {
   const legendColors = ['#FF6384', '#36A2EB', '#FFCE56', '#4CAF50'];
 
   return (
-    <div className='lg:absolute lg:top-1/4'>
+    <div className='block'>
         <h2 className="md:text-xl font-bold text-center my-4 underline">Across platforms</h2>
         <div className="lg:flex lg:flex-row">
           <div className="">
