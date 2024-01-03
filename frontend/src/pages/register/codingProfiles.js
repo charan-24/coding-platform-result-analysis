@@ -1,6 +1,6 @@
 import React from "react";
 import { SiHackerrank, SiLeetcode, SiCodechef, SiCodeforces,SiLinkedin,SiGithub} from "react-icons/si";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 function CodingProfiles(){
     return(
         <div className="lg:w-3/4 lg:mx-auto">

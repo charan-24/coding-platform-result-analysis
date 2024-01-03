@@ -1,9 +1,7 @@
 import React from "react";
 import { FcGoogle} from "react-icons/fc";
-// import { IoEye,IoEyeOff } from "react-icons/io5";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import Coding from '../images/coding.gif';
 
 function Login() {
     const [showpwd,setShowpd] = useState("Show password");
@@ -23,9 +21,10 @@ function Login() {
             <div className="relative">
                 <div className="relative max-md:hidden left-side w-full h-screen text-black font-extrabold">
                     <h1 className="xl:text-4xl">DYNAMICS</h1>
-                    <h1 className="block text-center text-3xl">WELCOME BACK</h1>
+                    <h1 className="block text-center text-3xl md:mt-16">WELCOME BACK</h1>
                     <div className="flex justify-center item-center">
-                        <img src= {Coding} className="absolute top-1/4 w-3/4" alt="coding GIF" />
+                        <img src= {process.env.PUBLIC_URL+"images/coding.gif"} className="absolute top-1/4 w-3/4" alt="coding GIF" />
+                        {/* {process.env.PUBLIC_URL} */}
                     </div>                   
                 </div>
                 <div className="md:hidden flex flex-row justify-between font-extrabold gap-10 text-black">

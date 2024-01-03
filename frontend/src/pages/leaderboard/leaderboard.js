@@ -1,12 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import Navbar from '../../layouts/navbar';
 import Contactus from "../../layouts/contactus";
 import './leaderboard.css';
 import { Users } from "./leaderboarddata";
 function LeaderBoard(){
+    const [outSideClick,setOutSideClick] = useState(0);
+    const handleOutSideClick = ()=>{
+        setOutSideClick(0);
+    }
     return(
-        <div>
-            <Navbar />
+        <div onClick="">
+            <Navbar outSideClick={outSideClick}/>
             <div>
                 <table className="w-full">
                     <thead>
@@ -37,7 +41,7 @@ function LeaderBoard(){
                     </tbody>
                 </table>
             </div>
-            <Contactus />
+            {/* <Contactus /> */}
         </div>
     );
 };

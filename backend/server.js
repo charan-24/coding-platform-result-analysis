@@ -19,7 +19,8 @@ app.post('/',(req,res)=>{
     const pwd = req.body.password;
     console.log(mail);
     console.log(pwd);
-    res.redirect('http://localhost:3000/my-profile');
+    if(pwd.length>0)
+        res.redirect('http://localhost:3000/my-profile');
 });
 
 app.post('/register',(req,res)=>{
@@ -29,7 +30,12 @@ app.post('/register',(req,res)=>{
     console.log(mail);
     console.log(pwd);
     console.log(cnfpwd);
-    res.redirect('http://localhost:3000/coding-profiles');
+    if(pwd===cnfpwd && pwd.length>0){
+        res.redirect('http://localhost:3000/coding-profiles');
+    }
+    else{
+        console.log("Passwords didn't matched, please try again");
+    }
 });
 
 app.post('/coding-profiles',(req,res)=>{
