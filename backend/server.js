@@ -6,6 +6,7 @@ const bodyParser = require("body-parser");
 const cors = require('cors');
 const connectDB = require('./config/dbConn');
 const mongoose = require('mongoose');
+const fetchapp=require('./routes/fetch')
 const PORT = process.env.PORT || 5000;
 
 //connect to DB
@@ -22,7 +23,10 @@ app.use(exp.static("public"));
 // app.use('/register',require('./routes/register'));
 app.use('/batch',require('./routes/batch'));
 app.use('/user',require('./routes/user'));
-app.use('/fetchScore',require('./routes/fetch'));
+app.use('/score',require('./routes/score'));
+// app.use('/fetch',require('./routes/fetch'));
+app.use('/fetch',fetchapp)
+
 
 //server connection
 mongoose.connection.once('open', ()=>{

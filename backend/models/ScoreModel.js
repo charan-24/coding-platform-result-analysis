@@ -14,7 +14,7 @@ const scoreSchema = new mongoose.Schema({
     dsScore: {
         type: Number,
     },
-    algoscore: {
+    algoScore: {
         type: Number,
     }
 });
