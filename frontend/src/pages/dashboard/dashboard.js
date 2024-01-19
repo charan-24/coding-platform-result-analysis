@@ -23,7 +23,6 @@ function Dashboard () {
     const handleClickOutSide = (e) =>{
         if(e.target.id === "addbatch" || e.target.id=== "addusers"){
             if(showBatchModal){
-                // setClickedOutSide(!clickedOutSide);
                 setShowBatchModal(!showBatchModal);
             }
             else if(showUserModal){
@@ -33,8 +32,9 @@ function Dashboard () {
         }
     }
 
-    const handleList = () =>{
-        console.log(showList)
+    const handleList = (e) =>{
+        // console.log(showList)
+        if(e.target.id)
         setShowList(!showList);
     }
     return(
@@ -48,8 +48,8 @@ function Dashboard () {
                         <div className="flex flex-row justify-between">
                             <h1 className="font-bold text-2xl">{batch.name}</h1>
                             <div>
-                                <CiMenuKebab className="text-2xl" onClick={handleList}/>
-                                <div className={showList ? "relative bg-black":"hidden"}>
+                                <CiMenuKebab className="text-2xl" id={batch.id} onClick={handleList}/>
+                                <div className={showList ? "relative bg-black w-[100px]":"hidden"}>
                                     <ul className="absolute right-0">
                                         <li className=" hover:bg-slate-200" onClick={handleShowUserModal}>Add Users</li>
                                     </ul>

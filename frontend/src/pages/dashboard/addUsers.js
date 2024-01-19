@@ -11,20 +11,18 @@ const AddUsers = ({display, handleShowUserModal}) =>{
                     <p className="text-center">OR</p>
                     <hr/>
                     <div>
-                        <form>
-                            <h1 className="underline">Enter Student Details</h1>
-                            <label htmlFor="username" className="block text-[16px] mt-4 font-lato">Name</label>                    
-                            <input id="username" type="text" name="username" className="mb-4 h-[43px]  bg-[#F5F5F5] rounded w-full focus:outline-none font-lato"/>
-                            <label htmlFor="username" className="block text-[16px] mt-4 font-lato">Roll No.</label>                    
-                            <input id="username" type="text" name="username" className="mb-4 h-[43px]  bg-[#F5F5F5] rounded w-full focus:outline-none font-lato"/>
-                            <label htmlFor="username" className="block text-[16px] mt-4 font-lato">Email</label>                    
-                            <input id="username" type="text" name="username" className="mb-4 h-[43px]  bg-[#F5F5F5] rounded w-full focus:outline-none font-lato"/>
-                            <label htmlFor="username" className="block text-[16px] mt-4 font-lato">Password</label>                    
-                            <input id="username" type="password" name="username" defaultValue="vnrvjiet123" className="mb-4 h-[43px]  bg-[#F5F5F5] rounded w-full focus:outline-none font-lato"/>
-                            <button className="block mx-auto bg-amber-300 rounded-md px-3 py-1 md:px-6 md:py-2 mt-5">
-                                Submit
-                            </button>
-                        </form>
+                        <h1 className="underline">Enter Student Details</h1>
+                        <label htmlFor="username" className="block text-[16px] mt-4 font-lato">Name</label>                    
+                        <input id="username" type="text" name="username" className="mb-4 h-[43px]  bg-[#F5F5F5] rounded w-full focus:outline-none font-lato"/>
+                        <label htmlFor="username" className="block text-[16px] mt-4 font-lato">Roll No.</label>                    
+                        <input id="username" type="text" name="username" className="mb-4 h-[43px]  bg-[#F5F5F5] rounded w-full focus:outline-none font-lato"/>
+                        <label htmlFor="username" className="block text-[16px] mt-4 font-lato">Email</label>                    
+                        <input id="username" type="text" name="username" className="mb-4 h-[43px]  bg-[#F5F5F5] rounded w-full focus:outline-none font-lato"/>
+                        <label htmlFor="username" className="block text-[16px] mt-4 font-lato">Password</label>                    
+                        <input id="username" type="password" name="username" defaultValue="vnrvjiet123" className="mb-4 h-[43px]  bg-[#F5F5F5] rounded w-full focus:outline-none font-lato"/>
+                        <button className="block mx-auto bg-amber-300 rounded-md px-3 py-1 md:px-6 md:py-2 mt-5">
+                            Submit
+                        </button>
                     </div>         
                 </form>
             </div>

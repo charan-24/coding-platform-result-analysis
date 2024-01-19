@@ -23,7 +23,7 @@ const addANewBatch = asyncHandler(async (req,res) => {
     const batch = new Batch({
         batchname
     });
-
+    console.log(users);
     for(let i=0;i<users.length;i++){
         const profile = new profileModel({
             hackerrank: {
