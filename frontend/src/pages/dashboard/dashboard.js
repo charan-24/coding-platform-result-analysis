@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Navbar from "../../layouts/navbar";
 import { Batches } from "./dashboardData";
 import { Link } from "react-router-dom";
-import { CiMenuKebab } from "react-icons/ci";
+import { IoMdMore } from "react-icons/io";
 import AddUsers from "./addUsers";
 import AddBatch from "./addBatch";
 function Dashboard () {
@@ -46,19 +46,22 @@ function Dashboard () {
                     {Batches.map((batch)=>(
                         <div key={batch.id} className="w-full md:w-1/3 lg:w-1/4 h-[120px] border-2 border-black m-4 px-4 py-3 flex flex-col justify-between rounded-md">
                         <div className="flex flex-row justify-between">
-                            <h1 className="font-bold text-2xl">{batch.name}</h1>
-                            <div>
-                                <CiMenuKebab className="text-2xl" id={batch.id} onClick={handleList}/>
-                                <div className={showList ? "relative bg-black w-[100px]":"hidden"}>
-                                    <ul className="absolute right-0">
+                            <h1 className="font-bold text-2xl "><Link to='/leaderboard' className="hover:underline">{batch.name}</Link></h1>
+                            <div className="relative">
+                                <IoMdMore className="text-2xl cursor-pointer" id={batch.id} onClick={handleList}/>
+                                <div className={showList ? "absolute right-0 top-5  w-[100px]":"hidden"}>
+                                    <ul >
                                         <li className=" hover:bg-slate-200" onClick={handleShowUserModal}>Add Users</li>
+                                    </ul>
+                                    <ul >
+                                        <li className=" hover:bg-slate-200" >Delete Batch</li>
                                     </ul>
                                 </div>
                             </div>
                         </div>
                         <div className="flex flex-row justify-between">
                             <p className="text-[13px] text-gray-500 font-semibold">{batch.status}</p>
-                            <button className="bg-gray-200 font-semibold px-4 rounded-sm text-lg"><Link to='/leaderboard'>open</Link></button>
+                            {/* <button className="bg-gray-200 font-semibold px-4 rounded-sm text-lg"><Link to='/leaderboard'>open</Link></button> */}
                         </div>
                     </div>
                     ))}
