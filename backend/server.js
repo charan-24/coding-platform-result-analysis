@@ -1,53 +1,37 @@
+//import modules
 require('dotenv').config();
 const exp = require('express');
+const app = exp();
 const bodyParser = require("body-parser");
 const cors = require('cors');
-const app=exp();
+const connectDB = require('./config/dbConn');
+const mongoose = require('mongoose');
+const fetchapp=require('./routes/fetch')
+const PORT = process.env.PORT || 5000;
 
+//connect to DB
+connectDB();
+
+//middlewares
 app.use(cors());
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(exp.json());
 app.use(exp.static("public"));
 
-require('./db');
+//routes
+// app.use('/',require('./routes/login'));
+// app.use('/register',require('./routes/register'));
+app.use('/batch',require('./routes/batch'));
+app.use('/user',require('./routes/user'));
+app.use('/score',require('./routes/score'));
+// app.use('/fetch',require('./routes/fetch'));
+app.use('/fetch',fetchapp)
 
-// app.get('/',(req,res)=>{
-//     res.send("Hello,from server");
-// });
 
-app.post('/',(req,res)=>{
-    const mail = req.body.mail;
-    const pwd = req.body.password;
-    console.log(mail);
-    console.log(pwd);
-    if(pwd.length>0)
-        res.redirect('http://localhost:3000/my-profile');
+//server connection
+mongoose.connection.once('open', ()=>{
+    app.listen(PORT,()=>{console.log(`server started on port ${PORT}`)});
 });
 
-app.post('/register',(req,res)=>{
-    const mail = req.body.mail;
-    const pwd = req.body.password;
-    const cnfpwd = req.body.cnfpassword;
-    console.log(mail);
-    console.log(pwd);
-    console.log(cnfpwd);
-    if(pwd===cnfpwd && pwd.length>0){
-        res.redirect('http://localhost:3000/coding-profiles');
-    }
-    else{
-        console.log("Passwords didn't matched, please try again");
-    }
-});
 
-app.post('/coding-profiles',(req,res)=>{
-    const hackeruname = req.body.hackeruname;
-    const leetuname = req.body.leetuname;
-    const chefuname = req.body.chefuname;
-    const forceuname = req.body.forceuname;
-    console.log("hacker: "+ hackeruname);
-    console.log("leetcode: "+ leetuname);
-    console.log("codechef: "+ chefuname);
-    console.log("coedforces: "+ forceuname);
-    res.redirect('http://localhost:3000/my-profile');
-});
 
-app.listen(5000,()=>{console.log("server started on port "+process.env.PORT)});

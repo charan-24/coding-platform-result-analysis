@@ -42,8 +42,8 @@ function Login() {
                             </button>
                         </div>
                         <form className="text-start bg-white ring-slate-50" action="http://localhost:5000/" method="post">   
-                            <label htmlFor="mail" className="block text-[16px] mt-4 font-lato">Email/Username</label>                    
-                            <input id="mail" type="email" name="mail" className="mb-4 h-[43px]  bg-[#F5F5F5] rounded w-full focus:outline-none font-lato"/>  
+                            <label htmlFor="username" className="block text-[16px] mt-4 font-lato">Email/Username</label>                    
+                            <input id="username" type="text" name="username" className="mb-4 h-[43px]  bg-[#F5F5F5] rounded w-full focus:outline-none font-lato"/>  
                             <label htmlFor="password" className="block text-[16px] font-lato">Password</label>                    
                             <input id="password" type={pwdtype?"password":"text"} name="password" className="mb-4 h-[43px] bg-[#F5F5F5] rounded w-full focus:outline-none font-lato"></input>  
                             <input type="checkbox" id="showpassword" name="showpassword" className="mt-4 mx-2" onClick={handlePassword}></input>
