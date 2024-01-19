@@ -18,8 +18,13 @@ const fetchScore = asyncHandler(async (req,res)=>{
         if(users[i].profiles.hackerrank.username){
             hr = await axios.get('http://localhost:'+process.env.PORT+'/fetch/hr/'+users[i].profiles.hackerrank.username);
             hr = hr.data.payload;
+            if(!hr.ds_score){
+                hr.ds_score=0;
+            }
+            if(!hr.algo_score){
+                hr.algo_score=0;
+            }
             console.log(hr);
-            
             const hrscore = scoreModel({
                 dsScore: hr.ds_score,
                 algoScore: hr.algo_score
@@ -30,6 +35,15 @@ const fetchScore = asyncHandler(async (req,res)=>{
         if(users[i].profiles.leetcode.username){
             lc = await axios.get('http://localhost:'+process.env.PORT+'/fetch/lc/'+users[i].profiles.leetcode.username);
             lc = lc.data.payload;
+            if(!lc.noOfProblemsSolved){
+                lc.noOfProblemsSolved = 0;
+            }
+            if(!lc.noOfContests){
+                lc.noOfContests = 0;
+            }
+            if(!lc.rating){
+                lc.rating = 0;
+            }
             console.log(lc);
             const lcscore = scoreModel({
                 noOfProblemsSolved: lc.noOfProblemsSolved,
@@ -42,6 +56,15 @@ const fetchScore = asyncHandler(async (req,res)=>{
         if(users[i].profiles.codechef.username){
             cc = await axios.get('http://localhost:'+process.env.PORT+'/fetch/cc/'+users[i].profiles.codechef.username);
             cc = cc.data.payload;
+            if(!cc.noOfProblemsSolved){
+                cc.noOfProblemsSolved = 0;
+            }
+            if(!cc.noOfContests){
+                cc.noOfContests = 0;
+            }
+            if(!cc.rating){
+                cc.rating = 0;
+            }
             console.log(cc);
             const ccscore = scoreModel({
                 noOfProblemsSolved: cc.noOfProblemsSolved,
@@ -54,6 +77,15 @@ const fetchScore = asyncHandler(async (req,res)=>{
         if(users[i].profiles.codeforces.username){
             cf = await axios.get('http://localhost:'+process.env.PORT+'/fetch/cf/'+users[i].profiles.codeforces.username);
             cf = cf.data.payload;
+            if(!cf.noOfProblemsSolved){
+                cf.noOfProblemsSolved = 0;
+            }
+            if(!cf.noOfContests){
+                cf.noOfContests = 0;
+            }
+            if(!cf.rating){
+                cf.rating = 0;
+            }
             console.log(cf);
             const cfscore = scoreModel({
                 noOfProblemsSolved: cf.noOfProblemsSolved,
@@ -66,6 +98,9 @@ const fetchScore = asyncHandler(async (req,res)=>{
         if(users[i].profiles.interviewbit.username){
             ib = await axios.get('http://localhost:'+process.env.PORT+'/fetch/ib/'+users[i].profiles.interviewbit.username);
             ib = ib.data.payload;
+            if(!ib.noOfProblemsSolved){
+                ib.noOfProblemsSolved = 0;
+            }
             console.log(ib);
             const ibscore = scoreModel({
                 noOfProblemsSolved: ib.noOfProblemsSolved,
@@ -76,6 +111,9 @@ const fetchScore = asyncHandler(async (req,res)=>{
         if(users[i].profiles.spoj.username){
             spoj = await axios.get('http://localhost:'+process.env.PORT+'/fetch/spoj/'+users[i].profiles.spoj.username);
             spoj = spoj.data.payload;
+            if(!spoj.noOfProblemsSolved){
+                spoj.noOfProblemsSolved = 0;
+            }
             console.log(spoj);
             const spojscore = scoreModel({
                 noOfProblemsSolved: spoj.noOfProblemsSolved,
@@ -103,7 +141,12 @@ const fetchScoreIndividual = asyncHandler(async(req,res)=>{
             hr = await axios.get('http://localhost:'+process.env.PORT+'/fetch/hr/'+user.profiles.hackerrank.username);
             hr = hr.data.payload;
             console.log(hr);
-
+            if(!hr.ds_score){
+                hr.ds_score=0;
+            }
+            if(!hr.algo_score){
+                hr.algo_score=0;
+            }
             const hrscore = scoreModel({
                 dsScore: hr.ds_score,
                 algoScore: hr.algo_score
@@ -114,6 +157,15 @@ const fetchScoreIndividual = asyncHandler(async(req,res)=>{
         if(user.profiles.leetcode.username){
             lc = await axios.get('http://localhost:'+process.env.PORT+'/fetch/lc/'+user.profiles.leetcode.username);
             lc = lc.data.payload;
+            if(!lc.noOfProblemsSolved){
+                lc.noOfProblemsSolved = 0;
+            }
+            if(!lc.noOfContests){
+                lc.noOfContests = 0;
+            }
+            if(!lc.contestRating){
+                lc.contestRating = 0;
+            }
             console.log(lc);
             const lcscore = scoreModel({
                 noOfProblemsSolved: lc.noOfProblemsSolved,
@@ -126,6 +178,15 @@ const fetchScoreIndividual = asyncHandler(async(req,res)=>{
         if(user.profiles.codechef.username){
             cc = await axios.get('http://localhost:'+process.env.PORT+'/fetch/cc/'+user.profiles.codechef.username);
             cc = cc.data.payload;
+            if(!cc.noOfProblemsSolved){
+                cc.noOfProblemsSolved = 0;
+            }
+            if(!cc.noOfContests){
+                cc.noOfContests = 0;
+            }
+            if(!cc.contestRating){
+                cc.contestRating = 0;
+            }
             console.log(cc);
             const ccscore = scoreModel({
                 noOfProblemsSolved: cc.noOfProblemsSolved,
@@ -138,6 +199,15 @@ const fetchScoreIndividual = asyncHandler(async(req,res)=>{
         if(user.profiles.codeforces.username){
             cf = await axios.get('http://localhost:'+process.env.PORT+'/fetch/cf/'+user.profiles.codeforces.username);
             cf = cf.data.payload;
+            if(!cf.noOfProblemsSolved){
+                cf.noOfProblemsSolved = 0;
+            }
+            if(!cf.noOfContests){
+                cf.noOfContests = 0;
+            }
+            if(!cf.contestRating){
+                cf.contestRating = 0;
+            }
             console.log(cf);
             const cfscore = scoreModel({
                 noOfProblemsSolved: cf.noOfProblemsSolved,
@@ -150,6 +220,9 @@ const fetchScoreIndividual = asyncHandler(async(req,res)=>{
         if(user.profiles.interviewbit.username){
             ib = await axios.get('http://localhost:'+process.env.PORT+'/fetch/ib/'+user.profiles.interviewbit.username);
             ib = ib.data.payload;
+            if(!ib.noOfProblemsSolved){
+                ib.noOfProblemsSolved = 0;
+            }
             console.log(ib);
             const ibscore = scoreModel({
                 noOfProblemsSolved: ib.noOfProblemsSolved,
@@ -160,6 +233,9 @@ const fetchScoreIndividual = asyncHandler(async(req,res)=>{
         if(user.profiles.spoj.username){
             spoj = await axios.get('http://localhost:'+process.env.PORT+'/fetch/spoj/'+user.profiles.spoj.username);
             spoj = spoj.data.payload;
+            if(!spoj.noOfProblemsSolved){
+                spoj.noOfProblemsSolved = 0;
+            }
             console.log(spoj);
             const spojscore = scoreModel({
                 noOfProblemsSolved: spoj.noOfProblemsSolved,
@@ -171,7 +247,87 @@ const fetchScoreIndividual = asyncHandler(async(req,res)=>{
     return res.status(200).json({success:"scores updated"});
 });
 
+const getScores = asyncHandler(async (req,res)=>{
+    // const {batchname} = req.body;
+    // if(!batchname){
+    //     return res.status(400).json({message:"batchname required"});
+    // }
+    batchname = "b1";
+    const batch = await Batch.findOne({batchname}).exec();
+    if(!batch){
+        return res.status(400).json({message:`${batchname} not found`});
+    }
+    const users = batch.users;
+    if(!Array.isArray(users) || users.length===0){
+        return res.status(400).json({message:"users required"});
+    }
+
+    const scoresData = [];
+    for(let i=0;i<users.length;i++){
+        let user = users[i];
+        const resObj = {};
+        // console.log(user);
+        resObj["fullname"] = user.fullname;
+        resObj["rollno"] = user.rollno;
+        resObj["total"] = 0;
+        user=user.profiles;
+        // console.log(user);
+        const hruname = user.hackerrank.username;
+        const lcuname = user.leetcode.username;
+        const ccuname = user.codechef.username;
+        const cfuname = user.codeforces.username;
+        const ibuname = user.interviewbit.username;
+        const spojuname = user.spoj.username;
+        if(hruname){
+            const hrscore = user.hackerrank.scores.dsScore + user.hackerrank.scores.algoScore;
+            resObj["hacker"] = hrscore;
+            resObj["total"] += hrscore;
+        }
+
+        if(spojuname){
+            const spojscore = user.spoj.scores.noOfProblemsSolved * 20;
+            resObj["spoj"] = spojscore;
+            resObj["total"] += spojscore;
+        }
+        if(ibuname){
+            const ibscore = user.interviewbit.scores.noOfProblemsSolved / 3;
+            resObj["interviewbit"] = ibscore;
+            resObj["total"] += ibscore;
+        }
+
+        if(lcuname){    
+            let lcscore = user.leetcode.scores.noOfProblemsSolved * 50;
+            if(user.leetcode.scores.noOfContests>3 && user.leetcode.scores.contestRating>1300){
+                lcscore += ((user.leetcode.scores.contestRating-1300)*(user.leetcode.scores.contestRating-1300))/30;
+            }
+            resObj["leet"] = lcscore;
+            resObj["total"] += lcscore;
+        }
+
+        if(ccuname){
+            let ccscore = user.codechef.scores.noOfProblemsSolved * 10;
+            if(user.codechef.scores.noOfContests>3 && user.codechef.scores.contestRating>1300){
+                ccscore += ((user.codechef.scores.contestRating-1300)*(user.codechef.scores.contestRating-1300))/30;
+            }
+            resObj["chef"] = ccscore;
+            resObj["total"] += ccscore;
+        }
+
+        if(cfuname){
+            let cfscore = user.codeforces.scores.noOfProblemsSolved * 10;
+            if(user.codeforces.scores.noOfContests>3 && user.codeforces.scores.contestRating>1200){
+                cfscore += ((user.codeforces.scores.contestRating-1200)*(user.codeforces.scores.contestRating-1200))/30;
+            }
+            resObj["forces"] = cfscore;
+            resObj["total"] += cfscore;
+        }
+        scoresData.push(resObj);
+    }
+    return  res.status(200).json(scoresData);
+})
+
 module.exports = {
     fetchScore,
-    fetchScoreIndividual
+    fetchScoreIndividual,
+    getScores
 }

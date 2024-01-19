@@ -4,15 +4,26 @@ const {profileModel} = require('../models/ProfileModel')
 const bcrypt = require('bcrypt');
 const asyncHandler = require('express-async-handler')
 
+//get All Batches
+const getBatches = asyncHandler(async (req,res)=>{
+    const batch = await Batch.find({}).exec();
+    if(!batch){
+        return res.sendStatus(400);
+    }
+    // console.log(batch);
+    return res.status(200).json(batch);
+});
 
 //add a newBatch
 const addANewBatch = asyncHandler(async (req,res) => {
+    // console.log(req.body);
     const {batchname,users} = req.body;
-
     if(!batchname){
         return res.status(400).json({message:"batchname required"});
     }
+
     if(!Array.isArray(users) || users.length===0){
+        // console.log(!Array.isArray(users));
         return res.status(400).json({message:"users data required"});
     }
 
@@ -83,6 +94,7 @@ const addUsers = asyncHandler(async (req,res)=>{
     if(!batchname){
         return res.status(400).json({message:"batchname required"});
     }
+
     if(!Array.isArray(users) || users.length===0){
         return res.status(400).json({message:"users data required"});
     }
@@ -161,5 +173,6 @@ const deleteAUser = asyncHandler(async (req,res) => {
 module.exports = { addANewBatch,
                    deleteABatch,
                    addUsers,
-                   deleteAUser 
+                   deleteAUser,
+                   getBatches 
                 };

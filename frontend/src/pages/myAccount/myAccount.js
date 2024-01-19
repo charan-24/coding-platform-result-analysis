@@ -12,7 +12,7 @@ function MyAccount(){
                     {personals.map((personal)=>(
                         <div key={personal.id}>
                             <label htmlFor={personal.label} className="block text-[12px] text-gray-500 font-semibold mt-2">{personal.label}</label>
-                            <input id={personal.label} type="text" defaultValue={personal.input} className="inline mt-2 focus:outline-none"></input>
+                            <input id={personal.label} type="text" defaultValue={personal.input} className="inline mt-2 focus:outline-none" disabled></input>
                             <button className="inline float-right bg-amber-300 rounded-md px-3 py-1 md:px-6 md:py-2 mb-1">
                                 update
                             </button>

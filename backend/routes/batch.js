@@ -1,9 +1,13 @@
 const exp = require('express');
 const router = exp.Router();
+const fileUpload = require('express-fileupload');
 const batchController = require('../controllers/batchController');
 
+//get all Batches
+router.get('/getBatches',batchController.getBatches);
+
 //add a newBatch
-router.post('/addBatch',batchController.addANewBatch);
+router.post('/addBatch',fileUpload({createParentPath: true}),batchController.addANewBatch);
 
 //delete a Batch
 router.delete('/deleteBatch',batchController.deleteABatch);
