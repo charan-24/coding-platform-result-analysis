@@ -64,6 +64,21 @@ const AddUsers = ({display, handleShowUserModal}) =>{
         }
     },[excelData])
 
+    const fetchScores = async (batchData)=>{
+        const response = await axios.post('http://localhost:5000/score/fetchScores',batchData,{
+            headers: {
+                'Content-Type': 'application/json'
+                // Add other headers as needed
+            }
+        })
+        .then(res => {
+            console.log(res.data);
+        })
+        .catch(err=>{
+            console.error(err);
+        });
+    }
+
     const handlePostReq = async (batchData)=>{
         const response = await axios.post('http://localhost:5000/batch/addUsers', batchData, {
             headers: {
@@ -74,7 +89,8 @@ const AddUsers = ({display, handleShowUserModal}) =>{
             .then(response => {
             // Handle the response data if needed
             handleShowUserModal();
-            console.log(response);
+            // console.log(response);
+            fetchScores(batchData);
             })
             .catch(error => {
             alert("file not uploaded")

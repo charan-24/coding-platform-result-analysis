@@ -201,8 +201,7 @@ fetchapp.get(
             "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Mobile Safari/537.36",
         },
       }).catch((err)=>{
-          return res.send({ message: "user details are ", payload: resObj });
-          // console.error(err);
+        return res.send({ message: "user details are ", payload: resObj });
       });
     const $ = cheerio.load(result.data);
     console.log(URL);
@@ -226,7 +225,6 @@ fetchapp.get(
 fetchapp.get(
   "/hr/:username",
   expressAsyncHandler(async (req, res) => {
-    console.log("I'm in HR");
     var resObj = {};
     var URL =
       "https://www.hackerrank.com/leaderboard?filter=" +
@@ -298,7 +296,7 @@ fetchapp.get(
             "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Mobile Safari/537.36",
         },
       }).catch((err)=>{
-          return res.send({ message: "user details are ", payload: resObj });
+        return res.send({ message: "user details are ", payload: resObj });
       });
     const $ = cheerio.load(result.data);
     const noOfProblemsSolved = $(

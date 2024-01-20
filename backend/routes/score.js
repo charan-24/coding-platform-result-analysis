@@ -4,6 +4,6 @@ const fetchController = require('../controllers/fetchController');
 
 router.post('/fetchScores',fetchController.fetchScore);
 router.post('/updateScoreInd',fetchController.fetchScoreIndividual);
-router.get('/getScores',fetchController.getScores);
+router.get('/getScores/:batchname',fetchController.getScores);
 
 module.exports = router;

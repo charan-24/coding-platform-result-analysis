@@ -16,7 +16,7 @@ function Dashboard () {
     const handleShowBatchModal = ()=>{
         // console.log(showModal)
         setShowBatchModal(!showBatchModal);
-    }
+    }  
 
     const handleShowUserModal = ()=>{
         // console.log(showModal)
@@ -37,7 +37,13 @@ function Dashboard () {
 
     const handleList = (e) =>{
         // console.log(showList)
-        setBatchId(e.target.id);
+        if(showList){
+            setBatchId(null);
+        }
+        else{
+            setBatchId(e.target.id);
+        }
+        
         setShowList(!showList);
     }
 
@@ -59,6 +65,12 @@ function Dashboard () {
                                     .catch(err=>console.error(err));       
     }
 
+    const handleDeleteABatch = async (e) => {
+        await axios.delete('http://localhost:5000/batch/deleteBatch/'+e.target.id)
+                    .then(res=>handleBatches())
+                    .catch(err=>console.error(err));
+    }
+
     useEffect(()=>{
         handleBatches();
     },[]) 
@@ -72,22 +84,19 @@ function Dashboard () {
                     {Batches.map((batch)=>(
                         <div key={batch.id} className="w-full md:w-1/3 lg:w-1/4 h-[120px] border-2 border-black m-4 px-4 py-3 flex flex-col justify-between rounded-md">
                         <div className="flex flex-row justify-between">
-                            <h1 className="font-bold text-2xl "><Link to='/leaderboard' className="hover:underline">{batch.batchname}</Link></h1>
+                            <h1 className="font-bold text-2xl "><Link to={`/leaderboard/`+batch.batchname} className="hover:underline">{batch.batchname}</Link></h1>
                             <div className="relative">
                                 <IoMdMore className="text-2xl cursor-pointer" id={batch.id} onClick={handleList}/>
-                                <div className={showList ? "absolute right-0 top-5  w-[100px]":"hidden"}>
-                                    <ul >
-                                        <li className=" hover:bg-slate-200" onClick={handleShowUserModal}>Add Users</li>
-                                    </ul>
-                                    <ul>
-                                        <li className=" hover:bg-slate-200" >Delete Batch</li>
+                                <div className={ (batchId===batch.id) ? (showList ? "absolute right-0 top-5  w-[100px]":"hidden"):"hidden"}>
+                                    <ul className="rounded-md shadow-lg">
+                                        <li className=" hover:bg-gray-200 mb-2" onClick={handleShowUserModal}>Add Users</li>
+                                        <li className=" hover:bg-gray-200" id={batch.batchname} onClick={handleDeleteABatch}>Delete Batch</li>
                                     </ul>
                                 </div>
                             </div>
                         </div>
                         <div className="flex flex-row justify-between">
                             <p className="text-[13px] text-gray-500 font-semibold">{batch.status}</p>
-                            {/* <button className="bg-gray-200 font-semibold px-4 rounded-sm text-lg"><Link to='/leaderboard'>open</Link></button> */}
                         </div>
                     </div>
                     ))}

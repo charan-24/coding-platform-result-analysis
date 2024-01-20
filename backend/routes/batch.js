@@ -10,13 +10,13 @@ router.get('/getBatches',batchController.getBatches);
 router.post('/addBatch',fileUpload({createParentPath: true}),batchController.addANewBatch);
 
 //delete a Batch
-router.delete('/deleteBatch',batchController.deleteABatch);
+router.delete('/deleteBatch/:batchname',batchController.deleteABatch);
 
 //add a newUser
 router.post('/addUsers',batchController.addUsers);
 
 //delete a User
-router.delete('/deleteUser',batchController.deleteAUser);
+router.delete('/deleteUser/:batchname/:rollno',batchController.deleteAUser);
 
 
 module.exports = router;

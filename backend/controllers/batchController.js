@@ -72,7 +72,8 @@ const addANewBatch = asyncHandler(async (req,res) => {
 
 //delete a Batch
 const deleteABatch = asyncHandler(async (req,res) => {
-    const {batchname} = req.body;
+    const batchname = req.params.batchname;
+    console.log(batchname);
     if(!batchname){
         return res.status(400).json({message:"batchname required"});
     }
@@ -83,8 +84,7 @@ const deleteABatch = asyncHandler(async (req,res) => {
     }
 
     await Batch.deleteOne({batchname});
-    return res.status(200).json({message:`${batchname} deleted`});
-   
+    return res.status(200).json({message:`${batchname} deleted`});   
 });
 
 //add Users
@@ -145,7 +145,11 @@ const addUsers = asyncHandler(async (req,res)=>{
 
 //delete a User
 const deleteAUser = asyncHandler(async (req,res) => {
-    const {batchname,rollno} = req.body;
+    const batchname = req.params.batchname;
+    let rollno = req.params.rollno;
+    rollno = parseInt(rollno);
+    console.log(batchname);
+    console.log(rollno);
     if(!batchname || !rollno){
         return res.status(400).json({message:"all fields required"});
     }
@@ -154,6 +158,7 @@ const deleteAUser = asyncHandler(async (req,res) => {
     if(!batch){
         return res.status(400).json({message:`${batchname} not found`});
     }
+    // console.log(batch);
 
     const foundUser = batch.users.find(user => user.rollno === rollno);
     if(!foundUser){

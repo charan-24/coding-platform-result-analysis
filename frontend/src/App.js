@@ -22,9 +22,9 @@ function App() {
             <Route path='/register' element={<Register />}/>
             <Route path='/my-profile' element={<MyProfile />}/>
             <Route path='/coding-profiles' element={<CodingProfiles/>}/>
-            <Route path='/leaderboard' element={<LeaderBoard />}/>
+            <Route path='/leaderboard/:batchname' element={<LeaderBoard />} />
             <Route path='/my-account' element={<MyAccount />}/>
-            <Route path='/contact-us' element={<Contactus />}/>
+            <Route path='/contact-us' element={<Contactus />} />
             <Route path='/dashboard' element={<Dashboard />} />
         </Routes>       
       </Router>
