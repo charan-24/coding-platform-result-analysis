@@ -8,7 +8,7 @@ const expressAsyncHandler = require("express-async-handler");
 fetchapp.get(
   "/cc/:username",
   expressAsyncHandler(async (req, res) => {
-    const URL = "https://www.codechef.com/users/" + req.params.username;
+    const URL = "https://www.codechef.com/users/" + req.params.username + "/";
     console.log(URL);
     let resObj = {};
     var result = await axios.get(URL, {
@@ -94,7 +94,7 @@ fetchapp.get(
 
     //for Contest Rating
     const rating = $(
-      "#__next > div > div.mx-auto.w-full.grow.p-4.md\\:mt-0.md\\:max-w-\\[888px\\].md\\:p-6.lg\\:max-w-screen-xl.mt-\\[50px\\] > div > div.w-full.lc-lg\\:max-w-\\[calc\\(100\\%_-_316px\\)\\] > div.bg-layer-1.dark\\:bg-dark-layer-1.rounded-lg.my-4.hidden.h-\\[200px\\].w-full.p-4.lc-lg\\:mt-0.lc-xl\\:flex > div.lc-md\\:min-w-none.h-full.w-full.min-w-\\[200px\\].flex-1 > div > div.relative.min-h-\\[53px\\].text-xs > div > div:nth-child(1) > div.text-label-1.dark\\:text-dark-label-1.flex.items-center.text-2xl"
+      "#__next > div.flex.min-h-screen.min-w-\\[360px\\].flex-col.text-label-1.dark\\:text-dark-label-1.bg-layer-bg.dark\\:bg-dark-layer-bg > div.mx-auto.w-full.grow.p-4.md\\:mt-0.md\\:max-w-\\[888px\\].md\\:p-6.lg\\:max-w-screen-xl.mt-\\[50px\\] > div > div.lc-lg\\:max-w-\\[calc\\(100\\%_-_316px\\)\\].w-full > div:nth-child(2) > div.bg-layer-1.dark\\:bg-dark-layer-1.shadow-down-01.dark\\:shadow-dark-down-01.rounded-lg.lc-lg\\:mt-0.lc-xl\\:hidden.mt-4.flex.h-\\[200px\\].w-full.min-w-\\[200px\\].p-4 > div > div.relative.min-h-\\[53px\\].text-xs > div > div:nth-child(1) > div.text-label-1.dark\\:text-dark-label-1.flex.items-center.text-2xl"
     );
     var x = $(rating[0]).text();
     var rat = "";
@@ -117,6 +117,7 @@ fetchapp.get(
       "#__next > div > div.mx-auto.w-full.grow.p-4.md\\:mt-0.md\\:max-w-\\[888px\\].md\\:p-6.lg\\:max-w-screen-xl.mt-\\[50px\\] > div > div.w-full.lc-lg\\:max-w-\\[calc\\(100\\%_-_316px\\)\\] > div.bg-layer-1.dark\\:bg-dark-layer-1.rounded-lg.my-4.hidden.h-\\[200px\\].w-full.p-4.lc-lg\\:mt-0.lc-xl\\:flex > div.lc-md\\:min-w-none.h-full.w-full.min-w-\\[200px\\].flex-1 > div > div.relative.min-h-\\[53px\\].text-xs > div > div.hidden.md\\:block > div.text-label-1.dark\\:text-dark-label-1.font-medium.leading-\\[22px\\]"
     );
     resObj["noOfContests"] = parseInt($(noOfContests[0]).text()) ?? 0;
+
     if (Number.isNaN(resObj["noOfContests"])) resObj["noOfContests"] = 0;
     if (Number.isNaN(resObj["noOfProblemsSolved"]))
       resObj["noOfProblemsSolved"] = 0;
@@ -193,6 +194,7 @@ fetchapp.get(
   expressAsyncHandler(async (req, res) => {
     const URL = "https://www.spoj.com/users/" + req.params.username;
     var resObj = {};
+    resObj["noOfProblemsSolved"] = 0;
     var result = await axios.get(URL, {
         headers: {
           "user-agent":
@@ -200,6 +202,7 @@ fetchapp.get(
         },
       }).catch((err)=>{
           return res.send({ message: "user details are ", payload: resObj });
+          // console.error(err);
       });
     const $ = cheerio.load(result.data);
     console.log(URL);
