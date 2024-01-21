@@ -1,4 +1,4 @@
-import React,{useEffect, useState, useRef} from "react";
+import React,{useEffect, useState} from "react";
 import { RxCross1 } from "react-icons/rx";
 import * as XLSX from 'xlsx';
 import axios from 'axios';
@@ -43,14 +43,9 @@ const AddBatch = ({display, handleShowBatchModal, handleBatches}) =>{
         reader.readAsArrayBuffer(selectedFile);
     }
 
-    useEffect(()=>{
-        if(excelData){
-            handlePostReq(excelData);
-        }
-    },[excelData])
-
     const fetchScores = async (batchData)=>{
-        const response = await axios.post('http://localhost:5000/score/fetchScores',batchData,{
+        // console.log(typeof batchData.users[0].rollno);
+        await axios.post('http://localhost:5000/score/fetchScores',batchData,{
             headers: {
                 'Content-Type': 'application/json'
                 // Add other headers as needed
@@ -65,7 +60,7 @@ const AddBatch = ({display, handleShowBatchModal, handleBatches}) =>{
     }
     
     const handlePostReq = async (batchData)=>{
-        const response = await axios.post('http://localhost:5000/batch/addBatch', batchData, {
+        await axios.post('http://localhost:5000/batch/addBatch', batchData, {
             headers: {
                 'Content-Type': 'application/json'
                 // Add other headers as needed
@@ -82,6 +77,12 @@ const AddBatch = ({display, handleShowBatchModal, handleBatches}) =>{
             console.error('Error:', error.message);
         });
     }
+
+    useEffect(()=>{
+        if(excelData){
+            handlePostReq(excelData);
+        }
+    },[excelData])
 
     return(
             <div className={`${display?"fixed inset-0 bg-opacity-25 backdrop-blur-sm flex justify-center items-center":"hidden"}`} id="addbatch">

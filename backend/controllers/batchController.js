@@ -34,7 +34,7 @@ const addANewBatch = asyncHandler(async (req,res) => {
     const batch = new Batch({
         batchname
     });
-    console.log(users);
+    // console.log(users);
     for(let i=0;i<users.length;i++){
         const profile = new profileModel({
             hackerrank: {
@@ -90,6 +90,7 @@ const deleteABatch = asyncHandler(async (req,res) => {
 //add Users
 const addUsers = asyncHandler(async (req,res)=>{
     const {batchname,users} = req.body;
+    console.log(users);
 
     if(!batchname){
         return res.status(400).json({message:"batchname required"});
@@ -105,8 +106,9 @@ const addUsers = asyncHandler(async (req,res)=>{
     }
 
     for(let i=0;i<users.length;i++){
-        const duplicate = batch.users.find(user => user.rollno === users[i].rollno);
+        const duplicate = batch.users.find(user => parseInt(user.rollno) === parseInt(users[i].rollno));
         if(duplicate){
+            console.log("duplicate");
             continue;
         }
         const profile = new profileModel({
@@ -147,9 +149,8 @@ const addUsers = asyncHandler(async (req,res)=>{
 const deleteAUser = asyncHandler(async (req,res) => {
     const batchname = req.params.batchname;
     let rollno = req.params.rollno;
-    rollno = parseInt(rollno);
-    console.log(batchname);
-    console.log(rollno);
+    // console.log(batchname);
+    // console.log(rollno);
     if(!batchname || !rollno){
         return res.status(400).json({message:"all fields required"});
     }
@@ -167,7 +168,7 @@ const deleteAUser = asyncHandler(async (req,res) => {
     }
 
     const otherUsers = batch.users.filter(user => user.rollno !== rollno);
-    console.log(otherUsers);
+    // console.log(otherUsers);
     batch.users.splice(0,batch.users.length);
     batch.users = otherUsers;
     await batch.save();

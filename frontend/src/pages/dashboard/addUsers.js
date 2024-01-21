@@ -3,10 +3,11 @@ import { RxCross1 } from "react-icons/rx";
 import * as XLSX from 'xlsx';
 import axios from 'axios';
 
-const AddUsers = ({display, handleShowUserModal}) =>{
+const AddUsers = ({display, handleShowUserModal, batchname}) =>{
+    // console.log(batchname);
     const [selectedFile, setSelectedFile] = useState(null);
     const [excelData,setExcelData] = useState(null);
-    const [batchname,setBatchName] = useState("b1");
+    // const [batchname,setBatchName] = useState("b1");
 
     const handleFileChange = (e)=>{
         setSelectedFile(e.target.files[0]);
@@ -57,15 +58,9 @@ const AddUsers = ({display, handleShowUserModal}) =>{
         }
     }
 
-
-    useEffect(()=>{
-        if(excelData){
-            handlePostReq(excelData);
-        }
-    },[excelData])
-
-    const fetchScores = async (batchData)=>{
-        const response = await axios.post('http://localhost:5000/score/fetchScores',batchData,{
+    const fetchNewScores = async (batchData)=>{
+        console.log(batchData);
+        await axios.post('http://localhost:5000/score/fetchScores',batchData,{
             headers: {
                 'Content-Type': 'application/json'
                 // Add other headers as needed
@@ -80,7 +75,7 @@ const AddUsers = ({display, handleShowUserModal}) =>{
     }
 
     const handlePostReq = async (batchData)=>{
-        const response = await axios.post('http://localhost:5000/batch/addUsers', batchData, {
+        axios.post('http://localhost:5000/batch/addUsers', batchData, {
             headers: {
                 'Content-Type': 'application/json'
                 // Add other headers as needed
@@ -90,13 +85,19 @@ const AddUsers = ({display, handleShowUserModal}) =>{
             // Handle the response data if needed
             handleShowUserModal();
             // console.log(response);
-            fetchScores(batchData);
+            fetchNewScores(batchData);
             })
             .catch(error => {
-            alert("file not uploaded")
+            alert("users not added")
             console.error('Error:', error.message);
         });
     }
+
+    useEffect(()=>{
+        if(excelData){
+            handlePostReq(excelData);
+        }
+    },[excelData])
 
     return(
             <div id="addusers" className={`${display?"fixed inset-0 bg-opacity-25 backdrop-blur-sm flex justify-center items-center":"hidden"}`}>

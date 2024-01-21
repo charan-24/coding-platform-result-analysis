@@ -11,7 +11,7 @@ function Dashboard () {
     const [showUserModal,setShowUserModal] = useState(0);
     const [showList, setShowList] = useState(0);
     const [Batches,setBatches] = useState([]);
-    const [batchId,setBatchId] = useState(null);
+    const [batchname,setBatchName] = useState(null);
     
     const handleShowBatchModal = ()=>{
         // console.log(showModal)
@@ -19,7 +19,6 @@ function Dashboard () {
     }  
 
     const handleShowUserModal = ()=>{
-        // console.log(showModal)
         setShowList(0);
         setShowUserModal(!showUserModal);
     }
@@ -37,11 +36,12 @@ function Dashboard () {
 
     const handleList = (e) =>{
         // console.log(showList)
+        console.log(e.target.id);
         if(showList){
-            setBatchId(null);
+            setBatchName(null);
         }
         else{
-            setBatchId(e.target.id);
+            setBatchName(e.target.id);
         }
         
         setShowList(!showList);
@@ -49,10 +49,10 @@ function Dashboard () {
 
     const handleBatches = async () => {
         const arr = [];
-        const response = await axios.get('http://localhost:5000/batch/getBatches')
+        await axios.get('http://localhost:5000/batch/getBatches')
                                     .then(res=>{
                                         // console.log(res.data);
-                                        res.data.map(item=>{
+                                        res.data.forEach(item=>{
                                             arr.push({
                                                 id:item._id,
                                                 batchname:item.batchname,
@@ -79,17 +79,17 @@ function Dashboard () {
         <div onClick={handleClickOutSide}>
             <Navbar />
                 <AddBatch display={showBatchModal} handleShowBatchModal={handleShowBatchModal} handleBatches={handleBatches}/>
-                <AddUsers display={showUserModal} handleShowUserModal={handleShowUserModal} />
+                <AddUsers display={showUserModal} handleShowUserModal={handleShowUserModal} batchname={batchname} />
                 <div className={`flex flex-row flex-wrap md:justify-around lg:justify-normal`}>
                     {Batches.map((batch)=>(
                         <div key={batch.id} className="w-full md:w-1/3 lg:w-1/4 h-[120px] border-2 border-black m-4 px-4 py-3 flex flex-col justify-between rounded-md">
                         <div className="flex flex-row justify-between">
                             <h1 className="font-bold text-2xl "><Link to={`/leaderboard/`+batch.batchname} className="hover:underline">{batch.batchname}</Link></h1>
                             <div className="relative">
-                                <IoMdMore className="text-2xl cursor-pointer" id={batch.id} onClick={handleList}/>
-                                <div className={ (batchId===batch.id) ? (showList ? "absolute right-0 top-5  w-[100px]":"hidden"):"hidden"}>
+                                <IoMdMore className="text-2xl cursor-pointer" id={batch.batchname} onClick={handleList}/>
+                                <div className={ (batchname === batch.batchname) ? (showList ? "absolute right-0 top-5  w-[100px]":"hidden"):"hidden"}>
                                     <ul className="rounded-md shadow-lg">
-                                        <li className=" hover:bg-gray-200 mb-2" onClick={handleShowUserModal}>Add Users</li>
+                                        <li className=" hover:bg-gray-200 mb-2" id={batch.batchname} onClick={handleShowUserModal}>Add Users</li>
                                         <li className=" hover:bg-gray-200" id={batch.batchname} onClick={handleDeleteABatch}>Delete Batch</li>
                                     </ul>
                                 </div>

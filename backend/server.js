@@ -19,7 +19,7 @@ app.use(exp.json());
 app.use(exp.static("public"));
 
 //routes
-// app.use('/',require('./routes/login'));
+app.use('/login',require('./routes/login'));
 // app.use('/register',require('./routes/register'));
 app.use('/batch',require('./routes/batch'));
 app.use('/user',require('./routes/user'));

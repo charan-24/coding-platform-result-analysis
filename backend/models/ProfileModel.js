@@ -7,37 +7,37 @@ const profileSchema = new mongoose.Schema({
         username: {
             type: String,
         },
-        scores: scoreSchema
+        scores: scoreSchema,        
     },
     leetcode: {
         username: {
             type: String,
         },
-        scores: scoreSchema
+        scores: scoreSchema,       
     },
     codechef: {
         username: {
             type: String,
         },
-        scores: scoreSchema
+        scores: scoreSchema,       
     },
     codeforces: {
         username: {
             type: String,
         },
-        scores: scoreSchema
+        scores: scoreSchema,        
     },
     interviewbit: {
         username: {
             type: String,
         },
-        scores: scoreSchema
+        scores: scoreSchema,       
     },
     spoj: {
         username: {
             type: String,
         },
-        scores: scoreSchema
+        scores: scoreSchema,       
     }
 });
 

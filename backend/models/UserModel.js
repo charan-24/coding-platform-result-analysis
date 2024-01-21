@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema({
         required: true
     },
     rollno: {
-        type: Number,
+        type: String,
         required: true
     },
     email: {
@@ -19,7 +19,11 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    profiles: profileSchema
+    profiles: profileSchema,
+    total:{
+        type: Number
+    }
+
 });
 
 const userModel = mongoose.model('User',userSchema);

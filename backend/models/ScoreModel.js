@@ -16,6 +16,9 @@ const scoreSchema = new mongoose.Schema({
     },
     algoScore: {
         type: Number,
+    },
+    total:{
+        type: Number,
     }
 });
 

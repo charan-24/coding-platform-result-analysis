@@ -20,7 +20,7 @@ function App() {
         <Routes>
             <Route path='/' element={<Login />}/>
             <Route path='/register' element={<Register />}/>
-            <Route path='/my-profile' element={<MyProfile />}/>
+            <Route path='/my-profile/:rollno' element={<MyProfile />}/>
             <Route path='/coding-profiles' element={<CodingProfiles/>}/>
             <Route path='/leaderboard/:batchname' element={<LeaderBoard />} />
             <Route path='/my-account' element={<MyAccount />}/>
