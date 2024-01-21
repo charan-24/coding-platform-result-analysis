@@ -21,9 +21,9 @@ function LeaderBoard (){
     
     const getScores = async () => {
         const arr = [];
-        const response = await axios.get('http://localhost:5000/score/getScores/'+batchname)
+            await axios.get('http://localhost:5000/score/getScores/'+batchname)
                                     .then(res=>{
-                                        res.data.map((item,index)=>{
+                                        res.data.forEach((item,index)=>{
                                             arr.push({
                                                 sno:index+1,
                                                 rollno: item.rollno,
@@ -151,14 +151,14 @@ function LeaderBoard (){
 
     const handleList = (e) => {
         e.preventDefault();
-        // console.log(e.target.id);
+        // console.log(typeof e.target.id);
         setDelid(e.target.id);
         setShowList(1);
     }
 
     const handleDelUser = async (e) => {
         e.preventDefault();
-        const rollno = parseInt(e.target.id);
+        const rollno = e.target.id;
         await axios.delete('http://localhost:5000/batch/deleteUser/'+batchname+'/'+rollno)
                     .then(res=>{
                         getScores();
@@ -197,8 +197,8 @@ function LeaderBoard (){
                                 <td id={user.rollno} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
                                     <div className="relative">
                                         <p className="inline">{user.rollno}</p>
-                                        <IoMdMore id={user.rollno} onClick={handleList} className={parseInt(userid)===parseInt(user.rollno)?(showDel ?"inline float-right":"hidden"):"hidden"}/>
-                                        <div className={ (parseInt(delid)===user.rollno) ? (showList ? "absolute left-full top-5  w-[100px]":"hidden"):"hidden"}>
+                                        <IoMdMore id={user.rollno} onClick={handleList} className={userid===user.rollno?(showDel ?"inline float-right":"hidden"):"hidden"}/>
+                                        <div className={ (delid===user.rollno) ? (showList ? "absolute left-full top-5  w-[100px]":"hidden"):"hidden"}>
                                             <ul className="rounded-md shadow-lg">
                                                 <li className=" hover:bg-gray-200 mb-2" id={user.rollno} onClick={handleDelUser}>Delete User</li>
                                             </ul>
