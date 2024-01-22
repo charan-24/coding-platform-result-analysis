@@ -7,6 +7,7 @@ const cors = require('cors');
 const connectDB = require('./config/dbConn');
 const mongoose = require('mongoose');
 const fetchapp=require('./routes/fetch')
+const cookieParser = require('cookie-parser');
 const PORT = process.env.PORT || 5000;
 
 //connect to DB
@@ -14,6 +15,7 @@ connectDB();
 
 //middlewares
 app.use(cors());
+app.use(cookieParser());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(exp.json());
 app.use(exp.static("public"));

@@ -12,7 +12,6 @@ const batchSchema = new mongoose.Schema({
         default: "Active",
         required: true
     },
-    roles: [String], // Array of roles (e.g., ["admin", "user"])
     users: [userSchema]
 });
 
