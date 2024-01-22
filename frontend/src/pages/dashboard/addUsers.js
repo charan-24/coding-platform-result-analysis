@@ -16,27 +16,28 @@ const AddUsers = ({display, handleShowUserModal, batchname}) =>{
     const handleForm = async (e)=>{
         e.preventDefault();
         if(!selectedFile){
-            const fullname = e.target.elements.fullname.value;
-            const email = e.target.elements.email.value;
-            const rollno = e.target.elements.rollno.value;
-            const password = e.target.elements.password.value;
+            // const fullname = e.target.elements.fullname.value;
+            // const email = e.target.elements.email.value;
+            // const rollno = e.target.elements.rollno.value;
+            // const password = e.target.elements.password.value;
             
-            if(!fullname || !email || !rollno){
-                alert("all details required");
-                return;
-            }
-            setExcelData({
-                    "batchname":batchname,
-                    "users":[{
-                        "fullname":fullname,
-                        "email":email,
-                        "rollno":rollno,
-                        "password":password
-                    }]
-            })
+            // if(!fullname || !email || !rollno){
+            //     alert("all details required");
+            //     return;
+            // }
+            // setExcelData({
+            //         "batchname":batchname,
+            //         "users":[{
+            //             "fullname":fullname,
+            //             "email":email,
+            //             "rollno":rollno,
+            //             "password":password
+            //         }]
+            // })
+            alert("please select a file");
+            return;
         }
-        else{
-            const reader = new FileReader();
+        const reader = new FileReader();
             reader.onload = (e) => {
                 const data = new Uint8Array(e.target.result);
                 const workbook = XLSX.read(data, { type: 'array' });
@@ -54,13 +55,32 @@ const AddUsers = ({display, handleShowUserModal, batchname}) =>{
                     "users":jsonData
                 });
             };
-            reader.readAsArrayBuffer(selectedFile);
-        }
+        reader.readAsArrayBuffer(selectedFile);
+        // else{
+        //     const reader = new FileReader();
+        //     reader.onload = (e) => {
+        //         const data = new Uint8Array(e.target.result);
+        //         const workbook = XLSX.read(data, { type: 'array' });
+
+        //         // Assuming the first sheet is the one of interest
+        //         const sheetName = workbook.SheetNames[0];
+        //         const sheet = workbook.Sheets[sheetName];
+
+        //         // Convert sheet data to JSON
+        //         const jsonData = XLSX.utils.sheet_to_json(sheet);
+
+        //         // Store the data in state
+        //         setExcelData({
+        //             "batchname":batchname,
+        //             "users":jsonData
+        //         });
+        //     };
+        //     reader.readAsArrayBuffer(selectedFile);
+        // }
     }
 
     const fetchNewScores = async (batchData)=>{
-        console.log(batchData);
-        await axios.post('http://localhost:5000/score/fetchScores',batchData,{
+        await axios.post('http://localhost:5000/score/fetchNewUserScore',batchData,{
             headers: {
                 'Content-Type': 'application/json'
                 // Add other headers as needed
@@ -75,7 +95,7 @@ const AddUsers = ({display, handleShowUserModal, batchname}) =>{
     }
 
     const handlePostReq = async (batchData)=>{
-        axios.post('http://localhost:5000/batch/addUsers', batchData, {
+        await axios.post('http://localhost:5000/batch/addUsers', batchData, {
             headers: {
                 'Content-Type': 'application/json'
                 // Add other headers as needed
@@ -84,7 +104,7 @@ const AddUsers = ({display, handleShowUserModal, batchname}) =>{
             .then(response => {
             // Handle the response data if needed
             handleShowUserModal();
-            // console.log(response);
+            console.log("users added");
             fetchNewScores(batchData);
             })
             .catch(error => {

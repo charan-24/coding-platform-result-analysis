@@ -8,6 +8,7 @@ function Login() {
     const navigate = useNavigate();
     const [showpwd,setShowpd] = useState("Show password");
     const [pwdtype,setPwdtype] = useState(1);
+    const [token,setToken] = useState(null);
     const handlePassword = ()=>{
         if(pwdtype){
             setShowpd("Hide password");
@@ -29,11 +30,15 @@ function Login() {
         // console.log(userData);
         await axios.post('http://localhost:5000/login',userData)
                     .then(res=>{
-                        console.log("login success");
+                        console.log(res.data.accessToken);
+                        setToken(res.data.accessToken);
                         navigate(`/my-profile/`+username);
                     })
                     .catch(err=>console.error(err));
     }
+    const config = {
+        headers: { Authorization: `Bearer ${token}` }
+    };
     
     return(
         <div>

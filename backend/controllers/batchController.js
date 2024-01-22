@@ -17,7 +17,7 @@ const getBatches = asyncHandler(async (req,res)=>{
 //add a newBatch
 const addANewBatch = asyncHandler(async (req,res) => {
     // console.log(req.body);
-    const {batchname,users} = req.body;
+    let {batchname,users} = req.body;
     if(!batchname){
         return res.status(400).json({message:"batchname required"});
     }
@@ -33,8 +33,7 @@ const addANewBatch = asyncHandler(async (req,res) => {
     }
     const batch = new Batch({
         batchname
-    });
-    // console.log(users);
+    }); 
     for(let i=0;i<users.length;i++){
         const profile = new profileModel({
             hackerrank: {
@@ -56,12 +55,14 @@ const addANewBatch = asyncHandler(async (req,res) => {
                 username: users[i].spoj
             }
         })
+        
         users[i].password = await bcrypt.hash(users[i].password,11);
         const newUser = new userModel({
             fullname: users[i].fullname,
             rollno: users[i].rollno,
             email: users[i].email,
             password: users[i].password,
+            role: users[i].role,
             profiles: profile
         });
         batch.users.push(newUser);
@@ -90,7 +91,7 @@ const deleteABatch = asyncHandler(async (req,res) => {
 //add Users
 const addUsers = asyncHandler(async (req,res)=>{
     const {batchname,users} = req.body;
-    console.log(users);
+    // console.log(users);
 
     if(!batchname){
         return res.status(400).json({message:"batchname required"});
@@ -137,6 +138,7 @@ const addUsers = asyncHandler(async (req,res)=>{
             rollno: users[i].rollno,
             email: users[i].email,
             password: users[i].password,
+            role: users[i].role,
             profiles: profile
         });
         batch.users.push(newUser);

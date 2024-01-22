@@ -19,11 +19,18 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    role: {
+        type: String,
+        required: true,
+        default: "Student"
+    },
+    refreshToken:{
+        type: String
+    },
     profiles: profileSchema,
     total:{
         type: Number
     }
-
 });
 
 const userModel = mongoose.model('User',userSchema);
