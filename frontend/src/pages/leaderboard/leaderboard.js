@@ -1,11 +1,13 @@
-import React, { useState,useEffect } from "react";
+import React, { useState,useEffect, useContext } from "react";
 import Navbar from '../../layouts/navbar';
 import { IoMdMore } from "react-icons/io";
 import { BiUpArrowAlt } from "react-icons/bi";
 import { Headings } from "./leaderboarddata";
+import useAuth from "../../hooks/useAuth";
 import { useParams } from "react-router-dom";
 import './leaderboard.css';
 import axios from 'axios';
+
 function LeaderBoard (){
     const [Users,setUsers] = useState([]);
     const [isUp,setIsUp] = useState(1);
@@ -15,10 +17,11 @@ function LeaderBoard (){
     const [userid,setUserid] = useState(null);
     const [delid,setDelid] = useState(null);
     const [showList,setShowList] = useState(0);
-    // const [batchname,setBatchName] = useState();
 
+    const {auth} = useAuth();
     const {batchname} = useParams();
-    
+    const role = auth.role;
+
     const getScores = async () => {
         const arr = [];
             await axios.get('http://localhost:5000/score/getScores/'+batchname)
@@ -197,11 +200,13 @@ function LeaderBoard (){
                                 <td id={user.rollno} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
                                     <div className="relative">
                                         <p className="inline">{user.rollno}</p>
-                                        <IoMdMore id={user.rollno} onClick={handleList} className={userid===user.rollno?(showDel ?"inline float-right":"hidden"):"hidden"}/>
-                                        <div className={ (delid===user.rollno) ? (showList ? "absolute left-full top-5  w-[100px]":"hidden"):"hidden"}>
-                                            <ul className="rounded-md shadow-lg">
-                                                <li className=" hover:bg-gray-200 mb-2" id={user.rollno} onClick={handleDelUser}>Delete User</li>
-                                            </ul>
+                                        <div className={role===`Student`?"hidden":"inline"}>
+                                            <IoMdMore id={user.rollno} onClick={handleList} className={userid===user.rollno?(showDel ?"inline float-right":"hidden"):"hidden"}/>
+                                            <div className={ (delid===user.rollno) ? (showList ? "absolute left-full top-5  w-[100px]":"hidden"):"hidden"}>
+                                                <ul className="rounded-md shadow-lg">
+                                                    <li className=" hover:bg-gray-200 mb-2" id={user.rollno} onClick={handleDelUser}>Delete User</li>
+                                                </ul>
+                                            </div>
                                         </div>
                                     </div>
                                 </td>

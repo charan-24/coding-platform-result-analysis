@@ -2,11 +2,13 @@
 import React, { useState} from 'react';
 import { Link,} from 'react-router-dom';
 import { IoIosArrowDropdownCircle } from "react-icons/io";
+import useAuth from '../hooks/useAuth';
 const Navbar = () => {
 
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const [style,setStyle] = useState({});
-
+  const {auth} = useAuth();
+  const role = auth.role;
   const toggleDropdown = () => {
     if(!isDropdownOpen){
       setStyle({
@@ -47,14 +49,17 @@ const Navbar = () => {
             {<IoIosArrowDropdownCircle className='dropdown text-[20px]' style={style}/>}
           </button>
           <div className={`absolute ${isDropdownOpen ? 'block right-1/4' : 'hidden'} bg-white text-black py-2 mt-2 rounded shadow-lg`}>            
-            <Link to="/my-profile" className="block px-4 py-2 hover:bg-gray-200 " onClick={handleOptionClick}>
+            <Link to="/my-profile/:rollno" className={role==="Admin"?"hidden":"block px-4 py-2 hover:bg-gray-200"} onClick={handleOptionClick}>
               My Profile
             </Link>
-            <Link to="/leaderboard" className="block px-4 py-2 hover:bg-gray-200" onClick={handleOptionClick}>
+            {/* <Link to="/leaderboard/:batchname" className="block px-4 py-2 hover:bg-gray-200" onClick={handleOptionClick}>
               LeaderBoard
-            </Link>
+            </Link> */}
             <Link to="/my-account" className="block px-4 py-2 hover:bg-gray-200" onClick={handleOptionClick}>
               My Account
+            </Link>
+            <Link to="/dashboard" className="block px-4 py-2 hover:bg-gray-200" onClick={handleOptionClick}>
+              Dashboard
             </Link>
             <Link to="/contact-us" className="block px-4 py-2 hover:bg-gray-200" onClick={handleOptionClick}>
               Contact Us

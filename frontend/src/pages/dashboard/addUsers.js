@@ -16,24 +16,24 @@ const AddUsers = ({display, handleShowUserModal, batchname}) =>{
     const handleForm = async (e)=>{
         e.preventDefault();
         if(!selectedFile){
-            // const fullname = e.target.elements.fullname.value;
-            // const email = e.target.elements.email.value;
-            // const rollno = e.target.elements.rollno.value;
-            // const password = e.target.elements.password.value;
+            const fullname = e.target.elements.fullname.value;
+            const email = e.target.elements.email.value;
+            const rollno = e.target.elements.rollno.value;
+            const password = e.target.elements.password.value;
             
-            // if(!fullname || !email || !rollno){
-            //     alert("all details required");
-            //     return;
-            // }
-            // setExcelData({
-            //         "batchname":batchname,
-            //         "users":[{
-            //             "fullname":fullname,
-            //             "email":email,
-            //             "rollno":rollno,
-            //             "password":password
-            //         }]
-            // })
+            if(!fullname || !email || !rollno){
+                alert("all details required");
+                return;
+            }
+            setExcelData({
+                    "batchname":batchname,
+                    "users":[{
+                        "fullname":fullname,
+                        "email":email,
+                        "rollno":rollno,
+                        "password":password
+                    }]
+            })
             alert("please select a file");
             return;
         }
@@ -60,7 +60,7 @@ const AddUsers = ({display, handleShowUserModal, batchname}) =>{
         //     const reader = new FileReader();
         //     reader.onload = (e) => {
         //         const data = new Uint8Array(e.target.result);
-        //         const workbook = XLSX.read(data, { type: 'array' });
+        //         const workbook = XLSX.read(data, { type: 'arra y' });
 
         //         // Assuming the first sheet is the one of interest
         //         const sheetName = workbook.SheetNames[0];
@@ -76,6 +76,7 @@ const AddUsers = ({display, handleShowUserModal, batchname}) =>{
         //         });
         //     };
         //     reader.readAsArrayBuffer(selectedFile);
+        //     return;
         // }
     }
 

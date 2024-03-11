@@ -381,7 +381,7 @@ const getScores = asyncHandler(async (req,res)=>{
     }
     const batch = await Batch.findOne({batchname}).exec();
     if(!batch){
-        return res.status(400).json({message:`${batchname} not found`});
+        return res.status(400).json({message:`batchname not found`});
     }
     const users = batch.users.filter(user => user.role !== "Admin");
     if(!Array.isArray(users) || users.length===0){
@@ -481,14 +481,3 @@ module.exports = {
     getIndScore
 }
 
-// "<!DOCTYPE html>
-// <html lang="en">
-// <head>
-// <meta charset="utf-8">
-// <title>Error</title>
-// </head>
-// <body>
-// <pre>TypeError: undefined is not a function<br> &nbsp; &nbsp;at Array.filter (&lt;anonymous&gt;)<br> &nbsp; &nbsp;at Proxy.methods.&lt;computed&gt; (D:\coding-platform-result-analysis\backend\node_modules\mongoose\lib\types\array\methods\index.js:1025:24)<br> &nbsp; &nbsp;at D:\coding-platform-result-analysis\backend\controllers\fetchController.js:142:31<br> &nbsp; &nbsp;at processTicksAndRejections (node:internal/process/task_queues:96:5)</pre>
-// </body>
-// </html>
-// "

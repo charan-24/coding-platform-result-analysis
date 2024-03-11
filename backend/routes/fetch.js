@@ -79,7 +79,7 @@ fetchapp.get(
 fetchapp.get(
   "/lc/:username",
   expressAsyncHandler(async (req, res) => {
-    const URL = "https://leetcode.com/" + req.params.username;
+    const URL = "https://leetcode.com/" + req.params.username + "/";
     console.log(URL);
     let resObj = {};
     var result = await axios.get(URL, {
@@ -94,7 +94,7 @@ fetchapp.get(
 
     //for Contest Rating
     const rating = $(
-      "#__next > div.flex.min-h-screen.min-w-\\[360px\\].flex-col.text-label-1.dark\\:text-dark-label-1.bg-layer-bg.dark\\:bg-dark-layer-bg > div.mx-auto.w-full.grow.p-4.md\\:mt-0.md\\:max-w-\\[888px\\].md\\:p-6.lg\\:max-w-screen-xl.mt-\\[50px\\] > div > div.lc-lg\\:max-w-\\[calc\\(100\\%_-_316px\\)\\].w-full > div:nth-child(2) > div.bg-layer-1.dark\\:bg-dark-layer-1.shadow-down-01.dark\\:shadow-dark-down-01.rounded-lg.lc-lg\\:mt-0.lc-xl\\:hidden.mt-4.flex.h-\\[200px\\].w-full.min-w-\\[200px\\].p-4 > div > div.relative.min-h-\\[53px\\].text-xs > div > div:nth-child(1) > div.text-label-1.dark\\:text-dark-label-1.flex.items-center.text-2xl"
+      "#__next > div.flex.min-h-screen.min-w-\\[360px\\].flex-col.text-label-1.dark\\:text-dark-label-1.bg-layer-bg.dark\\:bg-dark-layer-bg > div.mx-auto.w-full.grow.p-4.md\\:max-w-\\[888px\\].md\\:p-6.lg\\:max-w-screen-xl > div > div.lc-lg\\:max-w-\\[calc\\(100\\%_-_316px\\)\\].w-full > div:nth-child(2) > div.bg-layer-1.dark\\:bg-dark-layer-1.shadow-down-01.dark\\:shadow-dark-down-01.rounded-lg.lc-lg\\:mt-0.lc-xl\\:hidden.mt-4.flex.h-\\[200px\\].w-full.min-w-\\[200px\\].p-4 > div > div.relative.min-h-\\[53px\\].text-xs > div > div:nth-child(1) > div.text-label-1.dark\\:text-dark-label-1.flex.items-center.text-2xl"
     );
     var x = $(rating[0]).text();
     var rat = "";
@@ -107,14 +107,14 @@ fetchapp.get(
 
     //No of problems Solved
     const noOfProblemsSolved = $(
-      "#__next > div > div.mx-auto.mt-\\[50px\\].w-full.grow.p-4.md\\:mt-0.md\\:max-w-\\[888px\\].md\\:p-6.lg\\:max-w-screen-xl > div > div.w-full.lc-lg\\:max-w-\\[calc\\(100\\%_-_316px\\)\\] > div.flex.w-full.flex-col.space-x-0.space-y-4.lc-xl\\:flex-row.lc-xl\\:space-y-0.lc-xl\\:space-x-4 > div.min-w-max.max-w-full.w-full.flex-1 > div > div.mx-3.flex.items-center.lc-xl\\:mx-8 > div.mr-8.mt-6.flex.min-w-\\[100px\\].justify-center > div > div > div > div.text-\\[24px\\].font-medium.text-label-1.dark\\:text-dark-label-1"
+      "#__next > div.flex.min-h-screen.min-w-\\[360px\\].flex-col.text-label-1.dark\\:text-dark-label-1.bg-layer-bg.dark\\:bg-dark-layer-bg > div.mx-auto.w-full.grow.p-4.md\\:max-w-\\[888px\\].md\\:p-6.lg\\:max-w-screen-xl > div > div.lc-lg\\:max-w-\\[calc\\(100\\%_-_316px\\)\\].w-full > div.lc-xl\\:flex-row.lc-xl\\:space-y-0.flex.w-full.flex-col.space-x-0.space-y-4.lc-xl\\:space-x-4 > div.min-w-max.max-w-full.w-full.flex-1 > div > div.lc-xl\\:mx-8.mx-3.flex.items-center > div.mr-8.mt-6.flex.min-w-\\[100px\\].justify-center > div > div"
     );
     resObj["noOfProblemsSolved"] =
       parseInt($(noOfProblemsSolved[0]).text()) ?? 0;
 
     //No Of Contests
     const noOfContests = $(
-      "#__next > div > div.mx-auto.w-full.grow.p-4.md\\:mt-0.md\\:max-w-\\[888px\\].md\\:p-6.lg\\:max-w-screen-xl.mt-\\[50px\\] > div > div.w-full.lc-lg\\:max-w-\\[calc\\(100\\%_-_316px\\)\\] > div.bg-layer-1.dark\\:bg-dark-layer-1.rounded-lg.my-4.hidden.h-\\[200px\\].w-full.p-4.lc-lg\\:mt-0.lc-xl\\:flex > div.lc-md\\:min-w-none.h-full.w-full.min-w-\\[200px\\].flex-1 > div > div.relative.min-h-\\[53px\\].text-xs > div > div.hidden.md\\:block > div.text-label-1.dark\\:text-dark-label-1.font-medium.leading-\\[22px\\]"
+      "#__next > div.flex.min-h-screen.min-w-\\[360px\\].flex-col.text-label-1.dark\\:text-dark-label-1.bg-layer-bg.dark\\:bg-dark-layer-bg > div.mx-auto.w-full.grow.p-4.md\\:max-w-\\[888px\\].md\\:p-6.lg\\:max-w-screen-xl > div > div.lc-lg\\:max-w-\\[calc\\(100\\%_-_316px\\)\\].w-full > div:nth-child(2) > div.bg-layer-1.dark\\:bg-dark-layer-1.shadow-down-01.dark\\:shadow-dark-down-01.rounded-lg.lc-lg\\:mt-0.lc-xl\\:hidden.mt-4.flex.h-\\[200px\\].w-full.min-w-\\[200px\\].p-4 > div > div.relative.min-h-\\[53px\\].text-xs > div > div.hidden.md\\:block > div.text-label-1.dark\\:text-dark-label-1.font-medium.leading-\\[22px\\]"
     );
     resObj["noOfContests"] = parseInt($(noOfContests[0]).text()) ?? 0;
 

@@ -1,14 +1,15 @@
-import React from "react";
+import React, { useContext, useState }  from "react";
 import { FcGoogle} from "react-icons/fc";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
 import axios from "axios";
 
 function Login() {
     const navigate = useNavigate();
     const [showpwd,setShowpd] = useState("Show password");
     const [pwdtype,setPwdtype] = useState(1);
-    const [token,setToken] = useState(null);
+    const {setAuth} = useAuth();
+
     const handlePassword = ()=>{
         if(pwdtype){
             setShowpd("Hide password");
@@ -30,16 +31,18 @@ function Login() {
         // console.log(userData);
         await axios.post('http://localhost:5000/login',userData)
                     .then(res=>{
+                        setAuth({"rollno":username,"role":res.data.role,"accessToken":res.data.accessToken});
                         console.log(res.data.accessToken);
-                        setToken(res.data.accessToken);
-                        navigate(`/my-profile/`+username);
+                        if(res.data.role==="Student"){
+                            navigate(`/my-profile/`+username);
+                        }
+                        else{
+                            navigate('/dashboard');
+                        }
                     })
                     .catch(err=>console.error(err));
     }
-    const config = {
-        headers: { Authorization: `Bearer ${token}` }
-    };
-    
+
     return(
         <div>
             <div className="md:grid md:grid-cols-2 relative">

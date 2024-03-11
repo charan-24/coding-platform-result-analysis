@@ -4,13 +4,14 @@ import BarGraph from './BarChart';
 import DonutChart from './DonutChart';
 import UserInfo from './UserProfileInfo';
 import Navbar from '../../layouts/navbar';
-import { useParams } from "react-router-dom";
+import useAuth from '../../hooks/useAuth';
 import axios from 'axios';
 
 const MyProfile = () => {
   const [userData,setUserData] = useState({});
   const [donutData,setDonutData] = useState([]);
-  const {rollno} = useParams();
+  const {auth} = useAuth();
+  const rollno = auth.rollno;
   const getScores = async () => {
     await axios.get('http://localhost:5000/score/getIndScore/'+rollno)
                                 .then(res=>{
