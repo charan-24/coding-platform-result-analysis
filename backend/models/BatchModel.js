@@ -9,7 +9,7 @@ const batchSchema = new mongoose.Schema({
     },
     batchstatus: {
         type: String,
-        default: "Active",
+        default: "active",
         required: true
     },
     users: [userSchema]

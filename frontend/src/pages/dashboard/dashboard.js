@@ -4,24 +4,31 @@ import { Link } from "react-router-dom";
 import { IoMdMore } from "react-icons/io";
 import AddUsers from "./addUsers";
 import AddBatch from "./addBatch";
+import useAuth from "../../hooks/useAuth";
 import axios from 'axios';
 
 function Dashboard() {
     const [showBatchModal, setShowBatchModal] = useState(0);
     const [showUserModal, setShowUserModal] = useState(0);
-    const [showList, setShowList] = useState(0);
+    const [showList, setShowList] = useState(false);
     const [Batches, setBatches] = useState([]);
-    const [upBatches, setUpBatches] = useState([]);
-    const [batchname, setBatchName] = useState(null);
+    const [batchname, setBatchName] = useState("");
     const [filterBatch, setFilterBatch] = useState([]);
+    const [showMenu,setShowMenu] = useState(1);
+    const {auth} = useAuth();
+    const role = auth.role;
+    const rollno = auth.rollno
 
     const handleShowBatchModal = () => {
         // console.log(showModal)
+        setShowList(0);
+        setShowMenu(!showMenu);
         setShowBatchModal(!showBatchModal);
     }
 
     const handleShowUserModal = () => {
         setShowList(0);
+        setShowMenu(!showMenu);        
         setShowUserModal(!showUserModal);
     }
 
@@ -38,7 +45,9 @@ function Dashboard() {
 
     const handleList = (e) => {
         // console.log(showList)
+        e.preventDefault();
         console.log(e.target.id);
+        console.log(showList);
         if (showList) {
             setBatchName(null);
         }
@@ -54,13 +63,28 @@ function Dashboard() {
         await axios.get('http://localhost:5000/batch/getBatches')
             .then(res => {
                 // console.log(res.data);
-                res.data.forEach(item => {
-                    arr.push({
-                        id: item._id,
-                        batchname: item.batchname,
-                        status: item.batchstatus,
+                let foundStudent;
+                if(role==="Student"){
+                    res.data.forEach(item =>{
+                        foundStudent = item.users.find(user => user.rollno == rollno);
+                        if(foundStudent){
+                            arr.push({
+                                id: item._id,
+                                batchname: item.batchname,
+                                status: item.batchstatus,
+                            })
+                        }    
+                    });
+                }
+                else{
+                    res.data.forEach(item => {
+                        arr.push({
+                            id: item._id,
+                            batchname: item.batchname,
+                            status: item.batchstatus,
+                        })
                     })
-                })
+                }
                 // console.log(arr);
                 setBatches(arr);
             })
@@ -112,18 +136,18 @@ function Dashboard() {
             </div>
             <div className={`flex flex-row flex-wrap md:justify-around lg:justify-normal`}>
                 {Batches.map((batch) => (
-                    <div key={batch.id} className={filterBatch.length !== 0 ? (filterBatch.indexOf(batch.status) === -1 ? "hidden" : "w-full md:w-1/3 lg:w-1/4 h-[120px] border-2 border-black m-4 px-4 py-3 flex flex-col justify-between rounded-md") : "w-full md:w-1/3 lg:w-1/4 h-[120px] border-2 border-black m-4 px-4 py-3 flex flex-col justify-between rounded-md"}>
+                    <div key={batch.id}  className={filterBatch.length !== 0 ? (filterBatch.indexOf(batch.status) === -1 ? "hidden" : "w-full md:w-1/3 lg:w-1/4 h-[120px] border-2 border-black m-4 px-4 py-3 flex flex-col justify-between rounded-md") : "w-full md:w-1/3 lg:w-1/4 h-[120px] border-2 border-black m-4 px-4 py-3 flex flex-col justify-between rounded-md"}>
                         <div className="flex flex-row justify-between">
                             <h1 className="font-bold text-2xl "><Link to={`/leaderboard/` + batch.batchname} className="hover:underline">{batch.batchname}</Link></h1>
-                            <div className="relative">
-                                <IoMdMore className="text-2xl cursor-pointer" id={batch.batchname} onClick={handleList} />
-                                <div className={(batchname === batch.batchname) ? (showList ? "absolute right-0 top-5  w-[100px]" : "hidden") : "hidden"}>
-                                    <ul className="rounded-md shadow-lg">
-                                        <li className=" hover:bg-gray-200 mb-2" id={batch.batchname} onClick={handleShowUserModal}>Add Users</li>
-                                        <li className=" hover:bg-gray-200" id={batch.batchname} onClick={handleDeleteABatch}>Delete Batch</li>
-                                    </ul>
+                                <div className={role==="Student"?"hidden":"relative"}>
+                                    <IoMdMore className={showMenu?"text-2xl cursor-pointer":"hidden"} id={batch.batchname} onClick={handleList} />
+                                    <div className={(batchname === batch.batchname) ? (showList ? " absolute top-5 right-0 w-[100px]" : "hidden") : "hidden"}>
+                                        <ul className="rounded-md shadow-lg ">
+                                            <li className=" hover:bg-gray-200 mb-2" id={batch.batchname} onClick={handleShowUserModal}>Add Users</li>
+                                            <li className=" hover:bg-gray-200" id={batch.batchname} onClick={handleDeleteABatch}>Delete Batch</li>
+                                        </ul>
+                                    </div>
                                 </div>
-                            </div>
                         </div>
                         <div className="flex flex-row justify-between">
                             <p className="text-[13px] text-gray-500 font-semibold">{batch.status}</p>
@@ -131,7 +155,7 @@ function Dashboard() {
                     </div>
                 ))}
             </div>
-            <button className="block mx-auto bg-amber-300 rounded-md px-3 py-1 md:px-6 md:py-2 mt-5" onClick={handleShowBatchModal}>
+            <button className={role==="Student"?"hidden":"block mx-auto bg-amber-300 rounded-md px-3 py-1 md:px-6 md:py-2 mt-5"} onClick={handleShowBatchModal}>
                 Add a NewBatch
             </button>
         </div>

@@ -4,12 +4,11 @@ import { Doughnut } from 'react-chartjs-2';
 
 const DonutChart = ({donutData}) => {
   const data = {
-    labels: ['Hackerrank', 'LeetCode', 'CodeChef', 'CodeForces','InterviewBit','Spoj'],
+    labels: ['Hackerrank', 'LeetCode', 'CodeChef', 'CodeForces','Spoj','InterviewBit'],
     datasets: [
       {
         data: donutData,
         backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4CAF50','#F74304','#C704F7'],
-        // hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4CAF50'],
       },
     ],
   };
@@ -32,9 +31,9 @@ const DonutChart = ({donutData}) => {
   const legendColors = ['#FF6384', '#36A2EB', '#FFCE56', '#4CAF50','#F74304','#C704F7'];
 
   return (
-    <div className='block'>
-        <h2 className="md:text-xl font-bold text-center my-4 underline">Across platforms</h2>
-        <div className="lg:flex lg:flex-row">
+    <div className= 'block'>
+      <h2 className="md:text-xl font-bold text-center my-4 underline">Across platforms</h2>
+        <div className="lg:flex lg:flex-row justify-center">
           <div className="">
             <Doughnut data={data} options={options} />
           </div>
@@ -49,7 +48,7 @@ const DonutChart = ({donutData}) => {
               </div>
             ))}
           </div>
-       </div>
+        </div>
     </div>   
   );
 };

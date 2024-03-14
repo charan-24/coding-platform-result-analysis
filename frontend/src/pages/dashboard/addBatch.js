@@ -54,6 +54,7 @@ const AddBatch = ({display, handleShowBatchModal, handleBatches}) =>{
         })
         .then(res => {
             console.log(res.data);
+            alert("scores updated")
         })
         .catch(err=>{
             console.error(err);
@@ -70,8 +71,8 @@ const AddBatch = ({display, handleShowBatchModal, handleBatches}) =>{
             .then(response =>{
             // Handle the response data if needed
             handleShowBatchModal();
-            handleBatches();
             fetchScores(batchData);
+            handleBatches();
             })
             .catch(error => {
             alert("file not uploaded")

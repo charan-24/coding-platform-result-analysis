@@ -11,6 +11,7 @@ const handleLogin = async (req,res) => {
     }
     const batch = await Batch.find({}).exec();
     for(let i=0;i<batch.length;i++){
+        const batchname = batch[i].batchname;
         const users = batch[i].users;
         // console.log(users);
         const foundUser = users.find(user => parseInt(user.rollno) === parseInt(username));
@@ -21,11 +22,12 @@ const handleLogin = async (req,res) => {
         if(match){
             // create JWTs
             const role = foundUser.role;
+            const rollno = foundUser.rollno;
             const accessToken = jwt.sign(
                 {"UserInfo":
                             { 
-                                "username": foundUser.username,
-                                "role": role
+                                "rollno": rollno,
+                                "role": role,
                             }
                 },
                 process.env.SECRET_ACCESS_TOKEN,
@@ -40,7 +42,7 @@ const handleLogin = async (req,res) => {
             foundUser.refreshToken = refreshToken;
             await batch[i].save();
             res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 });
-            return res.json({ accessToken });
+            return res.json({ accessToken, role});
         }     
     }
     return res.sendStatus(401);
