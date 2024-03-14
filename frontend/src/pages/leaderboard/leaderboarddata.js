@@ -28,12 +28,12 @@ export const Headings = [
         title:"CodeForces"
     },
     {
-        id:"spoj",
-        title:"Spoj"
-    },
-    {
         id:"interviewbit",
         title:"InterviewBit"
+    },
+    {
+        id:"spoj",
+        title:"Spoj"
     },
     {
         id:"total",

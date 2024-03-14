@@ -8,6 +8,7 @@ const Navbar = () => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const [style,setStyle] = useState({});
   const {auth} = useAuth();
+  const rollno = auth.rollno;
   const role = auth.role;
   const toggleDropdown = () => {
     if(!isDropdownOpen){
@@ -49,7 +50,7 @@ const Navbar = () => {
             {<IoIosArrowDropdownCircle className='dropdown text-[20px]' style={style}/>}
           </button>
           <div className={`absolute ${isDropdownOpen ? 'block right-1/4' : 'hidden'} bg-white text-black py-2 mt-2 rounded shadow-lg`}>            
-            <Link to="/my-profile/:rollno" className={role==="Admin"?"hidden":"block px-4 py-2 hover:bg-gray-200"} onClick={handleOptionClick}>
+            <Link to={`/my-profile/`+rollno} className={role==="Admin"?"hidden":"block px-4 py-2 hover:bg-gray-200"} onClick={handleOptionClick}>
               My Profile
             </Link>
             {/* <Link to="/leaderboard/:batchname" className="block px-4 py-2 hover:bg-gray-200" onClick={handleOptionClick}>

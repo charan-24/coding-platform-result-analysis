@@ -4,7 +4,7 @@ import { IoMdMore } from "react-icons/io";
 import { BiUpArrowAlt } from "react-icons/bi";
 import { Headings } from "./leaderboarddata";
 import useAuth from "../../hooks/useAuth";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import './leaderboard.css';
 import axios from 'axios';
 
@@ -210,7 +210,7 @@ function LeaderBoard (){
                                         </div>
                                     </div>
                                 </td>
-                                <td>{user.fullname}</td>
+                                <td><Link to={`/my-profile/`+user.rollno}>{user.fullname}</Link></td>
                                 <td>{user.hacker}</td>
                                 <td>{user.leet}</td>
                                 <td>{user.chef}</td>

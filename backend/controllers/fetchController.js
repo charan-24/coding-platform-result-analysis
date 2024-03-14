@@ -391,7 +391,7 @@ const getScores = asyncHandler(async (req,res)=>{
     const scoresData = [];
     for(let i=0;i<users.length;i++){
         let user = users[i];
-        console.log(user);
+        // console.log(user);
         const resObj = {};
         // console.log(user);
         resObj["fullname"] = user.fullname;
@@ -465,6 +465,9 @@ const getIndScore = asyncHandler(async (req,res)=>{
                 codeforces:foundUser.profiles.codeforces.scores.total,
                 spoj:foundUser.profiles.spoj.scores.total,
                 interviewbit:foundUser.profiles.interviewbit.scores.total,
+                lcContestRating:foundUser.profiles.leetcode.scores.contestRating,
+                ccContestRating:foundUser.profiles.codechef.scores.contestRating,
+                cfContestRating:foundUser.profiles.codeforces.scores.contestRating,
             }
             resObj["scoreObj"] = scoreObj;
            return res.status(200).json(resObj); 

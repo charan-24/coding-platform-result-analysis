@@ -94,9 +94,10 @@ fetchapp.get(
 
     //for Contest Rating
     const rating = $(
-      "#__next > div.flex.min-h-screen.min-w-\\[360px\\].flex-col.text-label-1.dark\\:text-dark-label-1.bg-layer-bg.dark\\:bg-dark-layer-bg > div.mx-auto.w-full.grow.p-4.md\\:max-w-\\[888px\\].md\\:p-6.lg\\:max-w-screen-xl > div > div.lc-lg\\:max-w-\\[calc\\(100\\%_-_316px\\)\\].w-full > div:nth-child(2) > div.bg-layer-1.dark\\:bg-dark-layer-1.shadow-down-01.dark\\:shadow-dark-down-01.rounded-lg.lc-lg\\:mt-0.lc-xl\\:hidden.mt-4.flex.h-\\[200px\\].w-full.min-w-\\[200px\\].p-4 > div > div.relative.min-h-\\[53px\\].text-xs > div > div:nth-child(1) > div.text-label-1.dark\\:text-dark-label-1.flex.items-center.text-2xl"
+      "#__next > div.flex.min-h-screen.min-w-\[360px\].flex-col.text-label-1.dark\:text-dark-label-1.bg-layer-bg.dark\:bg-dark-layer-bg > div.mx-auto.w-full.grow.p-4.md\:max-w-\[888px\].md\:p-6.lg\:max-w-screen-xl > div > div.lc-lg\:max-w-\[calc\(100\%_-_316px\)\].w-full > div:nth-child(2) > div.bg-layer-1.dark\:bg-dark-layer-1.shadow-down-01.dark\:shadow-dark-down-01.rounded-lg.lc-lg\:mt-0.lc-xl\:hidden.mt-4.flex.h-\[200px\].w-full.min-w-\[200px\].p-4 > div > div.relative.min-h-\[53px\].text-xs > div > div:nth-child(1) > div.text-label-1.dark\:text-dark-label-1.flex.items-center.text-2xl"
     );
     var x = $(rating[0]).text();
+    console.log(x);
     var rat = "";
     for (var i = 0; i < x.length; i++) {
       if (x[i] >= "0" && x[i] <= "9") {
@@ -107,7 +108,7 @@ fetchapp.get(
 
     //No of problems Solved
     const noOfProblemsSolved = $(
-      "#__next > div.flex.min-h-screen.min-w-\\[360px\\].flex-col.text-label-1.dark\\:text-dark-label-1.bg-layer-bg.dark\\:bg-dark-layer-bg > div.mx-auto.w-full.grow.p-4.md\\:max-w-\\[888px\\].md\\:p-6.lg\\:max-w-screen-xl > div > div.lc-lg\\:max-w-\\[calc\\(100\\%_-_316px\\)\\].w-full > div.lc-xl\\:flex-row.lc-xl\\:space-y-0.flex.w-full.flex-col.space-x-0.space-y-4.lc-xl\\:space-x-4 > div.min-w-max.max-w-full.w-full.flex-1 > div > div.lc-xl\\:mx-8.mx-3.flex.items-center > div.mr-8.mt-6.flex.min-w-\\[100px\\].justify-center > div > div"
+      "#__next > div.flex.min-h-screen.min-w-\\[360px\\].flex-col.text-label-1.dark\\:text-dark-label-1.bg-layer-bg.dark\\:bg-dark-layer-bg > div.mx-auto.w-full.grow.p-4.md\\:max-w-\\[888px\\].md\\:p-6.lg\\:max-w-screen-xl > div > div.lc-lg\\:max-w-\\[calc\\(100\\%_-_316px\\)\\].w-full > div.lc-xl\\:flex-row.lc-xl\\:space-y-0.flex.w-full.flex-col.space-x-0.space-y-4.lc-xl\\:space-x-4 > div.min-w-max.max-w-full.w-full.flex-1 > div > div.lc-xl\\:mx-8.mx-3.flex.items-center > div.mr-8.mt-6.flex.min-w-\\[100px\\].justify-center > div > div > div > div.text-\\[24px\\].font-medium.text-label-1.dark\\:text-dark-label-1"
     );
     resObj["noOfProblemsSolved"] =
       parseInt($(noOfProblemsSolved[0]).text()) ?? 0;
@@ -192,7 +193,7 @@ fetchapp.get(
 fetchapp.get(
   "/spoj/:username",
   expressAsyncHandler(async (req, res) => {
-    const URL = "https://www.spoj.com/users/" + req.params.username;
+    const URL = "https://www.spoj.com/users/" + req.params.username+"/";
     var resObj = {};
     resObj["noOfProblemsSolved"] = 0;
     var result = await axios.get(URL, {
@@ -209,6 +210,7 @@ fetchapp.get(
     const noOfProblemsSolved = $(
       "#content > div:nth-child(2) > div > div.col-md-9 > div:nth-child(2) > div > div.row > div.col-md-6.text-center.valign-center > dl > dd:nth-child(2)"
     );
+    console.log($(noOfProblemsSolved[0]).text());
     resObj["noOfProblemsSolved"] =
       parseInt($(noOfProblemsSolved[0]).text()) ?? 0;
 
@@ -280,8 +282,8 @@ fetchapp.get(
     res.send({ message: "users data is ", payload: resObj });
   })
 );
-
 // ********************************************************************************************************************************************************************
+
 // interview bit
 fetchapp.get(
   "/ib/:username",
@@ -300,10 +302,11 @@ fetchapp.get(
       });
     const $ = cheerio.load(result.data);
     const noOfProblemsSolved = $(
-      "body > div.container.user-profile > div.col-xs-12.col-md-4 > div.user-stats > div:nth-child(2) > div.txt"
+      "body > div.ib-app-root__content > div > div.profile-main > div.profile-ongoing-tracks > div.horizontal-scroll-view > div > div > div:nth-child(1) > div.profile-ongoing-tracks__card-content > div > div.profile-ongoing-tracks__card-stat.profile-ongoing-tracks__card-stat--problems > span > b"
     );
     resObj["noOfProblemsSolved"] =
       parseInt($(noOfProblemsSolved[0]).text()) ?? 0;
+      console.log($(noOfProblemsSolved[0]).text());
     if (Number.isNaN(resObj["noOfProblemsSolved"]))
       resObj["noOfProblemsSolved"] = 0;
     //Send Response
