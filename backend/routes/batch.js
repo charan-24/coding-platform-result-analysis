@@ -18,5 +18,8 @@ router.post('/addUsers',batchController.addUsers);
 //delete a User
 router.delete('/deleteUser/:batchname/:rollno',batchController.deleteAUser);
 
+//change staus of a batch
+router.post('/changeBatchStatus',batchController.changeBatchStatus);
+
 
 module.exports = router;

@@ -42,10 +42,13 @@ const handleLogin = async (req,res) => {
             foundUser.refreshToken = refreshToken;
             await batch[i].save();
             res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 });
-            return res.json({ accessToken, role});
+            return res.json({ accessToken, role, "fullname":foundUser.fullname});
+        }
+        else{
+            return res.status(401).json({message:"password"});
         }     
     }
-    return res.sendStatus(401);
+    return res.status(401).json({message:"username"});
 };
 
 module.exports = { handleLogin };

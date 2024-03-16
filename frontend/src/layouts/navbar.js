@@ -10,6 +10,8 @@ const Navbar = () => {
   const {auth} = useAuth();
   const rollno = auth.rollno;
   const role = auth.role;
+  const fullname = auth.fullname;
+  console.log(fullname);
   const toggleDropdown = () => {
     if(!isDropdownOpen){
       setStyle({
@@ -44,7 +46,7 @@ const Navbar = () => {
         <div className="dropdownmenu relative group bg-white text-black rounded mr-4 p-2" id='dropdownmeu' name="dropdownmenu" >
           {/* Hide on small devices */}
           <span className=" full_name hidden sm:inline cursor-pointer" id="full_name" name="full_name" onClick={toggleDropdown}>
-            Full_Name
+            {fullname}
           </span>
           <button className="ml-2  mr-2 text-black focus:outline-none" id='dropdown' name="dropdown" onClick={toggleDropdown}>
             {<IoIosArrowDropdownCircle className='dropdown text-[20px]' style={style}/>}

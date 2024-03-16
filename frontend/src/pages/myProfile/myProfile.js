@@ -15,8 +15,11 @@ const MyProfile = () => {
   const [totalScoreData,setTotalScoreData] = useState([]);
   const { rollno } = useParams(); 
   const {auth} = useAuth();
+  
   console.log(auth);
+
   const roll = rollno || auth.rollno;
+
   const getScores = async () => {
     await axios.get('http://localhost:5000/score/getIndScore/'+roll)
                                 .then(res=>{

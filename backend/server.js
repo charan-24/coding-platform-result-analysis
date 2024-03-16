@@ -8,6 +8,8 @@ const connectDB = require('./config/dbConn');
 const mongoose = require('mongoose');
 const fetchapp=require('./routes/fetch')
 const cookieParser = require('cookie-parser');
+const cron = require('node-cron');
+const Batch = require('./models/BatchModel');
 const PORT = process.env.PORT || 5000;
 
 //connect to DB
@@ -28,6 +30,31 @@ app.use('/user',require('./routes/user'));
 app.use('/score',require('./routes/score'));
 // app.use('/fetch',require('./routes/fetch'));
 app.use('/fetch',fetchapp)
+
+// Schedule the cron job to run at 12:00
+cron.schedule('54 23 * * *', async () => {
+    const batches = await Batch.find().exec();
+    console.log(batches.length);
+    for(let i=0;i<batches.length;i++){
+        const batch = batches[i];
+        console.log(batch.batchname);
+        const batchData = {
+            batchname:batch.batchname,
+        }
+        console.log(batchData);
+        await axios.post('http://localhost:5000/score/fetchScores', batchData, {
+            headers: {'Content-Type' : 'application/json'}
+        })
+        .then(res => {
+            console.log(res.data);
+        })
+        .catch(err=>{
+            console.error(err);
+        });
+        console.log(batchData);
+    }
+});
+   
 
 
 //server connection

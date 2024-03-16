@@ -8,6 +8,7 @@ function MyAccount(){
     const [userDetails,setUserDetails] = useState({});
     const [codingProfiles,setCodingProfiles] = useState([]);
     const [personals, setPersonals] = useState([]);
+    const [newHandle, setNewHandle] = useState(null);
     const {auth} = useAuth();
     const rollno = auth.rollno;
 
@@ -78,6 +79,35 @@ function MyAccount(){
         setCodingProfiles([...codingProfiles.slice(codingProfiles.length,codingProfiles.length),...codingProfile]);
         setPersonals([...personals.slice(personals.length,personals.length),...personal]);
     }
+
+    const handleInputChange = async (e) => {
+        e.preventDefault();
+        setNewHandle(e.target.value);
+    }
+
+    const changeHandle = async (e) => {
+        e.preventDefault();
+        if(newHandle===null){
+            alert("nothing new to update");
+            return;
+        }
+        const handlename = e.target.id;
+        const dataObj = {
+            "rollno": rollno,
+            "handlename": handlename.toLowerCase().split(' ')[0],
+            "handle": newHandle
+        }
+        console.log(dataObj);
+        await axios.post('http://localhost:5000/user/changeAhandle',dataObj)
+                    .then((res)=>{
+                        // console.log(res);
+                        alert(res.data.message);
+                    })
+                    .catch((err)=>{
+                        console.log("handle not changed");
+                    });
+    }
+
     useEffect(()=>{
         getUserDetails();
     },[]);
@@ -92,7 +122,7 @@ function MyAccount(){
             <div>
                 <h1 className="text-center font-bold md:mt-4 underline">Personal Details</h1>
                 <form className="w-3/4 md:w-2/5 mx-auto">
-                    {!personals.length ?? personals.map((personal)=>(
+                    {personals.map((personal)=>(
                         <div key={personal.id}>
                             <label htmlFor={personal.label} className="block text-[12px] text-gray-500 font-semibold mt-2">{personal.label}</label>
                             <input id={personal.label} type="text" defaultValue={personal.input} className="inline mt-2 focus:outline-none" disabled></input>
@@ -110,8 +140,8 @@ function MyAccount(){
                     {codingProfiles.map((platform)=>(
                         <div key={platform.id}>
                             <label htmlFor={platform.label} className="block text-[12px] text-gray-500 font-semibold mt-2">{platform.label}</label>
-                            <input id={platform.label} type="text" defaultValue={platform.input} className="inline mt-2 focus:outline-none"></input>
-                            <button className="inline float-right bg-amber-300 rounded-md px-3 py-1 md:px-6 md:py-2 mb-1">
+                            <input id={platform.label} type="text" defaultValue={platform.input} className="inline mt-2 focus:outline-none" onChange={handleInputChange}></input>
+                            <button className="inline float-right bg-amber-300 rounded-md px-3 py-1 md:px-6 md:py-2 mb-1" id={platform.label} onClick={changeHandle}>
                                 update
                             </button>
                             <hr className={`border-1 border-black w-full`}/>                   

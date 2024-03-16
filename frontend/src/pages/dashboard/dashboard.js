@@ -1,15 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import Navbar from "../../layouts/navbar";
 import { Link } from "react-router-dom";
 import { IoMdMore } from "react-icons/io";
 import AddUsers from "./addUsers";
 import AddBatch from "./addBatch";
+import ChangeStatus from "./changeStatus";
 import useAuth from "../../hooks/useAuth";
 import axios from 'axios';
 
 function Dashboard() {
     const [showBatchModal, setShowBatchModal] = useState(0);
     const [showUserModal, setShowUserModal] = useState(0);
+    const [statusModal,setStatusModal] = useState(0)
     const [showList, setShowList] = useState(false);
     const [Batches, setBatches] = useState([]);
     const [batchname, setBatchName] = useState("");
@@ -32,29 +34,29 @@ function Dashboard() {
         setShowUserModal(!showUserModal);
     }
 
+    const handleChangeStatusModal = () => {
+        setShowList(0);
+        setShowMenu(!showMenu);        
+        setStatusModal(!statusModal);
+    }
+
     const handleClickOutSide = (e) => {
-        if (e.target.id === "addbatch" || e.target.id === "addusers") {
-            if (showBatchModal) {
-                handleShowBatchModal();
-            }
-            else if (showUserModal) {
-                handleShowUserModal()
-            }
+        if(showList){
+            setShowList(0);
         }
     }
 
     const handleList = (e) => {
         // console.log(showList)
         e.preventDefault();
-        console.log(e.target.id);
-        console.log(showList);
+        // console.log(e.target.id);
+        // console.log(showList);
         if (showList) {
             setBatchName(null);
         }
         else {
             setBatchName(e.target.id);
         }
-
         setShowList(!showList);
     }
 
@@ -66,7 +68,7 @@ function Dashboard() {
                 let foundStudent;
                 if(role==="Student"){
                     res.data.forEach(item =>{
-                        foundStudent = item.users.find(user => user.rollno == rollno);
+                        foundStudent = item.users.find(user => user.rollno === rollno);
                         if(foundStudent){
                             arr.push({
                                 id: item._id,
@@ -92,6 +94,7 @@ function Dashboard() {
     }
 
     const handleDeleteABatch = async (e) => {
+        e.preventDefault();
         await axios.delete('http://localhost:5000/batch/deleteBatch/' + e.target.id)
             .then(res => handleBatches())
             .catch(err => console.error(err));
@@ -120,6 +123,8 @@ function Dashboard() {
             <Navbar />
             <AddBatch display={showBatchModal} handleShowBatchModal={handleShowBatchModal} handleBatches={handleBatches} />
             <AddUsers display={showUserModal} handleShowUserModal={handleShowUserModal} batchname={batchname} />
+            <ChangeStatus batchname={batchname} display={statusModal} handleChangeStatusModal={handleChangeStatusModal} handleBatches={handleBatches} />
+            {/* <Fragment></Fragment> */}
             <div className="flex flex-row gap-20 text-[20px] ml-10">
                 <div className="text-[20px]">
                     <input id="completed" name="completed" type="checkbox" onClick={handleCheckBox} />
@@ -142,9 +147,12 @@ function Dashboard() {
                                 <div className={role==="Student"?"hidden":"relative"}>
                                     <IoMdMore className={showMenu?"text-2xl cursor-pointer":"hidden"} id={batch.batchname} onClick={handleList} />
                                     <div className={(batchname === batch.batchname) ? (showList ? " absolute top-5 right-0 w-[100px]" : "hidden") : "hidden"}>
-                                        <ul className="rounded-md shadow-lg ">
-                                            <li className=" hover:bg-gray-200 mb-2" id={batch.batchname} onClick={handleShowUserModal}>Add Users</li>
-                                            <li className=" hover:bg-gray-200" id={batch.batchname} onClick={handleDeleteABatch}>Delete Batch</li>
+                                        <ul className="rounded-md shadow-lg">
+                                            <li className=" hover:bg-gray-200 border-solid" id={batch.batchname} onClick={handleShowUserModal}>add users</li>
+                                            <hr />
+                                            <li className=" hover:bg-gray-200" id={batch.batchname} onClick={handleDeleteABatch}>delete batch</li>
+                                            <hr />
+                                            <li className=" hover:bg-gray-200" id={batch.batchname} onClick={handleChangeStatusModal}>change status</li>
                                         </ul>
                                     </div>
                                 </div>

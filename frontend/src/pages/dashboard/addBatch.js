@@ -44,14 +44,14 @@ const AddBatch = ({display, handleShowBatchModal, handleBatches}) =>{
         reader.readAsArrayBuffer(selectedFile);
     }
 
-    const fetchScores = async (batchData)=>{
-        // console.log(typeof batchData.users[0].rollno);
+    const fetchScores = async (batchData) =>{
+        console.log(batchData);
         await axios.post('http://localhost:5000/score/fetchScores',batchData,{
             headers: {
                 'Content-Type': 'application/json'
                 // Add other headers as needed
             }
-        })
+        }) 
         .then(res => {
             console.log(res.data);
             alert("scores updated")

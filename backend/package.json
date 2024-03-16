@@ -22,7 +22,8 @@
     "express-async-handler": "^1.2.0",
     "express-fileupload": "^1.4.3",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.0.3"
+    "mongoose": "^8.0.3",
+    "node-cron": "^3.0.3"
   },
   "devDependencies": {
     "nodemon": "^3.0.2"
