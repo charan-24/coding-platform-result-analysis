@@ -3,14 +3,11 @@ const asyncHandler = require('express-async-handler');
 
 const changeAhandle = asyncHandler(async (req,res) => {
     const {rollno,handlename,handle} = req.body;
+    console.log(rollno + handlename + handle);
     if(!rollno || !handlename || !handle){
         return res.status(400).json({message:"all fields required"});
     }
-    // const batch = await Batch.findOne({batchname}).exec();
-    // if(!batch){
-    //     return res.status(400).json({message:`${batchname} not found`});
-    // }
-
+    
     const batch = await Batch.find().exec();
     if(!batch){
         return res.status(400).json({message:`no batches found`});
@@ -49,7 +46,7 @@ const changeAhandle = asyncHandler(async (req,res) => {
 
 const fetchUserDetails = asyncHandler(async(req,res)=>{
     const rollno = req.params.rollno;
-    console.log(rollno);
+    // console.log(rollno);
     if(!rollno){
         return res.status(400).json({message:"rollno required"});
     }

@@ -4,7 +4,9 @@ const { scoreSchema, scoreModel } = require('../models/ScoreModel');
 const asyncHandler = require('express-async-handler');
 
 const fetchScore = asyncHandler(async (req,res)=>{
+    console.log("fetchscore")
     const {batchname} = req.body;
+    console.log(req.body);
     if(!batchname){
         return res.status(400).json({message:`all fields are required`});
     }
@@ -95,8 +97,7 @@ const fetchScore = asyncHandler(async (req,res)=>{
         users[i].profiles.codeforces.scores = cfscore;
         
 
-        //fetch from interviewbit
-        
+        //fetch from interviewbit       
         ib = await axios.get('http://localhost:'+process.env.PORT+'/fetch/ib/'+users[i].profiles.interviewbit.username);
         ib = ib.data.payload;
         if(!ib.noOfProblemsSolved){

@@ -178,9 +178,23 @@ const deleteAUser = asyncHandler(async (req,res) => {
     return res.status(200).json({success:`${rollno} deleted`});
 });
 
+const changeBatchStatus = asyncHandler (async (req,res)=>{
+    const {batchname,changeTo} = req.body;
+    console.log(req.body);
+    const batch = await Batch.findOneAndUpdate({batchname},{batchstatus: changeTo},{
+        new: true
+    }).exec();
+    if(!batch){
+        return res.status(401).json({message:"required batch not found"});
+    }
+
+    return res.status(200).json({message:"status changed"});
+})
+
 module.exports = { addANewBatch,
                    deleteABatch,
                    addUsers,
                    deleteAUser,
-                   getBatches 
+                   getBatches,
+                   changeBatchStatus 
                 };
