@@ -469,6 +469,18 @@ const getIndScore = asyncHandler(async (req,res)=>{
                 lcContestRating:foundUser.profiles.leetcode.scores.contestRating,
                 ccContestRating:foundUser.profiles.codechef.scores.contestRating,
                 cfContestRating:foundUser.profiles.codeforces.scores.contestRating,
+                noOfProblemsSolvedhr: Math.floor(foundUser.profiles.hackerrank.scores.algoScore/20 + foundUser.profiles.hackerrank.scores.dsScore/20) || 0,
+                noOfProblemsSolvedlc:foundUser.profiles.leetcode.scores.noOfProblemsSolved || 0,
+                noOfProblemsSolvedcc:foundUser.profiles.codechef.scores.noOfProblemsSolved || 0,
+                noOfProblemsSolvedcf:foundUser.profiles.codeforces.scores.noOfProblemsSolved || 0,
+                noOfProblemsSolvedspoj:foundUser.profiles.spoj.scores.noOfProblemsSolved || 0,
+                noOfProblemsSolvedib:foundUser.profiles.interviewbit.scores.noOfProblemsSolved || 0,
+                noOfContestshr:foundUser.profiles.hackerrank.scores.noOfContests || 0,
+                noOfContestslc:foundUser.profiles.leetcode.scores.noOfContests || 0,
+                noOfContestscc:foundUser.profiles.codechef.scores.noOfContests || 0,
+                noOfContestscf:foundUser.profiles.codeforces.scores.noOfContests || 0,
+                noOfContestsspoj:foundUser.profiles.spoj.scores.noOfContests || 0,
+                noOfContestsib:foundUser.profiles.interviewbit.scores.noOfContests || 0,
             }
             resObj["scoreObj"] = scoreObj;
            return res.status(200).json(resObj); 

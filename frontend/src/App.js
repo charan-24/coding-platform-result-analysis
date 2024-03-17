@@ -29,6 +29,7 @@ function App() {
             {/* <Route element={<RequireAuth />}> */}
               <Route path='/my-profile/:rollno' element={<MyProfile />}/>
               <Route path='/coding-profiles' element={<CodingProfiles/>}/>
+              <Route path='/leaderboard' element={<Contactus/>}/>
               <Route path='/leaderboard/:batchname' element={<LeaderBoard />} />
               <Route path='/my-account' element={<MyAccount />}/>
               <Route path='/contact-us' element={<Contactus />} />
