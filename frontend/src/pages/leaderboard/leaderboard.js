@@ -27,10 +27,13 @@ function LeaderBoard (){
             await axios.get('http://localhost:5000/score/getScores/'+batchname)
                                     .then(res=>{
                                         res.data.forEach((item,index)=>{
+                                            const lastlogin = item.lastlogin?.toLocaleString().slice(0,10) ?? "";
+                                            // const logintime = "";
                                             arr.push({
                                                 sno:index+1,
                                                 rollno: item.rollno,
                                                 fullname: item.fullname,
+                                                lastlogin: lastlogin,
                                                 hacker: item.hacker,
                                                 leet: item.leet,
                                                 chef: item.chef,
@@ -165,7 +168,6 @@ function LeaderBoard (){
         await axios.delete('http://localhost:5000/batch/deleteUser/'+batchname+'/'+rollno)
                     .then(res=>{
                         getScores();
-                        // console.log("deleted");
                     })
                     .catch(err=>{
                         console.error(err);
@@ -184,9 +186,9 @@ function LeaderBoard (){
                     <thead>
                         <tr className="thead-row">
                             {Headings.map((item)=>(
-                                <th key={item.id}>
+                                <th className={item.id==="lastlogin" && role==="Student" && "hidden"} key={item.id}>
                                     <div className="flex flex-row justify-evenly">
-                                        <h2 className="inline">{item.title}</h2>
+                                        <h2 className={"inline"}>{item.title}</h2>
                                         <BiUpArrowAlt id={item.id} onClick={handleSort} className="" style={headId===item.id ? style : {} }/>
                                     </div>
                                 </th>
@@ -211,6 +213,7 @@ function LeaderBoard (){
                                     </div>
                                 </td>
                                 <td><Link to={`/my-profile/`+user.rollno}>{user.fullname}</Link></td>
+                                <td className={role === "Student" && "hidden"}>{user.lastlogin}</td>
                                 <td>{user.hacker}</td>
                                 <td>{user.leet}</td>
                                 <td>{user.chef}</td>

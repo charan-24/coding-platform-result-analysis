@@ -11,7 +11,7 @@ const Navbar = () => {
   const rollno = auth.rollno;
   const role = auth.role;
   const fullname = auth.fullname;
-  console.log(fullname);
+  // console.log(fullname);
   const toggleDropdown = () => {
     if(!isDropdownOpen){
       setStyle({

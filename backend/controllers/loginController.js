@@ -40,6 +40,9 @@ const handleLogin = async (req,res) => {
             );
             // Saving refreshToken with current user
             foundUser.refreshToken = refreshToken;
+            //Saving lastLogintime
+
+            foundUser.lastLogin = Date.now(); 
             await batch[i].save();
             res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 });
             return res.json({ accessToken, role, "fullname":foundUser.fullname});
