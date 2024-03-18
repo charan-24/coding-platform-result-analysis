@@ -1,12 +1,10 @@
 const axios = require('axios');
 const Batch = require('../models/BatchModel');
-const { scoreSchema, scoreModel } = require('../models/ScoreModel');
+const { scoreModel } = require('../models/ScoreModel');
 const asyncHandler = require('express-async-handler');
 
 const fetchScore = asyncHandler(async (req,res)=>{
-    console.log("fetchscore")
     const {batchname} = req.body;
-    console.log(req.body);
     if(!batchname){
         return res.status(400).json({message:`all fields are required`});
     }
@@ -18,7 +16,8 @@ const fetchScore = asyncHandler(async (req,res)=>{
     const users = batch.users.filter(user => user.role !== "Admin");
     for(let i=0;i<users.length;i++){
         //fetch from hackerrank
-        hr = await axios.get('http://localhost:'+process.env.PORT+'/fetch/hr/'+users[i].profiles.hackerrank.username);
+        const user = users[i];
+        hr = await axios.get('http://localhost:'+process.env.PORT+'/fetch/hr/'+user.profiles.hackerrank.username);
         hr = hr.data.payload;
         if(!hr.ds_score){
             hr.ds_score=0;
@@ -27,15 +26,17 @@ const fetchScore = asyncHandler(async (req,res)=>{
             hr.algo_score=0;
         }
         console.log(hr);
+        if(user.profiles.hackerrank.scores.dsScore != hr.ds_score || user.profiles.hackerrank.scores.algoScore != hr.algo_score){
+            user.profiles.hackerrank.lastUpdated = Date.now();
+        }
         const hrscore = scoreModel({
             dsScore: hr.ds_score,
             algoScore: hr.algo_score
         });
-        users[i].profiles.hackerrank.scores = hrscore;
-        
+        user.profiles.hackerrank.scores = hrscore;
 
         //fetch from leetcode
-        lc = await axios.get('http://localhost:'+process.env.PORT+'/fetch/lc/'+users[i].profiles.leetcode.username);
+        lc = await axios.get('http://localhost:'+process.env.PORT+'/fetch/lc/'+user.profiles.leetcode.username);
         lc = lc.data.payload;
         if(!lc.noOfProblemsSolved){
             lc.noOfProblemsSolved = 0;
@@ -47,16 +48,19 @@ const fetchScore = asyncHandler(async (req,res)=>{
             lc.rating = 0;
         }
         console.log(lc);
+        if(user.profiles.leetcode.scores.noOfProblemsSolved !==lc.noOfProblemsSolved || user.profiles.leetcode.scores.noOfContests !== lc.noOfContests){
+            user.profiles.leetcode.lastUpdated = Date.now();
+        }
         const lcscore = scoreModel({
             noOfProblemsSolved: lc.noOfProblemsSolved,
             noOfContests: lc.noOfContests,
             contestRating: lc.rating,
         }); 
-        users[i].profiles.leetcode.scores = lcscore;
+        user.profiles.leetcode.scores = lcscore;
         
 
         //fetch from codechef
-        cc = await axios.get('http://localhost:'+process.env.PORT+'/fetch/cc/'+users[i].profiles.codechef.username);
+        cc = await axios.get('http://localhost:'+process.env.PORT+'/fetch/cc/'+user.profiles.codechef.username);
         cc = cc.data.payload;
         if(!cc.noOfProblemsSolved){
             cc.noOfProblemsSolved = 0;
@@ -68,16 +72,18 @@ const fetchScore = asyncHandler(async (req,res)=>{
             cc.rating = 0;
         }
         console.log(cc);
+        if(user.profiles.codechef.scores.noOfProblemsSolved !== cc.noOfProblemsSolved || user.profiles.codechef.scores.noOfContests !== cc.noOfContests){
+            user.profiles.codechef.lastUpdated = Date.now();
+        }      
         const ccscore = scoreModel({
             noOfProblemsSolved: cc.noOfProblemsSolved,
             noOfContests: cc.noOfContests,
             contestRating: cc.rating,
         });
-        users[i].profiles.codechef.scores = ccscore;
-        
+        user.profiles.codechef.scores = ccscore;
 
         //fetch from codeforces
-        cf = await axios.get('http://localhost:'+process.env.PORT+'/fetch/cf/'+users[i].profiles.codeforces.username);
+        cf = await axios.get('http://localhost:'+process.env.PORT+'/fetch/cf/'+user.profiles.codeforces.username);
         cf = cf.data.payload;
         if(!cf.noOfProblemsSolved){
             cf.noOfProblemsSolved = 0;
@@ -89,40 +95,47 @@ const fetchScore = asyncHandler(async (req,res)=>{
             cf.rating = 0;
         }
         console.log(cf);
+        if(user.profiles.codeforces.scores.noOfProblemsSolved !== cf.noOfProblemsSolved || user.profiles.codeforces.scores.noOfContests !== cf.noOfContests){
+            user.profiles.codeforces.lastUpdated = Date.now();
+        }
         const cfscore = scoreModel({
             noOfProblemsSolved: cf.noOfProblemsSolved,
             noOfContests: cf.noOfContests,
             contestRating: cf.rating,
         });
-        users[i].profiles.codeforces.scores = cfscore;
+        user.profiles.codeforces.scores = cfscore;
         
 
         //fetch from interviewbit       
-        ib = await axios.get('http://localhost:'+process.env.PORT+'/fetch/ib/'+users[i].profiles.interviewbit.username);
+        ib = await axios.get('http://localhost:'+process.env.PORT+'/fetch/ib/'+user.profiles.interviewbit.username);
         ib = ib.data.payload;
         if(!ib.noOfProblemsSolved){
             ib.noOfProblemsSolved = 0;
         }
         console.log(ib);
+        if(user.profiles.interviewbit.scores.noOfProblemsSolved !== ib.noOfProblemsSolved){
+            user.profiles.interviewbit.lastUpdated = Date.now();
+        }
         const ibscore = scoreModel({
             noOfProblemsSolved: ib.noOfProblemsSolved,
         });
-        users[i].profiles.interviewbit.scores = ibscore;
+        user.profiles.interviewbit.scores = ibscore;
         
-
         //fetch from spoj     
-        spoj = await axios.get('http://localhost:'+process.env.PORT+'/fetch/spoj/'+users[i].profiles.spoj.username);
+        spoj = await axios.get('http://localhost:'+process.env.PORT+'/fetch/spoj/'+user.profiles.spoj.username);
         spoj = spoj.data.payload;
         if(!spoj.noOfProblemsSolved){
             spoj.noOfProblemsSolved = 0;
         }
         console.log(spoj);
+        if(user.profiles.spoj.scores.noOfProblemsSolved !== spoj.noOfProblemsSolved){
+            user.profiles.spoj.lastUpdated = Date.now();
+        }
         const spojscore = scoreModel({
             noOfProblemsSolved: spoj.noOfProblemsSolved,
         });
-        users[i].profiles.spoj.scores = spojscore;
+        user.profiles.spoj.scores = spojscore;
     }
-
     //save to db
     await batch.save();
     return res.status(200).json({success:"scores updated"});
@@ -147,8 +160,9 @@ const fetchNewUserScore = asyncHandler(async (req,res)=>{
     console.log(currusers);
     for(let i=0;i<currusers.length;i++){
         //fetch from hackerrank
-        console.log(currusers[i].profiles);
-        hr = await axios.get('http://localhost:'+process.env.PORT+'/fetch/hr/'+currusers[i].profiles.hackerrank.username);
+        // console.log(currusers[i].profiles);
+        const user = currusers[i];
+        hr = await axios.get('http://localhost:'+process.env.PORT+'/fetch/hr/'+user.profiles.hackerrank.username);
         hr = hr.data.payload;
         if(!hr.ds_score){
             hr.ds_score=0;
@@ -157,15 +171,17 @@ const fetchNewUserScore = asyncHandler(async (req,res)=>{
             hr.algo_score=0;
         }
         console.log(hr);
+        if(user.profiles.hackerrank.scores.dsScore != hr.ds_score || user.profiles.hackerrank.scores.algoScore != hr.algo_score){
+            user.profiles.hackerrank.lastUpdated = Date.now();
+        }
         const hrscore = scoreModel({
             dsScore: hr.ds_score,
             algoScore: hr.algo_score
         });
-        currusers[i].profiles.hackerrank.scores = hrscore;
-        
+        user.profiles.hackerrank.scores = hrscore;
 
         //fetch from leetcode
-        lc = await axios.get('http://localhost:'+process.env.PORT+'/fetch/lc/'+currusers[i].profiles.leetcode.username);
+        lc = await axios.get('http://localhost:'+process.env.PORT+'/fetch/lc/'+user.profiles.leetcode.username);
         lc = lc.data.payload;
         if(!lc.noOfProblemsSolved){
             lc.noOfProblemsSolved = 0;
@@ -177,16 +193,19 @@ const fetchNewUserScore = asyncHandler(async (req,res)=>{
             lc.rating = 0;
         }
         console.log(lc);
+        if(user.profiles.leetcode.scores.noOfProblemsSolved !==lc.noOfProblemsSolved || user.profiles.leetcode.scores.noOfContests !== lc.noOfContests){
+            user.profiles.leetcode.lastUpdated = Date.now();
+        }
         const lcscore = scoreModel({
             noOfProblemsSolved: lc.noOfProblemsSolved,
             noOfContests: lc.noOfContests,
             contestRating: lc.rating,
         }); 
-        currusers[i].profiles.leetcode.scores = lcscore;
+        user.profiles.leetcode.scores = lcscore;
         
 
         //fetch from codechef
-        cc = await axios.get('http://localhost:'+process.env.PORT+'/fetch/cc/'+currusers[i].profiles.codechef.username);
+        cc = await axios.get('http://localhost:'+process.env.PORT+'/fetch/cc/'+user.profiles.codechef.username);
         cc = cc.data.payload;
         if(!cc.noOfProblemsSolved){
             cc.noOfProblemsSolved = 0;
@@ -198,16 +217,18 @@ const fetchNewUserScore = asyncHandler(async (req,res)=>{
             cc.rating = 0;
         }
         console.log(cc);
+        if(user.profiles.codechef.scores.noOfProblemsSolved !== cc.noOfProblemsSolved || user.profiles.codechef.scores.noOfContests !== cc.noOfContests){
+            user.profiles.codechef.lastUpdated = Date.now();
+        }      
         const ccscore = scoreModel({
             noOfProblemsSolved: cc.noOfProblemsSolved,
             noOfContests: cc.noOfContests,
             contestRating: cc.rating,
         });
-        currusers[i].profiles.codechef.scores = ccscore;
-        
+        user.profiles.codechef.scores = ccscore;
 
         //fetch from codeforces
-        cf = await axios.get('http://localhost:'+process.env.PORT+'/fetch/cf/'+currusers[i].profiles.codeforces.username);
+        cf = await axios.get('http://localhost:'+process.env.PORT+'/fetch/cf/'+user.profiles.codeforces.username);
         cf = cf.data.payload;
         if(!cf.noOfProblemsSolved){
             cf.noOfProblemsSolved = 0;
@@ -219,39 +240,46 @@ const fetchNewUserScore = asyncHandler(async (req,res)=>{
             cf.rating = 0;
         }
         console.log(cf);
+        if(user.profiles.codeforces.scores.noOfProblemsSolved !== cf.noOfProblemsSolved || user.profiles.codeforces.scores.noOfContests !== cf.noOfContests){
+            user.profiles.codeforces.lastUpdated = Date.now();
+        }
         const cfscore = scoreModel({
             noOfProblemsSolved: cf.noOfProblemsSolved,
             noOfContests: cf.noOfContests,
             contestRating: cf.rating,
         });
-        currusers[i].profiles.codeforces.scores = cfscore;
+        user.profiles.codeforces.scores = cfscore;
         
 
-        //fetch from interviewbit
-        
-        ib = await axios.get('http://localhost:'+process.env.PORT+'/fetch/ib/'+currusers[i].profiles.interviewbit.username);
+        //fetch from interviewbit       
+        ib = await axios.get('http://localhost:'+process.env.PORT+'/fetch/ib/'+user.profiles.interviewbit.username);
         ib = ib.data.payload;
         if(!ib.noOfProblemsSolved){
             ib.noOfProblemsSolved = 0;
         }
         console.log(ib);
+        if(user.profiles.interviewbit.scores.noOfProblemsSolved !== ib.noOfProblemsSolved){
+            user.profiles.interviewbit.lastUpdated = Date.now();
+        }
         const ibscore = scoreModel({
             noOfProblemsSolved: ib.noOfProblemsSolved,
         });
-        currusers[i].profiles.interviewbit.scores = ibscore;
+        user.profiles.interviewbit.scores = ibscore;
         
-
         //fetch from spoj     
-        spoj = await axios.get('http://localhost:'+process.env.PORT+'/fetch/spoj/'+currusers[i].profiles.spoj.username);
+        spoj = await axios.get('http://localhost:'+process.env.PORT+'/fetch/spoj/'+user.profiles.spoj.username);
         spoj = spoj.data.payload;
         if(!spoj.noOfProblemsSolved){
             spoj.noOfProblemsSolved = 0;
         }
         console.log(spoj);
+        if(user.profiles.spoj.scores.noOfProblemsSolved !== spoj.noOfProblemsSolved){
+            user.profiles.spoj.lastUpdated = Date.now();
+        }
         const spojscore = scoreModel({
             noOfProblemsSolved: spoj.noOfProblemsSolved,
         });
-        currusers[i].profiles.spoj.scores = spojscore;
+        user.profiles.spoj.scores = spojscore;
     }
     //save to db
     await batch.save();
@@ -260,6 +288,7 @@ const fetchNewUserScore = asyncHandler(async (req,res)=>{
 
 const fetchScoreIndividual = asyncHandler(async(req,res)=>{
     const {batchname,rollno} = req.body;
+    // console.log(req.body);
     if(!batchname || !rollno){
         return res.status(400).json({message:`all fields are required`});
     }
@@ -269,16 +298,24 @@ const fetchScoreIndividual = asyncHandler(async(req,res)=>{
     }
 
     const user = batch.users.find(user => user.rollno === rollno);
+    // console.log(user);
+    if(!user){
+        return res.status(401).json({message:"user not found"});
+    }
 
     //fetch from hackerrank
+    // console.log(user.profiles.hackerrank.scores);
     hr = await axios.get('http://localhost:'+process.env.PORT+'/fetch/hr/'+user.profiles.hackerrank.username);
     hr = hr.data.payload;
-    console.log(hr);
     if(!hr.ds_score){
         hr.ds_score=0;
     }
     if(!hr.algo_score){
         hr.algo_score=0;
+    }
+    console.log(hr);
+    if(user.profiles.hackerrank.scores.dsScore != hr.ds_score || user.profiles.hackerrank.scores.algoScore != hr.algo_score){
+        user.profiles.hackerrank.lastUpdated = Date.now();
     }
     const hrscore = scoreModel({
         dsScore: hr.ds_score,
@@ -295,16 +332,20 @@ const fetchScoreIndividual = asyncHandler(async(req,res)=>{
     if(!lc.noOfContests){
         lc.noOfContests = 0;
     }
-    if(!lc.contestRating){
-        lc.contestRating = 0;
+    if(!lc.rating){
+        lc.rating = 0;
     }
     console.log(lc);
+    if(user.profiles.leetcode.scores.noOfProblemsSolved !==lc.noOfProblemsSolved || user.profiles.leetcode.scores.noOfContests !== lc.noOfContests){
+        user.profiles.leetcode.lastUpdated = Date.now();
+    }
     const lcscore = scoreModel({
         noOfProblemsSolved: lc.noOfProblemsSolved,
         noOfContests: lc.noOfContests,
         contestRating: lc.rating,
     }); 
     user.profiles.leetcode.scores = lcscore;
+    
 
     //fetch from codechef
     cc = await axios.get('http://localhost:'+process.env.PORT+'/fetch/cc/'+user.profiles.codechef.username);
@@ -315,10 +356,13 @@ const fetchScoreIndividual = asyncHandler(async(req,res)=>{
     if(!cc.noOfContests){
         cc.noOfContests = 0;
     }
-    if(!cc.contestRating){
-        cc.contestRating = 0;
+    if(!cc.rating){
+        cc.rating = 0;
     }
     console.log(cc);
+    if(user.profiles.codechef.scores.noOfProblemsSolved !== cc.noOfProblemsSolved || user.profiles.codechef.scores.noOfContests !== cc.noOfContests){
+        user.profiles.codechef.lastUpdated = Date.now();
+    }      
     const ccscore = scoreModel({
         noOfProblemsSolved: cc.noOfProblemsSolved,
         noOfContests: cc.noOfContests,
@@ -335,36 +379,46 @@ const fetchScoreIndividual = asyncHandler(async(req,res)=>{
     if(!cf.noOfContests){
         cf.noOfContests = 0;
     }
-    if(!cf.contestRating){
-        cf.contestRating = 0;
+    if(!cf.rating){
+        cf.rating = 0;
     }
     console.log(cf);
+    if(user.profiles.codeforces.scores.noOfProblemsSolved !== cf.noOfProblemsSolved || user.profiles.codeforces.scores.noOfContests !== cf.noOfContests){
+        user.profiles.codeforces.lastUpdated = Date.now();
+    }
     const cfscore = scoreModel({
         noOfProblemsSolved: cf.noOfProblemsSolved,
         noOfContests: cf.noOfContests,
         contestRating: cf.rating,
     });
     user.profiles.codeforces.scores = cfscore;
+    
 
-    //fetch from interviewbit
+    //fetch from interviewbit       
     ib = await axios.get('http://localhost:'+process.env.PORT+'/fetch/ib/'+user.profiles.interviewbit.username);
     ib = ib.data.payload;
     if(!ib.noOfProblemsSolved){
         ib.noOfProblemsSolved = 0;
     }
     console.log(ib);
+    if(user.profiles.interviewbit.scores.noOfProblemsSolved !== ib.noOfProblemsSolved){
+        user.profiles.interviewbit.lastUpdated = Date.now();
+    }
     const ibscore = scoreModel({
         noOfProblemsSolved: ib.noOfProblemsSolved,
     });
-    user.profiles.interviewbit.scores = ibscore; 
-
-    //fetch from spoj
+    user.profiles.interviewbit.scores = ibscore;
+    
+    //fetch from spoj     
     spoj = await axios.get('http://localhost:'+process.env.PORT+'/fetch/spoj/'+user.profiles.spoj.username);
     spoj = spoj.data.payload;
     if(!spoj.noOfProblemsSolved){
         spoj.noOfProblemsSolved = 0;
     }
     console.log(spoj);
+    if(user.profiles.spoj.scores.noOfProblemsSolved !== spoj.noOfProblemsSolved){
+        user.profiles.spoj.lastUpdated = Date.now();
+    }
     const spojscore = scoreModel({
         noOfProblemsSolved: spoj.noOfProblemsSolved,
     });
@@ -397,6 +451,7 @@ const getScores = asyncHandler(async (req,res)=>{
         // console.log(user);
         resObj["fullname"] = user.fullname;
         resObj["rollno"] = user.rollno;
+        resObj["lastlogin"] = user.lastLogin;
         resObj["total"] = 0;
         user=user.profiles;
         // console.log(user);

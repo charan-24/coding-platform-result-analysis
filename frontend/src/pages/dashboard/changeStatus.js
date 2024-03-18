@@ -30,6 +30,7 @@ const ChangeStatus = ({batchname, display, handleChangeStatusModal, handleBatche
             console.log(err);
         })
         handleBatches();
+        handleChangeStatusModal();
     }
 
     const handleOption = (e)=>{

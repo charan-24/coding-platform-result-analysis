@@ -34,7 +34,7 @@ const AddUsers = ({display, handleShowUserModal, batchname}) =>{
                         "password":password
                     }]
             })
-            alert("please select a file");
+            // alert("please select a file");
             return;
         }
         const reader = new FileReader();
