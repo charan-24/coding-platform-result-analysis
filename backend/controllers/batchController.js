@@ -7,6 +7,7 @@ const asyncHandler = require('express-async-handler')
 //get All Batches
 const getBatches = asyncHandler(async (req,res)=>{
     const batch = await Batch.find({}).exec();
+    // console.log(batch);
     if(!batch){
         return res.sendStatus(400);
     }
@@ -58,7 +59,8 @@ const addANewBatch = asyncHandler(async (req,res) => {
         
         users[i].password = await bcrypt.hash(users[i].password,11);
         const newUser = new userModel({
-            fullname: users[i].fullname,
+            fullname: users[i].fullname.replace(/(\w)(\w*)/g,
+                                        function(g0,g1,g2){return g1.toUpperCase() + g2.toLowerCase();}),
             rollno: users[i].rollno,
             email: users[i].email,
             password: users[i].password,

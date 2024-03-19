@@ -20,6 +20,12 @@ const userSchema = new mongoose.Schema({
         required: true
     },
     lastLogin: Date,
+    lastUpdated: Date,
+    isActive: {
+        type: Boolean,
+        required: true,
+        default: true
+    },
     role: {
         type: String,
         required: true,

@@ -11,6 +11,7 @@ const cookieParser = require('cookie-parser');
 const cron = require('node-cron');
 const Batch = require('./models/BatchModel');
 const axios = require('axios');
+const emailjs = require('@emailjs/browser');
 const PORT = process.env.PORT || 5000;
 
 //connect to DB
@@ -34,7 +35,7 @@ app.use('/fetch',fetchapp)
 
 // Schedule the cron job to run at 12:00
 
-const cronjob = async ()=>{
+const dailyUpdate = async ()=>{
     const batches = await Batch.find().exec();
     // console.log(batches.length);
     for(let i=0;i<batches.length;i++){
@@ -58,8 +59,44 @@ const cronjob = async ()=>{
 }
 
 cron.schedule('20 00 * * *', () => {
-    cronjob();
+    dailyUpdate();
 });
+
+// const sendReminders = async () => {
+//     const batches = await Batch.find({}).exec();
+//     for(let i=0;i<batches.length;i++){
+//         const batch = batches[i];
+//         const users = batch.users;
+//         if(!users){
+//             return res.sendStatus(401);
+//         }
+
+//         for(let j=0;j<users.length;j++){
+//             const user = users[j];
+//             if(!user.isActive){
+
+//                 const templateparams = {
+//                     name: user.fullname,
+//                     email: user.email
+//                 };
+
+//                 console.log(templateparams)
+                
+//                 emailjs.send('service_cuitdwa', 'template_99uwo69', templateparams, 'JeeyJmTk8Wv7Z8qfi')
+//                 .then((result) => {
+//                     console.log("sent");
+//                 }, (error) => {
+//                     console.log("error");
+//                 });
+//             }
+//         }
+//     }
+// }
+
+// cron.schedule('59 00 * * *',()=>{
+//     sendReminders();
+// });
+
    
 
 

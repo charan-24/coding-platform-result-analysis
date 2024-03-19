@@ -10,7 +10,8 @@ const Navbar = () => {
   const {auth} = useAuth();
   const rollno = auth.rollno;
   const role = auth.role;
-  const fullname = auth.fullname;
+  const fullname = auth.fullname.replace(/(\w)(\w*)/g,
+  function(g0,g1,g2){return g1.toUpperCase() + g2.toLowerCase();});
   // console.log(fullname);
   const toggleDropdown = () => {
     if(!isDropdownOpen){

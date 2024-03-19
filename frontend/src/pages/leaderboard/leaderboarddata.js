@@ -16,6 +16,10 @@ export const Headings = [
         title:"Last Login"
     },
     {
+        id:"lastupdated",
+        title:"Last Updated"
+    },
+    {
         id:"hacker",
         title:"Hacker Rank"
     },
