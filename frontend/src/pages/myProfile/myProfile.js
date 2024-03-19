@@ -28,6 +28,7 @@ const MyProfile = () => {
                                 .then(res=>{
                                     console.log(res.data);
                                     let temp = Object.values(res.data.scoreObj);
+                                    let scores = [res.data.scoreObj.hackerrank]
                                     // console.log(temp);
                                     setDonutData([...temp.slice(0,6)]);
                                     setRatingsData([...temp.slice(6,9)]);
@@ -35,7 +36,8 @@ const MyProfile = () => {
                                     setProblems([...temp.slice(9,15)]);
                                     setContest([...temp.slice(15,21)]);
                                     setUserData({
-                                      fullname: res.data.fullname,
+                                      fullname: res.data.fullname.replace(/(\w)(\w*)/g,
+                                      function(g0,g1,g2){return g1.toUpperCase() + g2.toLowerCase();}),
                                       rollno: res.data.rollno,
                                       total: res.data.total
                                     });                                                    
