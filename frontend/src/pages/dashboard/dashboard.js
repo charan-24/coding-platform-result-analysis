@@ -18,14 +18,14 @@ function Dashboard() {
     const [batchname, setBatchName] = useState("");
     const [filterBatch, setFilterBatch] = useState([]);
     const [showMenu,setShowMenu] = useState(1);
-
+    
     const {auth} = useAuth();
-    const role = auth.role;
-    const rollno = auth.rollno
+    let role = sessionStorage.getItem('role');
+    let rollno = sessionStorage.getItem('rollno');
 
     const handleShowBatchModal = () => {
         // console.log(showModal)
-        setShowList(0);
+         setShowList(0);
         setShowMenu(!showMenu);
         setShowBatchModal(!showBatchModal);
     }
@@ -66,7 +66,7 @@ function Dashboard() {
         const arr = [];
         await axios.get('http://localhost:5000/batch/getBatches')
             .then(res => {
-                // console.log(res.data);
+                console.log(res.data);
                 let foundStudent;
                 if(role==="Student"){
                     res.data.forEach(item =>{
@@ -79,6 +79,8 @@ function Dashboard() {
                             })
                         }    
                     });
+                    // console.log("student" + role);
+                    // console.log(arr);
                 }
                 else{
                     res.data.forEach(item => {
@@ -88,6 +90,7 @@ function Dashboard() {
                             status: item.batchstatus,
                         })
                     })
+                    // console.log("admin  "+ role);
                 }
                 // console.log(arr);
                 setBatches(arr);
@@ -127,18 +130,14 @@ function Dashboard() {
                             if(!users){
                                 return res.sendStatus(401);
                             }
-                    
                             for(let j=0;j<users.length;j++){
                                 const user = users[j];
                                 if(!user.isActive){
-                    
                                     const templateparams = {
                                         name: user.fullname,
                                         email: user.email
                                     };
-                    
                                     console.log(templateparams)
-                                    
                                     emailjs.send('service_cuitdwa', 'template_99uwo69', templateparams, 'JeeyJmTk8Wv7Z8qfi')
                                     .then((result) => {
                                         console.log("sent");
@@ -148,15 +147,19 @@ function Dashboard() {
                                 }
                             }
                         }
+                        alert("Mails sent");
                     })
                     .catch((err)=>{
                         console.log(err);
+                        alert("There's a problem with this service right now, sorry for your inconvenince");
                     })
     }
     
     useEffect(() => {
         handleBatches();
-    }, [filterBatch])
+        // setRole(auth.role);
+        // setRollno(auth.rollno);
+    }, [filterBatch]);
 
     return (
         <div onClick={handleClickOutSide}>
@@ -183,7 +186,7 @@ function Dashboard() {
                 {Batches.map((batch) => (
                     <div key={batch.id}  className={filterBatch.length !== 0 ? (filterBatch.indexOf(batch.status) === -1 ? "hidden" : "w-full md:w-1/3 lg:w-1/4 h-[120px] border-2 border-black m-4 px-4 py-3 flex flex-col justify-between rounded-md") : "w-full md:w-1/3 lg:w-1/4 h-[120px] border-2 border-black m-4 px-4 py-3 flex flex-col justify-between rounded-md"}>
                         <div className="flex flex-row justify-between">
-                            <h1 className="font-bold text-2xl "><Link to={`/leaderboard/` + batch.batchname} className="hover:underline">{batch.batchname.replace(/(\w)(\w*)/g,
+                            <h1 className="font-bold text-2xl "><Link to={`/leaderboard/` + batch.batchname} className="hover:underline">{batch.batchname?.replace(/(\w)(\w*)/g,
                                         function(g0,g1,g2){return g1.toUpperCase() + g2.toLowerCase();})}</Link></h1>
                                 <div className={role==="Student"?"hidden":"relative"}>
                                     <IoMdMore className={showMenu?"text-2xl cursor-pointer":"hidden"} id={batch.batchname} onClick={handleList} />
@@ -199,7 +202,8 @@ function Dashboard() {
                                 </div>
                         </div>
                         <div className="flex flex-row justify-between">
-                            <p className="text-[13px] text-gray-500 font-semibold">{batch.status}</p>
+                            <p className="text-[13px] text-gray-500 font-semibold">{batch.status.replace(/(\w)(\w*)/g,
+                                        function(g0,g1,g2){return g1.toUpperCase() + g2.toLowerCase();})}</p>
                         </div>
                     </div>
                 ))}

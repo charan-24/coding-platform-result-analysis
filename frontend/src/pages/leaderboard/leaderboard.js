@@ -37,7 +37,7 @@ function LeaderBoard (){
                                             arr.push({
                                                 sno:index+1,
                                                 rollno: item.rollno,
-                                                fullname: item.fullname.replace(/(\w)(\w*)/g,
+                                                fullname: item.fullname?.replace(/(\w)(\w*)/g,
                                                             function(g0,g1,g2){return g1.toUpperCase() + g2.toLowerCase();}),
                                                 lastlogin: lastlogin,
                                                 lastUpdated: lastUpdated,
@@ -218,11 +218,11 @@ function LeaderBoard (){
                     </thead>
                     <tbody>
                         {Users.map((user,index)=>(
-                            <tr key={user.rollno} className={!user.isActive?"tbody-row bg-red-300":user.rollno===rollno?"tbody-row bg-green-200":index%2!==0?`tbody-row bg-[#f5f5f5]` :"tbody-row"}>
+                            <tr key={user.rollno} className={user.rollno===rollno?"tbody-row bg-green-200":index%2!==0?`tbody-row bg-[#f5f5f5]` :"tbody-row"}>
                                 <td>{user.sno}</td>
-                                <td id={user.rollno} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-                                    <div className="relative">
-                                        <p className="inline">{user.rollno}</p>
+                                <td className={!user.isActive && "bg-red-300"} id={user.rollno} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+                                    <div className={"relative"}>
+                                        <p className={"inline"}>{user.rollno}</p>
                                         <div className={role===`Student`?"hidden":"inline"}>
                                             <IoMdMore id={user.rollno} onClick={handleList} className={userid===user.rollno?(showDel ?"inline float-right":"hidden"):"hidden"}/>
                                             <div className={ (delid===user.rollno) ? (showList ? "absolute left-full top-5  w-[100px]":"hidden"):"hidden"}>
