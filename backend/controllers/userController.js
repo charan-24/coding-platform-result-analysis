@@ -44,6 +44,38 @@ const changeAhandle = asyncHandler(async (req,res) => {
     return res.status(200).json({message:`${handlename} handle updated`});
 });
 
+const changeAPersonalDetail = asyncHandler(async(req,res)=>{
+    const { rollno, key, value} = req.body;
+    console.log(req.body);
+    let f=0;
+    if(!rollno || !key || !value){
+        return res.status(401).json({message:"All fields required"});
+    }
+
+    const batch = await Batch.find().exec();
+    if(!batch){
+        return res.status(401).json({message:"No batches"});
+    }
+
+    for(let i=0;i<batch.length;i++){
+        const users = batch[i].users;
+        
+        const foundUser = users.find(user => user.rollno === rollno);
+        if(!foundUser){
+            continue;
+        }
+        f=1;
+        if(key==="email"){
+            foundUser.email = value;
+        }
+        await batch[i].save();
+    }
+    if(f==1){
+        return res.status(200).json({message:`${key} updated`});
+    } 
+    return res.status(401).json({message:"user not found"})
+});
+
 const fetchUserDetails = asyncHandler(async(req,res)=>{
     const rollno = req.params.rollno;
     // console.log(rollno);
@@ -73,12 +105,12 @@ const fetchUserDetails = asyncHandler(async(req,res)=>{
         resObj["interviewbit"] = foundUser.profiles.interviewbit.username;
         return res.status(200).json(resObj);
     }
-
 });
 
 
 
 module.exports = {
     changeAhandle,
+    changeAPersonalDetail,
     fetchUserDetails
 }
