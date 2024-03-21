@@ -23,6 +23,159 @@ function parseDate(str) {
     return new Date(year, month - 1, date);
 }
 
+const fetchNewBatchScores = asyncHandler(async (req,res)=>{
+    const {batchname} = req.body;
+    if(!batchname){
+        return res.status(400).json({message:`all fields are required`});
+    }
+    const batch = await Batch.findOne({batchname}).exec();
+    if(!batch){
+        return res.status(400).json({message:`${batchname} not found`});
+    }
+
+    const users = batch.users.filter(user => user.role !== "Admin");
+    for(let i=0;i<users.length;i++){
+        //fetch from hackerrank
+        const user = users[i];
+        hr = await axios.get('http://localhost:'+process.env.PORT+'/fetch/hr/'+user.profiles.hackerrank.username);
+        hr = hr.data.payload;
+        if(!hr.ds_score){
+            hr.ds_score=0;
+        }
+        if(!hr.algo_score){
+            hr.algo_score=0;
+        }
+        console.log(hr);
+
+        user.profiles.hackerrank.lastUpdated = Date.now();
+        user.lastUpdated = Date.now();
+
+        const hrscore = scoreModel({
+            dsScore: hr.ds_score,
+            algoScore: hr.algo_score
+        });
+        user.profiles.hackerrank.scores = hrscore;
+
+        //fetch from leetcode
+        lc = await axios.get('http://localhost:'+process.env.PORT+'/fetch/lc/'+user.profiles.leetcode.username);
+        lc = lc.data.payload;
+        if(!lc.noOfProblemsSolved){
+            lc.noOfProblemsSolved = 0;
+        }
+        if(!lc.noOfContests){
+            lc.noOfContests = 0;
+        }
+        if(!lc.rating){
+            lc.rating = 0;
+        }
+        console.log(lc);
+        user.profiles.leetcode.lastUpdated = Date.now();
+        user.lastUpdated = Date.now();
+        const lcscore = scoreModel({
+            noOfProblemsSolved: lc.noOfProblemsSolved,
+            noOfContests: lc.noOfContests,
+            contestRating: lc.rating,
+        }); 
+        user.profiles.leetcode.scores = lcscore;
+        
+
+        //fetch from codechef
+        cc = await axios.get('http://localhost:'+process.env.PORT+'/fetch/cc/'+user.profiles.codechef.username);
+        cc = cc.data.payload;
+        if(!cc.noOfProblemsSolved){
+            cc.noOfProblemsSolved = 0;
+        }
+        if(!cc.noOfContests){
+            cc.noOfContests = 0;
+        }
+        if(!cc.rating){
+            cc.rating = 0;
+        }
+        console.log(cc);
+
+        user.profiles.codechef.lastUpdated = Date.now();
+        user.lastUpdated = Date.now();  
+
+        const ccscore = scoreModel({
+            noOfProblemsSolved: cc.noOfProblemsSolved,
+            noOfContests: cc.noOfContests,
+            contestRating: cc.rating,
+        });
+        user.profiles.codechef.scores = ccscore;
+
+        //fetch from codeforces
+        cf = await axios.get('http://localhost:'+process.env.PORT+'/fetch/cf/'+user.profiles.codeforces.username);
+        cf = cf.data.payload;
+        if(!cf.noOfProblemsSolved){
+            cf.noOfProblemsSolved = 0;
+        }
+        if(!cf.noOfContests){
+            cf.noOfContests = 0;
+        }
+        if(!cf.rating){
+            cf.rating = 0;
+        }
+        console.log(cf);
+        
+        user.profiles.codeforces.lastUpdated = Date.now();
+        user.lastUpdated = Date.now();
+
+        const cfscore = scoreModel({
+            noOfProblemsSolved: cf.noOfProblemsSolved,
+            noOfContests: cf.noOfContests,
+            contestRating: cf.rating,
+        });
+        user.profiles.codeforces.scores = cfscore;
+        
+
+        //fetch from interviewbit       
+        ib = await axios.get('http://localhost:'+process.env.PORT+'/fetch/ib/'+user.profiles.interviewbit.username);
+        ib = ib.data.payload;
+        if(!ib.noOfProblemsSolved){
+            ib.noOfProblemsSolved = 0;
+        }
+        console.log(ib);
+        user.profiles.interviewbit.lastUpdated = Date.now();
+        user.lastUpdated = Date.now();
+        const ibscore = scoreModel({
+            noOfProblemsSolved: ib.noOfProblemsSolved,
+        });
+        user.profiles.interviewbit.scores = ibscore;
+        
+        //fetch from spoj     
+        spoj = await axios.get('http://localhost:'+process.env.PORT+'/fetch/spoj/'+user.profiles.spoj.username);
+        spoj = spoj.data.payload;
+        if(!spoj.noOfProblemsSolved){
+            spoj.noOfProblemsSolved = 0;
+        }
+        console.log(spoj);
+        user.profiles.spoj.lastUpdated = Date.now();
+        user.lastUpdated = Date.now();
+        const spojscore = scoreModel({
+            noOfProblemsSolved: spoj.noOfProblemsSolved,
+        });
+        user.profiles.spoj.scores = spojscore;
+
+        const currDate = new Date();
+        const lastUpdatedDate = user.lastUpdated;
+        // const lastUpdatedDate = new Date(24*3600*1000);
+        if(lastUpdatedDate){
+            const noofDays = datediff(parseDate(lastUpdatedDate), parseDate(currDate));
+            console.log(noofDays);
+            
+            if(parseInt(noofDays)>=7){
+                user.isActive = false;
+            }
+            else{
+                user.isActive = true;
+            }
+        }
+    }
+    //save to db
+    await batch.save();
+    return res.status(200).json({success:"scores updated"});
+});
+
 const fetchScore = asyncHandler(async (req,res)=>{
     const {batchname} = req.body;
     if(!batchname){
@@ -212,10 +365,8 @@ const fetchNewUserScore = asyncHandler(async (req,res)=>{
             hr.algo_score=0;
         }
         console.log(hr);
-        if(user.profiles.hackerrank.scores.dsScore != hr.ds_score || user.profiles.hackerrank.scores.algoScore != hr.algo_score){
-            user.profiles.hackerrank.lastUpdated = Date.now();
-            user.lastUpdated = Date.now();
-        }
+        user.profiles.hackerrank.lastUpdated = Date.now();
+        user.lastUpdated = Date.now();
         const hrscore = scoreModel({
             dsScore: hr.ds_score,
             algoScore: hr.algo_score
@@ -235,10 +386,12 @@ const fetchNewUserScore = asyncHandler(async (req,res)=>{
             lc.rating = 0;
         }
         console.log(lc);
-        if(user.profiles.leetcode.scores.noOfProblemsSolved !==lc.noOfProblemsSolved || user.profiles.leetcode.scores.noOfContests !== lc.noOfContests){
-            user.profiles.leetcode.lastUpdated = Date.now();
-            user.lastUpdated = Date.now();
-        }
+        // if(user.profiles.leetcode.scores.noOfProblemsSolved !==lc.noOfProblemsSolved || user.profiles.leetcode.scores.noOfContests !== lc.noOfContests){
+        //     user.profiles.leetcode.lastUpdated = Date.now();
+        //     user.lastUpdated = Date.now();
+        // }
+        user.profiles.leetcode.lastUpdated = Date.now();
+        user.lastUpdated = Date.now();
         const lcscore = scoreModel({
             noOfProblemsSolved: lc.noOfProblemsSolved,
             noOfContests: lc.noOfContests,
@@ -260,10 +413,13 @@ const fetchNewUserScore = asyncHandler(async (req,res)=>{
             cc.rating = 0;
         }
         console.log(cc);
-        if(user.profiles.codechef.scores.noOfProblemsSolved !== cc.noOfProblemsSolved || user.profiles.codechef.scores.noOfContests !== cc.noOfContests){
-            user.profiles.codechef.lastUpdated = Date.now();
-            user.lastUpdated = Date.now();
-        }      
+        // if(user.profiles.codechef.scores.noOfProblemsSolved !== cc.noOfProblemsSolved || user.profiles.codechef.scores.noOfContests !== cc.noOfContests){
+        //     user.profiles.codechef.lastUpdated = Date.now();
+        //     user.lastUpdated = Date.now();
+        // }      
+        user.profiles.codechef.lastUpdated = Date.now();
+        user.lastUpdated = Date.now();
+
         const ccscore = scoreModel({
             noOfProblemsSolved: cc.noOfProblemsSolved,
             noOfContests: cc.noOfContests,
@@ -284,10 +440,12 @@ const fetchNewUserScore = asyncHandler(async (req,res)=>{
             cf.rating = 0;
         }
         console.log(cf);
-        if(user.profiles.codeforces.scores.noOfProblemsSolved !== cf.noOfProblemsSolved || user.profiles.codeforces.scores.noOfContests !== cf.noOfContests){
-            user.profiles.codeforces.lastUpdated = Date.now();
-            user.lastUpdated = Date.now();
-        }
+        // if(user.profiles.codeforces.scores.noOfProblemsSolved !== cf.noOfProblemsSolved || user.profiles.codeforces.scores.noOfContests !== cf.noOfContests){
+        //     user.profiles.codeforces.lastUpdated = Date.now();
+        //     user.lastUpdated = Date.now();
+        // }
+        user.profiles.codeforces.lastUpdated = Date.now();
+        user.lastUpdated = Date.now();
         const cfscore = scoreModel({
             noOfProblemsSolved: cf.noOfProblemsSolved,
             noOfContests: cf.noOfContests,
@@ -303,10 +461,12 @@ const fetchNewUserScore = asyncHandler(async (req,res)=>{
             ib.noOfProblemsSolved = 0;
         }
         console.log(ib);
-        if(user.profiles.interviewbit.scores.noOfProblemsSolved !== ib.noOfProblemsSolved){
-            user.profiles.interviewbit.lastUpdated = Date.now();
-            user.lastUpdated = Date.now();
-        }
+        // if(user.profiles.interviewbit.scores.noOfProblemsSolved !== ib.noOfProblemsSolved){
+        //     user.profiles.interviewbit.lastUpdated = Date.now();
+        //     user.lastUpdated = Date.now();
+        // }
+        user.profiles.interviewbit.lastUpdated = Date.now();
+        user.lastUpdated = Date.now();
         const ibscore = scoreModel({
             noOfProblemsSolved: ib.noOfProblemsSolved,
         });
@@ -319,10 +479,12 @@ const fetchNewUserScore = asyncHandler(async (req,res)=>{
             spoj.noOfProblemsSolved = 0;
         }
         console.log(spoj);
-        if(user.profiles.spoj.scores.noOfProblemsSolved !== spoj.noOfProblemsSolved){
-            user.profiles.spoj.lastUpdated = Date.now();
-            user.lastUpdated = Date.now();
-        }
+        // if(user.profiles.spoj.scores.noOfProblemsSolved !== spoj.noOfProblemsSolved){
+        //     user.profiles.spoj.lastUpdated = Date.now();
+        //     user.lastUpdated = Date.now();
+        // }
+        user.profiles.spoj.lastUpdated = Date.now();
+        user.lastUpdated = Date.now();
         const spojscore = scoreModel({
             noOfProblemsSolved: spoj.noOfProblemsSolved,
         });
@@ -349,167 +511,181 @@ const fetchNewUserScore = asyncHandler(async (req,res)=>{
 });
 
 const fetchScoreIndividual = asyncHandler(async(req,res)=>{
-    const {batchname,rollno} = req.body;
-    // console.log(req.body);
-    if(!batchname || !rollno){
+    const {rollno} = req.body;
+    if(!rollno){
         return res.status(400).json({message:`all fields are required`});
     }
-    const batch = await Batch.findOne({batchname}).exec();
-    if(!batch){
-        return res.status(400).json({message:`${batchname} not found`});
+    let batches = await Batch.find({}).exec();
+    if(!batches){
+        return res.status(400).json({message:"batches not found"});
     }
+    // console.log(batches);
+    for(let i=0;i<batches.length;i++){
+        if(!batches[i])
+            return res.sendStatus(401);
+        let user = batches[i].users.filter(user => user.rollno === rollno);
+        console.log(batches[i].users);
+        if(!user){
+            return res.status(401).json({message:"user not found"});
+        }
 
-    const user = batch.users.find(user => user.rollno === rollno);
-    // console.log(user);
-    if(!user){
-        return res.status(401).json({message:"user not found"});
-    }
+        //fetch from hackerrank
+        // console.log(user.profiles.hackerrank.scores);
+        hr = await axios.get('http://localhost:'+process.env.PORT+'/fetch/hr/'+user.profiles.hackerrank.username);
+        hr = hr.data.payload;
+        if(!hr.ds_score){
+            hr.ds_score=0;
+        }
+        if(!hr.algo_score){
+            hr.algo_score=0;
+        }
+        console.log(hr);
+        if(user.profiles.hackerrank.scores.dsScore != hr.ds_score || user.profiles.hackerrank.scores.algoScore != hr.algo_score){
+            user.profiles.hackerrank.lastUpdated = Date.now();
+            user.lastUpdated = Date.now();
+        }
+        const hrscore = scoreModel({
+            dsScore: hr.ds_score,
+            algoScore: hr.algo_score
+        });
+        user.profiles.hackerrank.scores = hrscore;
 
-    //fetch from hackerrank
-    // console.log(user.profiles.hackerrank.scores);
-    hr = await axios.get('http://localhost:'+process.env.PORT+'/fetch/hr/'+user.profiles.hackerrank.username);
-    hr = hr.data.payload;
-    if(!hr.ds_score){
-        hr.ds_score=0;
-    }
-    if(!hr.algo_score){
-        hr.algo_score=0;
-    }
-    console.log(hr);
-    if(user.profiles.hackerrank.scores.dsScore != hr.ds_score || user.profiles.hackerrank.scores.algoScore != hr.algo_score){
-        user.profiles.hackerrank.lastUpdated = Date.now();
-        user.lastUpdated = Date.now();
-    }
-    const hrscore = scoreModel({
-        dsScore: hr.ds_score,
-        algoScore: hr.algo_score
-    });
-    user.profiles.hackerrank.scores = hrscore;
+        //fetch from leetcode
+        lc = await axios.get('http://localhost:'+process.env.PORT+'/fetch/lc/'+user.profiles.leetcode.username);
+        lc = lc.data.payload;
+        if(!lc.noOfProblemsSolved){
+            lc.noOfProblemsSolved = 0;
+        }
+        if(!lc.noOfContests){
+            lc.noOfContests = 0;
+        }
+        if(!lc.rating){
+            lc.rating = 0;
+        }
+        console.log(lc);
+        if(user.profiles.leetcode.scores?.noOfProblemsSolved){
+            if(user.profiles.leetcode.scores.noOfProblemsSolved !==lc.noOfProblemsSolved || user.profiles.leetcode.scores.noOfContests !== lc.noOfContests){
+                user.profiles.leetcode.lastUpdated = Date.now();
+                user.lastUpdated = Date.now();
+            }
+        }
 
-    //fetch from leetcode
-    lc = await axios.get('http://localhost:'+process.env.PORT+'/fetch/lc/'+user.profiles.leetcode.username);
-    lc = lc.data.payload;
-    if(!lc.noOfProblemsSolved){
-        lc.noOfProblemsSolved = 0;
-    }
-    if(!lc.noOfContests){
-        lc.noOfContests = 0;
-    }
-    if(!lc.rating){
-        lc.rating = 0;
-    }
-    console.log(lc);
-    if(user.profiles.leetcode.scores.noOfProblemsSolved !==lc.noOfProblemsSolved || user.profiles.leetcode.scores.noOfContests !== lc.noOfContests){
-        user.profiles.leetcode.lastUpdated = Date.now();
-        user.lastUpdated = Date.now();
-    }
-    const lcscore = scoreModel({
-        noOfProblemsSolved: lc.noOfProblemsSolved,
-        noOfContests: lc.noOfContests,
-        contestRating: lc.rating,
-    }); 
-    user.profiles.leetcode.scores = lcscore;
-    
-
-    //fetch from codechef
-    cc = await axios.get('http://localhost:'+process.env.PORT+'/fetch/cc/'+user.profiles.codechef.username);
-    cc = cc.data.payload;
-    if(!cc.noOfProblemsSolved){
-        cc.noOfProblemsSolved = 0;
-    }
-    if(!cc.noOfContests){
-        cc.noOfContests = 0;
-    }
-    if(!cc.rating){
-        cc.rating = 0;
-    }
-    console.log(cc);
-    if(user.profiles.codechef.scores.noOfProblemsSolved !== cc.noOfProblemsSolved || user.profiles.codechef.scores.noOfContests !== cc.noOfContests){
-        user.profiles.codechef.lastUpdated = Date.now();
-        user.lastUpdated = Date.now();
-    }      
-    const ccscore = scoreModel({
-        noOfProblemsSolved: cc.noOfProblemsSolved,
-        noOfContests: cc.noOfContests,
-        contestRating: cc.rating,
-    });
-    user.profiles.codechef.scores = ccscore;
-
-    //fetch from codeforces
-    cf = await axios.get('http://localhost:'+process.env.PORT+'/fetch/cf/'+user.profiles.codeforces.username);
-    cf = cf.data.payload;
-    if(!cf.noOfProblemsSolved){
-        cf.noOfProblemsSolved = 0;
-    }
-    if(!cf.noOfContests){
-        cf.noOfContests = 0;
-    }
-    if(!cf.rating){
-        cf.rating = 0;
-    }
-    console.log(cf);
-    if(user.profiles.codeforces.scores.noOfProblemsSolved !== cf.noOfProblemsSolved || user.profiles.codeforces.scores.noOfContests !== cf.noOfContests){
-        user.profiles.codeforces.lastUpdated = Date.now();
-        user.lastUpdated = Date.now();
-    }
-    const cfscore = scoreModel({
-        noOfProblemsSolved: cf.noOfProblemsSolved,
-        noOfContests: cf.noOfContests,
-        contestRating: cf.rating,
-    });
-    user.profiles.codeforces.scores = cfscore;
-    
-
-    //fetch from interviewbit       
-    ib = await axios.get('http://localhost:'+process.env.PORT+'/fetch/ib/'+user.profiles.interviewbit.username);
-    ib = ib.data.payload;
-    if(!ib.noOfProblemsSolved){
-        ib.noOfProblemsSolved = 0;
-    }
-    console.log(ib);
-    if(user.profiles.interviewbit.scores.noOfProblemsSolved !== ib.noOfProblemsSolved){
-        user.profiles.interviewbit.lastUpdated = Date.now();
-        user.lastUpdated = Date.now();
-    }
-    const ibscore = scoreModel({
-        noOfProblemsSolved: ib.noOfProblemsSolved,
-    });
-    user.profiles.interviewbit.scores = ibscore;
-    
-    //fetch from spoj     
-    spoj = await axios.get('http://localhost:'+process.env.PORT+'/fetch/spoj/'+user.profiles.spoj.username);
-    spoj = spoj.data.payload;
-    if(!spoj.noOfProblemsSolved){
-        spoj.noOfProblemsSolved = 0;
-    }
-    console.log(spoj);
-    if(user.profiles.spoj.scores.noOfProblemsSolved !== spoj.noOfProblemsSolved){
-        user.profiles.spoj.lastUpdated = Date.now();
-        user.lastUpdated = Date.now();
-    }
-    const spojscore = scoreModel({
-        noOfProblemsSolved: spoj.noOfProblemsSolved,
-    });
-    user.profiles.spoj.scores = spojscore;
-
-    const currDate = new Date();
-    // const lastUpdatedDate = user.lastUpdated;
-    const lastUpdatedDate = new Date(24*3600*1000);
-    if(lastUpdatedDate){
-        const noofDays = datediff(parseDate(lastUpdatedDate), parseDate(currDate));
-        console.log(noofDays);
+        const lcscore = scoreModel({
+            noOfProblemsSolved: lc.noOfProblemsSolved,
+            noOfContests: lc.noOfContests,
+            contestRating: lc.rating,
+        }); 
+        user.profiles.leetcode.scores = lcscore;
         
-        if(parseInt(noofDays)>=7){
-            user.isActive = false;
+
+        //fetch from codechef
+        cc = await axios.get('http://localhost:'+process.env.PORT+'/fetch/cc/'+user.profiles.codechef.username);
+        cc = cc.data.payload;
+        if(!cc.noOfProblemsSolved){
+            cc.noOfProblemsSolved = 0;
         }
-        else{
-            user.isActive = true;
+        if(!cc.noOfContests){
+            cc.noOfContests = 0;
         }
-        user.lastUpdated = lastUpdatedDate;
+        if(!cc.rating){
+            cc.rating = 0;
+        }
+        console.log(cc);
+        if(user.profiles.codechef.scores?.noOfProblemsSolved){
+            if(user.profiles.codechef.scores.noOfProblemsSolved !== cc.noOfProblemsSolved || user.profiles.codechef.scores.noOfContests !== cc.noOfContests){
+                user.profiles.codechef.lastUpdated = Date.now();
+                user.lastUpdated = Date.now();
+            } 
+        }     
+        const ccscore = scoreModel({
+            noOfProblemsSolved: cc.noOfProblemsSolved,
+            noOfContests: cc.noOfContests,
+            contestRating: cc.rating,
+        });
+        user.profiles.codechef.scores = ccscore;
+
+        //fetch from codeforces
+        cf = await axios.get('http://localhost:'+process.env.PORT+'/fetch/cf/'+user.profiles.codeforces.username);
+        cf = cf.data.payload;
+        if(!cf.noOfProblemsSolved){
+            cf.noOfProblemsSolved = 0;
+        }
+        if(!cf.noOfContests){
+            cf.noOfContests = 0;
+        }
+        if(!cf.rating){
+            cf.rating = 0;
+        }
+        console.log(cf);
+        if(user.profiles.codeforces.scores?.noOfProblemsSolved){
+            if(user.profiles.codeforces.scores.noOfProblemsSolved !== cf.noOfProblemsSolved || user.profiles.codeforces.scores.noOfContests !== cf.noOfContests){
+                user.profiles.codeforces.lastUpdated = Date.now();
+                user.lastUpdated = Date.now();
+            }
+        }
+        const cfscore = scoreModel({
+            noOfProblemsSolved: cf.noOfProblemsSolved,
+            noOfContests: cf.noOfContests,
+            contestRating: cf.rating,
+        });
+        user.profiles.codeforces.scores = cfscore;
+        
+
+        //fetch from interviewbit       
+        ib = await axios.get('http://localhost:'+process.env.PORT+'/fetch/ib/'+user.profiles.interviewbit.username);
+        ib = ib.data.payload;
+        if(!ib.noOfProblemsSolved){
+            ib.noOfProblemsSolved = 0;
+        }
+        console.log(ib);
+        if(user.profiles.interviewbit.scores?.noOfProblemsSolved){
+            if(user.profiles.interviewbit.scores.noOfProblemsSolved !== ib.noOfProblemsSolved){
+                user.profiles.interviewbit.lastUpdated = Date.now();
+                user.lastUpdated = Date.now();
+            }
+        }
+        const ibscore = scoreModel({
+            noOfProblemsSolved: ib.noOfProblemsSolved,
+        });
+        user.profiles.interviewbit.scores = ibscore;
+        
+        //fetch from spoj     
+        spoj = await axios.get('http://localhost:'+process.env.PORT+'/fetch/spoj/'+user.profiles.spoj.username);
+        spoj = spoj.data.payload;
+        if(!spoj.noOfProblemsSolved){
+            spoj.noOfProblemsSolved = 0;
+        }
+        console.log(spoj);
+        if(user.profiles.spoj.scores?.noOfProblemsSolved){
+            if(user.profiles.spoj.scores.noOfProblemsSolved !== spoj.noOfProblemsSolved){
+                user.profiles.spoj.lastUpdated = Date.now();
+                user.lastUpdated = Date.now();
+            }
+        }
+        const spojscore = scoreModel({
+            noOfProblemsSolved: spoj.noOfProblemsSolved,
+        });
+        user.profiles.spoj.scores = spojscore;
+
+        const currDate = new Date();
+        // const lastUpdatedDate = user.lastUpdated;
+        const lastUpdatedDate = new Date(24*3600*1000);
+        if(lastUpdatedDate){
+            const noofDays = datediff(parseDate(lastUpdatedDate), parseDate(currDate));
+            console.log(noofDays);
+            
+            if(parseInt(noofDays)>=7){
+                user.isActive = false;
+            }
+            else{
+                user.isActive = true;
+            }
+            user.lastUpdated = lastUpdatedDate;
+        }
     }
 
     //save to db
-    await batch.save();
+    await batches.save();
     return res.status(200).json({success:"scores updated"});
 });
 
@@ -582,6 +758,7 @@ const getScores = asyncHandler(async (req,res)=>{
         user.codeforces.scores.total = Math.ceil(cfscore);
         users[i].total = resObj["total"];
         scoresData.push(resObj);
+        // console.log(resObj);
     }
     await batch.save();
     return  res.status(200).json(scoresData);
@@ -632,6 +809,7 @@ const getIndScore = asyncHandler(async (req,res)=>{
 });
 
 module.exports = {
+    fetchNewBatchScores,
     fetchScore,
     fetchScoreIndividual,
     fetchNewUserScore,

@@ -28,7 +28,6 @@ const MyProfile = () => {
                                 .then(res=>{
                                     console.log(res.data);
                                     let temp = Object.values(res.data.scoreObj);
-                                    let scores = [res.data.scoreObj.hackerrank]
                                     // console.log(temp);
                                     setDonutData([...temp.slice(0,6)]);
                                     setRatingsData([...temp.slice(6,9)]);
