@@ -26,7 +26,7 @@ app.use(exp.static("public"));
 
 //routes
 app.use('/login',require('./routes/login'));
-// app.use('/register',require('./routes/register'));
+app.use('/register',require('./routes/register'));
 app.use('/batch',require('./routes/batch'));
 app.use('/user',require('./routes/user'));
 app.use('/score',require('./routes/score'));
@@ -62,40 +62,6 @@ cron.schedule('20 00 * * *', () => {
     dailyUpdate();
 });
 
-// const sendReminders = async () => {
-//     const batches = await Batch.find({}).exec();
-//     for(let i=0;i<batches.length;i++){
-//         const batch = batches[i];
-//         const users = batch.users;
-//         if(!users){
-//             return res.sendStatus(401);
-//         }
-
-//         for(let j=0;j<users.length;j++){
-//             const user = users[j];
-//             if(!user.isActive){
-
-//                 const templateparams = {
-//                     name: user.fullname,
-//                     email: user.email
-//                 };
-
-//                 console.log(templateparams)
-                
-//                 emailjs.send('service_cuitdwa', 'template_99uwo69', templateparams, 'JeeyJmTk8Wv7Z8qfi')
-//                 .then((result) => {
-//                     console.log("sent");
-//                 }, (error) => {
-//                     console.log("error");
-//                 });
-//             }
-//         }
-//     }
-// }
-
-// cron.schedule('59 00 * * *',()=>{
-//     sendReminders();
-// });
 
    
 
